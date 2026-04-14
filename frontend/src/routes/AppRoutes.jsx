@@ -99,7 +99,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
         
-        {/* Fallback */}
+        {/* Fallback - any unknown route goes to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

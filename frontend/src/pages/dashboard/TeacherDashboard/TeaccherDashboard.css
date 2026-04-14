@@ -1,0 +1,54 @@
+/* Reuse base styles from AdminDashboard.css */
+/* Add Teacher-specific styles */
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.task-due {
+  font-size: 12px;
+  color: #999;
+}
+
+.announcement-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.announcement-item:last-child {
+  border-bottom: none;
+}
+
+.announcement-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #1a1a2e;
+}
+
+.announcement-message {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.announcement-time {
+  font-size: 11px;
+  color: #999;
+}

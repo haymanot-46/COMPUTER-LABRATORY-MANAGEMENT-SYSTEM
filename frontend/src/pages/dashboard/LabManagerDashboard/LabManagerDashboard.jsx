@@ -1,209 +1,177 @@
 import React from 'react';
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Chip,
-  LinearProgress
-} from '@mui/material';
-import {
-  Science,
-  Computer,
-  Schedule,
-  Build,
-  CheckCircle,
-  Pending,
-  Warning,
-  Today
-} from '@mui/icons-material';
+import './LabMangenerDashboard.css';
 
 const LabManagerDashboard = () => {
   const stats = [
-    { title: 'Laboratories', value: '5', icon: <Science />, color: '#667eea' },
-    { title: 'Computers', value: '120', icon: <Computer />, color: '#48bb78' },
-    { title: 'Active Sessions', value: '8', icon: <Schedule />, color: '#ed8936' },
-    { title: 'Maintenance', value: '3', icon: <Build />, color: '#e53e3e' },
+    { title: 'Laboratories', value: '5', icon: '🔬', color: '#667eea' },
+    { title: 'Computers', value: '120', icon: '🖥️', color: '#48bb78' },
+    { title: 'Active Sessions', value: '8', icon: '📅', color: '#ed8936' },
+    { title: 'Maintenance', value: '3', icon: '🔧', color: '#e53e3e' },
   ];
 
   const pendingApprovals = [
-    { id: 1, lab: 'Lab 101', course: 'Database Systems', instructor: 'Dr. Abebe', time: '10:00 AM', date: '2026-04-15' },
-    { id: 2, lab: 'Lab 102', course: 'Computer Networks', instructor: 'Dr. Almaz', time: '2:00 PM', date: '2026-04-15' },
-    { id: 3, lab: 'Lab 103', course: 'Software Engineering', instructor: 'Dr. Biruk', time: '11:00 AM', date: '2026-04-16' },
+    { id: 1, lab: 'Lab 101', course: 'Database Systems', instructor: 'Dr. Abebe', time: '10:00 AM', date: 'Apr 15' },
+    { id: 2, lab: 'Lab 102', course: 'Computer Networks', instructor: 'Dr. Almaz', time: '2:00 PM', date: 'Apr 15' },
+    { id: 3, lab: 'Lab 103', course: 'Software Engineering', instructor: 'Dr. Biruk', time: '11:00 AM', date: 'Apr 16' },
   ];
 
   const labUtilization = [
-    { name: 'Lab 101', utilization: 85, status: 'High' },
-    { name: 'Lab 102', utilization: 62, status: 'Medium' },
-    { name: 'Lab 103', utilization: 45, status: 'Low' },
-    { name: 'Lab 104', utilization: 78, status: 'High' },
-    { name: 'Lab 105', utilization: 30, status: 'Low' },
+    { name: 'Lab 101', utilization: 85 },
+    { name: 'Lab 102', utilization: 62 },
+    { name: 'Lab 103', utilization: 45 },
+    { name: 'Lab 104', utilization: 78 },
+    { name: 'Lab 105', utilization: 30 },
   ];
 
-  const todaySchedules = [
-    { time: '8:00 AM - 10:00 AM', lab: 'Lab 101', course: 'Advanced Databases', instructor: 'Dr. Abebe' },
-    { time: '10:00 AM - 12:00 PM', lab: 'Lab 102', course: 'Web Development', instructor: 'Dr. Almaz' },
-    { time: '1:00 PM - 3:00 PM', lab: 'Lab 101', course: 'Data Structures', instructor: 'Dr. Chaltu' },
-    { time: '3:00 PM - 5:00 PM', lab: 'Lab 103', course: 'Network Security', instructor: 'Dr. Desta' },
-  ];
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+    window.location.href = '/login';
+  };
+
+  const getUtilizationColor = (percent) => {
+    if (percent > 70) return '#e53e3e';
+    if (percent > 50) return '#ed8936';
+    return '#38a169';
+  };
 
   return (
-    <Box sx={{ p: 3 }}>
-      {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Box>
-          <Typography variant="h4" fontWeight="bold">
-            Laboratory Manager Dashboard
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Manage Laboratories & Resources
-          </Typography>
-        </Box>
-        <Button variant="contained" startIcon={<Today />}>
-          View Schedule
-        </Button>
-      </Box>
+    <div className="dashboard-container">
+      <aside className="sidebar">
+        <div className="sidebar-logo">
+          <span className="logo-icon">🖥️</span>
+          <span className="logo-text">CLMS</span>
+        </div>
+        <nav className="sidebar-nav">
+          <a href="/lab-manager/dashboard" className="nav-item active">
+            <span className="nav-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" className="nav-item">
+            <span className="nav-icon">🔬</span>
+            <span>Laboratories</span>
+          </a>
+          <a href="#" className="nav-item">
+            <span className="nav-icon">📅</span>
+            <span>Schedules</span>
+          </a>
+          <a href="#" className="nav-item">
+            <span className="nav-icon">🖥️</span>
+            <span>Computers</span>
+          </a>
+          <a href="#" className="nav-item">
+            <span className="nav-icon">🔧</span>
+            <span>Maintenance</span>
+          </a>
+          <a href="#" className="nav-item">
+            <span className="nav-icon">📊</span>
+            <span>Reports</span>
+          </a>
+        </nav>
+        <button onClick={handleLogout} className="logout-btn">
+          <span className="nav-icon">🚪</span>
+          <span>Logout</span>
+        </button>
+      </aside>
 
-      {/* Statistics */}
-      <Grid container spacing={3} mb={4}>
-        {stats.map((stat, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card sx={{ height: '100%', borderRadius: 2 }}>
-              <CardContent>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Box>
-                    <Typography variant="h4" fontWeight="bold">
-                      {stat.value}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {stat.title}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ color: stat.color }}>
-                    {stat.icon}
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <main className="main-content">
+        <header className="top-header">
+          <div className="header-title">
+            <h1>Lab Manager Dashboard</h1>
+            <p>Manage Laboratories & Resources</p>
+          </div>
+          <div className="user-info">
+            <span className="user-avatar">🔬</span>
+            <span>Lab Manager</span>
+          </div>
+        </header>
 
-      <Grid container spacing={3}>
-        {/* Pending Approvals */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, borderRadius: 2 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-              <Typography variant="h6" fontWeight="bold">
-                Pending Approvals
-              </Typography>
-              <Chip label="3 pending" color="warning" size="small" />
-            </Box>
-            <TableContainer>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Lab/Course</TableCell>
-                    <TableCell>Instructor</TableCell>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
+        <div className="stats-grid">
+          {stats.map((stat, index) => (
+            <div key={index} className="stat-card" style={{ borderTopColor: stat.color }}>
+              <div className="stat-header">
+                <div className="stat-value">{stat.value}</div>
+                <div className="stat-icon">{stat.icon}</div>
+              </div>
+              <div className="stat-title">{stat.title}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="two-columns">
+          <div className="card">
+            <div className="card-header">
+              <h3>⏳ Pending Approvals</h3>
+              <span className="badge">3 pending</span>
+            </div>
+            <div className="card-body">
+              <table className="data-table">
+                <thead>
+                  <tr><th>Lab/Course</th><th>Instructor</th><th>Date/Time</th><th></th></tr>
+                </thead>
+                <tbody>
                   {pendingApprovals.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>
-                        <Typography variant="body2" fontWeight="bold">{item.lab}</Typography>
-                        <Typography variant="caption">{item.course}</Typography>
-                      </TableCell>
-                      <TableCell>{item.instructor}</TableCell>
-                      <TableCell>
-                        <Typography variant="caption">{item.date}</Typography>
-                        <Typography variant="caption" display="block">{item.time}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Button size="small" color="success" variant="outlined" sx={{ mr: 1 }}>
-                          Approve
-                        </Button>
-                        <Button size="small" color="error" variant="outlined">
-                          Reject
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                    <tr key={item.id}>
+                      <td>
+                        <div className="lab-name">{item.lab}</div>
+                        <div className="course-name">{item.course}</div>
+                      </td>
+                      <td>{item.instructor}</td>
+                      <td>{item.date}<br/>{item.time}</td>
+                      <td>
+                        <button className="action-btn success">Approve</button>
+                        <button className="action-btn danger">Reject</button>
+                      </td>
+                    </tr>
                   ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Button size="small" sx={{ mt: 1 }}>
-              View All Requests
-            </Button>
-          </Paper>
-        </Grid>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-        {/* Lab Utilization */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, borderRadius: 2 }}>
-            <Typography variant="h6" fontWeight="bold" mb={2}>
-              Laboratory Utilization
-            </Typography>
-            {labUtilization.map((lab, index) => (
-              <Box key={index} mb={2}>
-                <Box display="flex" justifyContent="space-between" mb={0.5}>
-                  <Typography variant="body2">{lab.name}</Typography>
-                  <Typography variant="body2" fontWeight="bold">{lab.utilization}%</Typography>
-                </Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={lab.utilization}
-                  color={lab.utilization > 70 ? 'error' : lab.utilization > 50 ? 'warning' : 'success'}
-                  sx={{ height: 8, borderRadius: 4 }}
-                />
-              </Box>
-            ))}
-          </Paper>
-        </Grid>
+          <div className="card">
+            <div className="card-header">
+              <h3>📊 Laboratory Utilization</h3>
+            </div>
+            <div className="card-body">
+              {labUtilization.map((lab, index) => (
+                <div key={index} className="utilization-item">
+                  <div className="utilization-header">
+                    <span>{lab.name}</span>
+                    <span>{lab.utilization}%</span>
+                  </div>
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ width: `${lab.utilization}%`, backgroundColor: getUtilizationColor(lab.utilization) }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-        {/* Today's Schedule */}
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2, borderRadius: 2 }}>
-            <Typography variant="h6" fontWeight="bold" mb={2}>
-              📅 Today's Schedule
-            </Typography>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Time</TableCell>
-                    <TableCell>Laboratory</TableCell>
-                    <TableCell>Course</TableCell>
-                    <TableCell>Instructor</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {todaySchedules.map((schedule, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{schedule.time}</TableCell>
-                      <TableCell>{schedule.lab}</TableCell>
-                      <TableCell>{schedule.course}</TableCell>
-                      <TableCell>{schedule.instructor}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Box>
+        <div className="card full-width">
+          <div className="card-header">
+            <h3>📅 Today's Schedule</h3>
+          </div>
+          <div className="card-body">
+            <table className="data-table">
+              <thead>
+                <tr><th>Time</th><th>Laboratory</th><th>Course</th><th>Instructor</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>8:00 AM - 10:00 AM</td><td>Lab 101</td><td>Advanced Databases</td><td>Dr. Abebe</td></tr>
+                <tr><td>10:00 AM - 12:00 PM</td><td>Lab 102</td><td>Web Development</td><td>Dr. Almaz</td></tr>
+                <tr><td>1:00 PM - 3:00 PM</td><td>Lab 101</td><td>Data Structures</td><td>Dr. Chaltu</td></tr>
+                <tr><td>3:00 PM - 5:00 PM</td><td>Lab 103</td><td>Network Security</td><td>Dr. Desta</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
   );
 };
 

@@ -1,0 +1,19 @@
+/* Reuse base styles from AdminDashboard.css */
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-active {
+  background: #e6fffa;
+  color: #38a169;
+}
+
+.status-pending {
+  background: #fff3e0;
+  color: #ed8936;
+}

@@ -1,0 +1,33 @@
+/* Reuse base styles from AdminDashboard.css */
+
+.warranty-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.warranty-item:last-child {
+  border-bottom: none;
+}
+
+.days-left {
+  color: #ed8936;
+  font-size: 13px;
+}
+
+.days-left.urgent {
+  color: #e53e3e;
+  font-weight: bold;
+}
+
+.condition-excellent {
+  color: #38a169;
+  font-weight: 500;
+}
+
+.condition-good {
+  color: #4299e1;
+  font-weight: 500;
+}

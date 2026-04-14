@@ -1,30 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Paper,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Alert,
-  InputAdornment,
-  IconButton,
-  FormControlLabel,
-  Checkbox,
-  Divider
-} from '@mui/material';
-import {
-  AccountCircle,
-  Lock,
-  Visibility,
-  VisibilityOff,
-  Computer
-} from '@mui/icons-material';
+import './LoginPage.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -34,19 +13,20 @@ const LoginPage = () => {
   });
 
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: type === 'checkbox' ? checked : value
     });
     setError('');
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Demo login - In production, this will call your backend API
+    // Demo login - Replace with real API call
     setTimeout(() => {
       setLoading(false);
       
@@ -98,138 +78,87 @@ const LoginPage = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        py: 4
-      }}
-    >
-      <Container maxWidth="sm">
-        <Paper elevation={10} sx={{ p: 4, borderRadius: 3 }}>
-          {/* Logo and Title */}
-          <Box textAlign="center" mb={3}>
-            <Computer sx={{ fontSize: 60, color: '#667eea' }} />
-            <Typography variant="h4" fontWeight="bold" color="primary" mt={1}>
-              CLMS
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              Computer Laboratory Management System
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Injibara University
-            </Typography>
-          </Box>
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <div className="logo">🖥️</div>
+          <h1>CLMS</h1>
+          <p>Computer Laboratory Management System</p>
+          <p className="university">Injibara University</p>
+        </div>
 
-          <Divider sx={{ my: 2 }} />
+        <div className="divider"></div>
 
-          <Typography variant="h5" textAlign="center" gutterBottom>
-            Welcome Back
-          </Typography>
-          <Typography variant="body2" textAlign="center" color="textSecondary" mb={3}>
-            Sign in to access your dashboard
-          </Typography>
+        <h2>Welcome Back</h2>
+        <p className="subtitle">Sign in to access your dashboard</p>
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
 
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Email Address"
-              name="email"
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <input
               type="email"
+              id="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Enter your email"
               required
-              margin="normal"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle color="primary" />
-                  </InputAdornment>
-                ),
-              }}
+              className="form-input"
             />
+          </div>
 
-            <TextField
-              fullWidth
-              label="Password"
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
               name="password"
-              type={showPassword ? 'text' : 'password'}
               value={formData.password}
               onChange={handleChange}
+              placeholder="Enter your password"
               required
-              margin="normal"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Lock color="primary" />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+              className="form-input"
             />
+          </div>
 
-            <Box display="flex" justifyContent="space-between" alignItems="center" mt={1} mb={2}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="rememberMe"
-                    checked={formData.rememberMe}
-                    onChange={handleChange}
-                    color="primary"
-                  />
-                }
-                label="Remember me"
+          <div className="form-options">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="rememberMe"
+                checked={formData.rememberMe}
+                onChange={handleChange}
               />
-              <Button color="primary" size="small">
-                Forgot Password?
-              </Button>
-            </Box>
+              <span>Remember me</span>
+            </label>
+            <a href="/forgot-password" className="forgot-link">Forgot Password?</a>
+          </div>
 
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              disabled={loading}
-              sx={{ py: 1.5, mb: 2 }}
-            >
-              {loading ? 'Signing in...' : 'Sign In'}
-            </Button>
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={loading}
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+        </form>
 
-            <Typography variant="body2" textAlign="center" color="textSecondary">
-              Demo Credentials:
-            </Typography>
-            <Box sx={{ mt: 1, fontSize: '0.75rem', textAlign: 'center' }}>
-              <Typography variant="caption" display="block">
-                Admin: admin@clms.com / admin123
-              </Typography>
-              <Typography variant="caption" display="block">
-                Teacher: teacher@clms.com / teacher123
-              </Typography>
-              <Typography variant="caption" display="block">
-                Student: student@clms.com / student123
-              </Typography>
-            </Box>
-          </form>
-        </Paper>
-      </Container>
-    </Box>
+        <div className="demo-credentials">
+          <p>Demo Credentials:</p>
+          <div className="credentials-grid">
+            <div><strong>Admin:</strong> admin@clms.com / admin123</div>
+            <div><strong>Teacher:</strong> teacher@clms.com / teacher123</div>
+            <div><strong>Student:</strong> student@clms.com / student123</div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

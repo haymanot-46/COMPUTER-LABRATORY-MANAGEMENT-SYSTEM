@@ -1,0 +1,19 @@
+/* Reuse base styles from AdminDashboard.css */
+
+.issue-item, .request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.issue-item:last-child, .request-item:last-child {
+  border-bottom: none;
+}
+
+.issue-time {
+  font-size: 11px;
+  color: #999;
+  margin-top: 4px;
+}
