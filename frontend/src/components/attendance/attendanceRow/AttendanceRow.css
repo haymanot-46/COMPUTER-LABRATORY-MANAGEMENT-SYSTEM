@@ -1,0 +1,95 @@
+.attendance-row:hover {
+  background: #fafafa;
+}
+
+.row-index {
+  width: 50px;
+  text-align: center;
+  color: #999;
+}
+
+.student-id {
+  font-family: monospace;
+  font-size: 13px;
+  color: #666;
+}
+
+.student-name {
+  font-weight: 500;
+}
+
+/* Status Selector */
+.status-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-btn {
+  padding: 4px 10px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+}
+
+.status-btn.status-present { border-color: #c8e6c9; color: #2e7d32; }
+.status-btn.status-absent { border-color: #ffcdd2; color: #c62828; }
+.status-btn.status-late { border-color: #ffe0b2; color: #ed8936; }
+.status-btn.status-excused { border-color: #bbdefb; color: #4299e1; }
+
+.status-btn.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+.status-btn.active.status-present { background: #2e7d32; border-color: #2e7d32; }
+.status-btn.active.status-absent { background: #c62828; border-color: #c62828; }
+.status-btn.active.status-late { background: #ed8936; border-color: #ed8936; }
+.status-btn.active.status-excused { background: #4299e1; border-color: #4299e1; }
+
+.status-btn:hover:not(.active) {
+  transform: scale(1.05);
+}
+
+/* Notes */
+.notes-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.add-note-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: left;
+  padding: 0;
+}
+
+.notes-input {
+  padding: 6px 8px;
+  border: 1px solid #667eea;
+  border-radius: 4px;
+  font-size: 12px;
+  width: 150px;
+}
+
+.note-preview {
+  font-size: 11px;
+  color: #999;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.time-cell {
+  font-size: 11px;
+  color: #999;
+}

@@ -1,0 +1,36 @@
+.add-computer-page {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 25px;
+}
+
+.back-btn {
+  padding: 8px 16px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.page-header h1 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+}
+
+.page-header p {
+  color: #666;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .add-computer-page {
+    padding: 15px;
+  }
+}

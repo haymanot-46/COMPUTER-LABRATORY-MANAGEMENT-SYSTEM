@@ -1,0 +1,521 @@
+/* frontend/src/components/computers/ComputerGrid.css */
+
+/* ============================================
+   COMPUTER GRID - Injibara University Theme
+   Computer Laboratory Management System
+   ============================================ */
+
+/* Main Grid Container */
+.computer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Computer Card */
+.computer-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+  position: relative;
+}
+
+.computer-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border-color: #f59e0b;
+}
+
+/* Card Header */
+.card-header {
+  background: linear-gradient(135deg, #1a3a4f 0%, #0f2b3d 100%);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.computer-icon {
+  font-size: 48px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.computer-card:hover .computer-icon {
+  transform: scale(1.05);
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s;
+}
+
+.status-available {
+  background: #d1fae5;
+  color: #065f46;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.status-in-use {
+  background: #dbeafe;
+  color: #1e40af;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.status-maintenance {
+  background: #fed7aa;
+  color: #9a3412;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+.status-damaged {
+  background: #fee2e2;
+  color: #991b1b;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+/* Card Body */
+.card-body {
+  padding: 20px;
+  background: #fafcff;
+}
+
+.computer-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a3a4f;
+  margin: 0 0 16px 0;
+  font-family: 'Poppins', sans-serif;
+  border-left: 3px solid #f59e0b;
+  padding-left: 12px;
+}
+
+.computer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e2e8f0;
+  font-size: 13px;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-item span:last-child {
+  color: #1a3a4f;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* Card Actions */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.action-btn.view {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.action-btn.view:hover {
+  background: #bfdbfe;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.action-btn.edit {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.action-btn.edit:hover {
+  background: #fdba74;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.action-btn.delete {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.action-btn.delete:hover {
+  background: #fecaca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+/* Status Select Dropdown */
+.status-select {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: white;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.status-select:hover {
+  border-color: #f59e0b;
+  transform: translateY(-2px);
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+/* Status Option Colors */
+.status-select option[value="available"] {
+  color: #10b981;
+}
+
+.status-select option[value="in-use"] {
+  color: #3b82f6;
+}
+
+.status-select option[value="maintenance"] {
+  color: #f59e0b;
+}
+
+.status-select option[value="damaged"] {
+  color: #ef4444;
+}
+
+/* Empty State */
+.computer-grid-empty {
+  text-align: center;
+  padding: 80px 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin-top: 24px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.computer-grid-empty h3 {
+  font-size: 24px;
+  color: #1a3a4f;
+  margin: 0 0 8px 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.computer-grid-empty p {
+  color: #64748b;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Loading Skeleton */
+.computer-card.skeleton {
+  background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .computer-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .computer-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .card-header {
+    padding: 16px;
+  }
+  
+  .computer-icon {
+    font-size: 36px;
+  }
+  
+  .status-badge {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+  
+  .card-body {
+    padding: 16px;
+  }
+  
+  .computer-name {
+    font-size: 16px;
+  }
+  
+  .card-actions {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  
+  .action-btn,
+  .status-select {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  
+  .computer-grid-empty {
+    padding: 60px 20px;
+  }
+  
+  .empty-icon {
+    font-size: 60px;
+  }
+  
+  .computer-grid-empty h3 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .computer-grid {
+    gap: 12px;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+  }
+  
+  .action-btn,
+  .status-select {
+    width: 100%;
+  }
+  
+  .detail-item {
+    font-size: 12px;
+  }
+  
+  .computer-grid-empty {
+    padding: 40px 16px;
+  }
+  
+  .empty-icon {
+    font-size: 48px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .computer-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  
+  .card-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+  
+  .card-body {
+    background: #1e293b;
+  }
+  
+  .computer-name {
+    color: #cbd5e1;
+  }
+  
+  .detail-item {
+    border-bottom-color: #334155;
+  }
+  
+  .detail-item span:last-child {
+    color: #cbd5e1;
+  }
+  
+  .detail-label {
+    color: #94a3b8;
+  }
+  
+  .card-actions {
+    background: #0f172a;
+    border-top-color: #334155;
+  }
+  
+  .status-select {
+    background: #334155;
+    color: #cbd5e1;
+    border-color: #475569;
+  }
+  
+  .computer-grid-empty {
+    background: #1e293b;
+  }
+  
+  .computer-grid-empty h3 {
+    color: #cbd5e1;
+  }
+  
+  .computer-grid-empty p {
+    color: #94a3b8;
+  }
+  
+  .action-btn.view {
+    background: #1e3a5f;
+    color: #60a5fa;
+  }
+  
+  .action-btn.edit {
+    background: #451a03;
+    color: #fdba74;
+  }
+  
+  .action-btn.delete {
+    background: #450a0a;
+    color: #fca5a5;
+  }
+}
+
+/* Hover Effects for Cards */
+.computer-card {
+  animation: cardAppear 0.4s ease-out;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .computer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .computer-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .card-actions,
+  .status-select {
+    display: none;
+  }
+  
+  .card-header {
+    background: #f0f4f8;
+  }
+  
+  .computer-name {
+    color: #1a3a4f;
+  }
+}

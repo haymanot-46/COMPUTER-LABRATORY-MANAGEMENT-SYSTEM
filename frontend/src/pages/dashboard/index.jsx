@@ -1,0 +1,9 @@
+export { default as AdminDashboard } from './AdminDashboard/AdminDashboard';
+export { default as TeacherDashboard } from './TeacherDashboard/TeacherDashboard';
+export { default as StudentDashboard } from './StudentDashboard/StudentDashboard';
+export { default as LabManagerDashboard } from './LabManagerDashboard/LabManagerDashboard';
+export { default as DeanDashboard } from './DeanDashboard/DeanDashboard';
+export { default as LabAssistantDashboard } from './LabAssistantDashboard/LabAssistantDashboard';
+export { default as ICTDashboard } from './IctDashboard/IctDashboard';
+export { default as AssetDashboard } from './AssetDashboard/AssetDashboard';
+export { default as Dashboard } from './Dashboard';

@@ -1,71 +1,63 @@
-import React from 'react';
+// frontend/src/routes/AppRoutes.jsx
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-
+import PrivateRoute from './PrivateRoute';
+import RoleBasedRoute from './RoleBasedRoute';
+import { ROUTES, ROLES, ROLE_GROUPS } from './routeConfig';
+import * as Components from './routeComponents';
+// Layout component
+import Layout from '../components/common/Layout/Layout';
 // Auth Pages
 import LoginPage from '../pages/auth/LoginPage/LoginPage';
+import RegisterPage from '../pages/auth/RegisterPage/RegisterPage';
+// Public Pages
+import HomePage from '../pages/home/HomePage';
+import ContactPage from '../pages/contact/Contact';
+import FeaturesPage from '../pages/features/Feature';
+import AboutPage from '../pages/about/About';
 
-// Dashboard Pages
-import AdminDashboard from '../pages/dashboard/AdminDashboard/AdiminDashbord';
-import LabManagerDashboard from '../pages/dashboard/LabManagerDashboard/LabManagerDashboard';
-import TeacherDashboard from '../pages/dashboard/TeacherDashboard/TeacherDashboard';
-import DeanDashboard from '../pages/dashboard/DeanDashboard/DeanDashboard';
-import StudentDashboard from '../pages/dashboard/StudentDashboard/StudentDashboard';
-import LabAssistantDashboard from '../pages/dashboard/LabAssistantDashboard/LabAssistantDashboard';
-import ICTDashboard from '../pages/dashboard/IctDashboard/IctDashboard';
-import AssetDashboard from '../pages/dashboard/AssetDashboard/AssetDashboard';
-
-// Schedule Pages
-import BookLabPage from '../pages/schedules/BookLabPage/BookLabPage';
-import MySchedulesPage from '../pages/schedules/MySchedulesPage/MySchedulePage';
-import PendingApprovalsPage from '../pages/schedules/PandingApprovalsPage/PandingApprovalsPage';
-import BatchSchedulePage from '../pages/schedules/BatchSchedulePage/BatchSchedulePage';
-import ScheduleCalendarPage from '../pages/schedules/ScheduleCalenderPage/ScheduleCalenderPage';
-
-// Computer Pages
-import ComputersPage from '../pages/computers/ComputersPage/ComputerPage';
-import ComputerDetailPage from '../pages/computers/ComputerDetailpage/ComputerDetailPage';
+// Import pages that don't use lazy loading
+import LaboratoriesPage from '../pages/laboratories/LaboratoriesPage';
+import ICTReportsPage from '../pages/reports/IctReportsPage/IctReportsPage';
 import AddComputerPage from '../pages/computers/AddComputerPage/AddComputerPage';
-import ComputerStatusPage from '../pages/computers/ComputerStatusPage/ComputerStatusPage';
+import MessagesPage from '../pages/messages/MessagesPage'
 
-// Maintenance Pages
-import CreateRequestPage from '../pages/maintenance/CreateRequestPage/CreateRequestPage';
-import MaintenancePage from '../pages/maintenance/MaintenancePage/MaintenancePage';
-import RequestDetailPage from '../pages/maintenance/RequestDetailPage/RequestDetailPage';
-import MyAssignmentsPage from '../pages/maintenance/MyAssignmentsPage/MyAssignmentsPage';
+// Loading Fallback Component
+const LoadingFallback = () => (
+  <div className="loading-container">
+    <div className="spinner"></div>
+    <p>Loading...</p>
+  </div>
+);
 
-// Attendance Pages
-import AttendancePage from '../pages/attendance/attendancePage/AttendancePage';
-import MyAttendancePage from '../pages/attendance/myAttendancePage/MyAttendancePage';
-import AttendanceReportPage from '../pages/attendance/AttendanceReportPage/AttendanceReportPage';
+// ✅ FIXED: Changed parameter name from 'Components' to 'Component'
+const renderProtectedRoute = (Component, allowedRoles) => (
+  <PrivateRoute>
+    <RoleBasedRoute allowedRoles={allowedRoles}>
+      <Layout>
+        <Suspense fallback={<LoadingFallback />}>
+          <Component />
+        </Suspense>
+      </Layout>
+    </RoleBasedRoute>
+  </PrivateRoute>
+);
 
-// Asset Pages
-import EquipmentPage from '../pages/asset/EquipmentPage/EquipmentPage';
-import RegisterEquipmentPage from '../pages/asset/RegisterEquipmentPage/RegisterEquipmentPage';
-import AuditPage from '../pages/asset/AuditPage/AuditPage';
-import AuditHistoryPage from '../pages/asset/AuditHistoryPage/AuditHistoryPage';
+// ✅ FIXED: Changed parameter name from 'Components' to 'Component'
+const renderPublicRouteWithLayout = (Component) => (
+  <Layout>
+    <Suspense fallback={<LoadingFallback />}>
+      <Component />
+    </Suspense>
+  </Layout>
+);
 
-// User Pages
-import UsersPage from '../pages/users/UsersPage/UsersPage';
-import ProfilePage from '../pages/users/ProfilePage/ProfilePage';
-import SettingsPage from '../pages/users/SettingsPage/SettingPage';
-
-// Report Pages
-import ReportsPage from '../pages/reports/ReoprtsPage/ReportPage';
-import ScheduledReportsPage from '../pages/reports/scheduledReportPage/ScheduledReportPage';
-const ProtectedRoute = ({ children, allowedRoles }) => {
-  const token = localStorage.getItem('token');
-  const userRole = localStorage.getItem('userRole');
-  
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  if (allowedRoles && !allowedRoles.includes(userRole)) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  return children;
-};
+// ✅ FIXED: Changed parameter name from 'Components' to 'Component'
+const renderAuthRoute = (Component) => (
+  <Suspense fallback={<LoadingFallback />}>
+    <Component />
+  </Suspense>
+);
 
 const AppRoutes = () => {
   return (
@@ -76,61 +68,333 @@ const AppRoutes = () => {
       }}
     >
       <Routes>
-        {/* Public Routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* ==================== PUBLIC LANDING PAGES ==================== */}
+        <Route 
+          path="/" 
+          element={
+            <Layout>
+              <HomePage />
+            </Layout>
+          } 
+        />
+        <Route 
+          path="/home" 
+          element={
+            <Layout>
+              <HomePage />
+            </Layout>
+          } 
+        />
+        <Route 
+          path="/features" 
+          element={
+            <Layout>
+              <FeaturesPage />
+            </Layout>
+          } 
+        />
+        <Route 
+          path="/about" 
+          element={
+            <Layout>
+              <AboutPage />
+            </Layout>
+          } 
+        />
+        <Route 
+          path="/contact" 
+          element={
+            <Layout>
+              <ContactPage />
+            </Layout>
+          } 
+        />
+
+        {/* Laboratories Page */}
+        <Route 
+          path="/laboratories" 
+          element={
+            <Layout>
+              <LaboratoriesPage />
+            </Layout>
+          } 
+        />
+
+        {/* ==================== AUTHENTICATION ROUTES (No Layout) ==================== */}
+        <Route path="/login" element={renderAuthRoute(LoginPage)} />
+        <Route path="/register" element={renderAuthRoute(RegisterPage)} />
+        <Route path={ROUTES.LOGIN} element={renderAuthRoute(Components.LoginPage)} />
+        <Route path={ROUTES.REGISTER} element={renderAuthRoute(Components.RegisterPage)} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={renderAuthRoute(Components.ForgotPasswordPage)} />
+        <Route path={ROUTES.RESET_PASSWORD} element={renderAuthRoute(Components.ResetPasswordPage)} />
+        <Route path={ROUTES.VERIFY_EMAIL} element={renderAuthRoute(Components.VerifyEmailPage)} />
+
+        {/* ==================== DASHBOARD ROUTES ==================== */}
         
-        {/* Dashboard Routes */}
-        <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
-        <Route path="/lab-manager/dashboard" element={<ProtectedRoute allowedRoles={['lab-manager']}><LabManagerDashboard /></ProtectedRoute>} />
-        <Route path="/teacher/dashboard" element={<ProtectedRoute allowedRoles={['teacher']}><TeacherDashboard /></ProtectedRoute>} />
-        <Route path="/dean/dashboard" element={<ProtectedRoute allowedRoles={['dean']}><DeanDashboard /></ProtectedRoute>} />
-        <Route path="/student/dashboard" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
-        <Route path="/lab-assistant/dashboard" element={<ProtectedRoute allowedRoles={['lab-assistant']}><LabAssistantDashboard /></ProtectedRoute>} />
-        <Route path="/ict/dashboard" element={<ProtectedRoute allowedRoles={['ict']}><ICTDashboard /></ProtectedRoute>} />
-        <Route path="/asset/dashboard" element={<ProtectedRoute allowedRoles={['asset']}><AssetDashboard /></ProtectedRoute>} />
+        {/* Generic Dashboard (auto-detects role) */}
+        <Route 
+          path={ROUTES.DASHBOARD} 
+          element={renderProtectedRoute(Components.Dashboard, ROLE_GROUPS.ALL)} 
+        />
         
-        {/* Schedule Routes */}
-        <Route path="/book-lab" element={<ProtectedRoute allowedRoles={['teacher', 'dean']}><BookLabPage /></ProtectedRoute>} />
-        <Route path="/my-schedules" element={<ProtectedRoute allowedRoles={['teacher', 'student', 'dean']}><MySchedulesPage /></ProtectedRoute>} />
-        <Route path="/pending-approvals" element={<ProtectedRoute allowedRoles={['lab-manager', 'dean']}><PendingApprovalsPage /></ProtectedRoute>} />
-        <Route path="/batch-schedule" element={<ProtectedRoute allowedRoles={['dean']}><BatchSchedulePage /></ProtectedRoute>} />
-        <Route path="/schedule-calendar" element={<ProtectedRoute allowedRoles={['teacher', 'student', 'lab-manager']}><ScheduleCalendarPage /></ProtectedRoute>} />
+        {/* Role-specific Dashboard Routes */}
+        <Route 
+          path={ROUTES.ADMIN_DASHBOARD} 
+          element={renderProtectedRoute(Components.AdminDashboard, [ROLES.ADMIN])} 
+        />
         
-        {/* Computer Routes */}
-        <Route path="/computers" element={<ProtectedRoute allowedRoles={['lab-manager', 'admin', 'ict']}><ComputersPage /></ProtectedRoute>} />
-        <Route path="/computer/:id" element={<ProtectedRoute allowedRoles={['lab-manager', 'admin', 'ict']}><ComputerDetailPage /></ProtectedRoute>} />
-        <Route path="/add-computer" element={<ProtectedRoute allowedRoles={['lab-manager', 'admin']}><AddComputerPage /></ProtectedRoute>} />
-        <Route path="/computer-status" element={<ProtectedRoute allowedRoles={['lab-manager', 'ict']}><ComputerStatusPage /></ProtectedRoute>} />
+        <Route 
+          path={ROUTES.LAB_MANAGER_DASHBOARD} 
+          element={renderProtectedRoute(Components.LabManagerDashboard, ['lab-manager', 'lab_manager'])} 
+        />
         
-        {/* Maintenance Routes */}
-        <Route path="/create-request" element={<ProtectedRoute allowedRoles={['teacher', 'student', 'lab-assistant']}><CreateRequestPage /></ProtectedRoute>} />
-        <Route path="/maintenance" element={<ProtectedRoute allowedRoles={['lab-manager', 'ict']}><MaintenancePage /></ProtectedRoute>} />
-        <Route path="/request/:id" element={<ProtectedRoute allowedRoles={['lab-manager', 'ict']}><RequestDetailPage /></ProtectedRoute>} />
-        <Route path="/my-assignments" element={<ProtectedRoute allowedRoles={['ict']}><MyAssignmentsPage /></ProtectedRoute>} />
+        <Route 
+          path={ROUTES.TEACHER_DASHBOARD} 
+          element={renderProtectedRoute(Components.TeacherDashboard, [ROLES.TEACHER])} 
+        />
         
-        {/* Attendance Routes */}
-        <Route path="/attendance/:scheduleId" element={<ProtectedRoute allowedRoles={['teacher', 'lab-assistant']}><AttendancePage /></ProtectedRoute>} />
-        <Route path="/my-attendance" element={<ProtectedRoute allowedRoles={['student']}><MyAttendancePage /></ProtectedRoute>} />
-        <Route path="/attendance-report" element={<ProtectedRoute allowedRoles={['teacher', 'lab-manager', 'dean']}><AttendanceReportPage /></ProtectedRoute>} />
+        <Route 
+          path={ROUTES.DEAN_DASHBOARD} 
+          element={renderProtectedRoute(Components.DeanDashboard, [ROLES.DEAN])} 
+        />
         
-        {/* Asset Routes */}
-        <Route path="/equipment" element={<ProtectedRoute allowedRoles={['asset', 'lab-manager', 'admin']}><EquipmentPage /></ProtectedRoute>} />
-        <Route path="/register-equipment" element={<ProtectedRoute allowedRoles={['asset']}><RegisterEquipmentPage /></ProtectedRoute>} />
-        <Route path="/audit/:labId" element={<ProtectedRoute allowedRoles={['asset']}><AuditPage /></ProtectedRoute>} />
-        <Route path="/audit-history" element={<ProtectedRoute allowedRoles={['asset', 'admin']}><AuditHistoryPage /></ProtectedRoute>} />
+        <Route 
+          path={ROUTES.STUDENT_DASHBOARD} 
+          element={renderProtectedRoute(Components.StudentDashboard, [ROLES.STUDENT])} 
+        />
         
-        {/* User Routes */}
-        <Route path="/users" element={<ProtectedRoute allowedRoles={['admin']}><UsersPage /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute allowedRoles={['admin', 'teacher', 'student', 'lab-manager', 'dean', 'lab-assistant', 'ict', 'asset']}><ProfilePage /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute allowedRoles={['admin']}><SettingsPage /></ProtectedRoute>} />
+        <Route 
+          path={ROUTES.LAB_ASSISTANT_DASHBOARD} 
+          element={renderProtectedRoute(Components.LabAssistantDashboard, [ROLES.LAB_ASSISTANT])} 
+        />
         
-        {/* Report Routes */}
-        <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin', 'lab-manager', 'dean']}><ReportsPage /></ProtectedRoute>} />
-        <Route path="/scheduled-reports" element={<ProtectedRoute allowedRoles={['admin']}><ScheduledReportsPage /></ProtectedRoute>} />
+        <Route 
+          path={ROUTES.ICT_DASHBOARD} 
+          element={renderProtectedRoute(Components.ICTDashboard, [ROLES.ICT])} 
+        />
         
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* ICT Reports Route */}
+        <Route 
+          path="/ict/reports" 
+          element={renderProtectedRoute(ICTReportsPage, [ROLES.ICT, ROLES.ADMIN])} 
+        />
+        
+        <Route 
+          path={ROUTES.ASSET_DASHBOARD} 
+          element={renderProtectedRoute(Components.AssetDashboard, [ROLES.ASSET])} 
+        />
+
+        {/* ==================== SCHEDULE ROUTES ==================== */}
+        <Route 
+          path={ROUTES.BOOK_LAB} 
+          element={renderProtectedRoute(Components.BookLabPage, [ROLES.TEACHER, ROLES.DEAN])} 
+        />
+        
+        <Route 
+          path={ROUTES.MY_SCHEDULES} 
+          element={renderProtectedRoute(Components.MySchedulesPage, [ROLES.TEACHER, ROLES.STUDENT, ROLES.DEAN])} 
+        />
+        
+        <Route 
+          path={ROUTES.PENDING_APPROVALS} 
+          element={renderProtectedRoute(Components.SchedulePendingApprovalsPage, [ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.ICT])} 
+        />
+        
+        <Route 
+          path={ROUTES.BATCH_SCHEDULE} 
+          element={renderProtectedRoute(Components.BatchSchedulePage, [ROLES.DEAN])} 
+        />
+        
+        <Route 
+          path={ROUTES.SCHEDULE_CALENDAR} 
+          element={renderProtectedRoute(Components.ScheduleCalendarPage, [ROLES.TEACHER, ROLES.STUDENT, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.LAB_ASSISTANT])} 
+        />
+
+        {/* ==================== COMPUTER ROUTES ==================== */}
+        <Route 
+          path="/add-computer" 
+          element={renderProtectedRoute(AddComputerPage, [ROLES.ADMIN, ROLES.ASSET, ROLES.LAB_MANAGER])} 
+        />
+        
+        <Route 
+          path={ROUTES.COMPUTERS} 
+          element={renderProtectedRoute(Components.ComputersPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT, ROLES.LAB_ASSISTANT])} 
+        />
+
+      <Route 
+      path="/lab-manager/messages" 
+      element={renderProtectedRoute(MessagesPage, [ROLES.LAB_MANAGER, ROLES.ADMIN])} 
+      />
+
+        <Route 
+          path={ROUTES.COMPUTER_DETAIL} 
+          element={renderProtectedRoute(Components.ComputerDetailPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT, ROLES.LAB_ASSISTANT])} 
+        />
+
+        <Route 
+          path={ROUTES.ADD_COMPUTER} 
+          element={renderProtectedRoute(Components.AddComputerPage, [ROLES.ADMIN, ROLES.LAB_MANAGER])} 
+        />
+
+        <Route 
+          path={ROUTES.COMPUTER_STATUS} 
+          element={renderProtectedRoute(Components.ComputerStatusPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT, ROLES.LAB_ASSISTANT])} 
+        />
+
+        {/* ==================== MAINTENANCE ROUTES ==================== */}
+        <Route 
+          path={ROUTES.CREATE_REQUEST} 
+          element={renderProtectedRoute(Components.CreateRequestPage, [ROLES.TEACHER, ROLES.STUDENT, ROLES.LAB_ASSISTANT])} 
+        />
+
+        <Route 
+          path={ROUTES.MAINTENANCE} 
+          element={renderProtectedRoute(Components.MaintenancePage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT])} 
+        />
+
+        {/* ICT PENDING APPROVALS - Maintenance requests only */}
+        <Route 
+          path="/ict/pending-approvals" 
+          element={renderProtectedRoute(Components.MaintenancePendingApprovalsPage, [ROLES.ICT, ROLES.ADMIN])} 
+        />
+
+        <Route 
+          path={ROUTES.REQUEST_DETAIL} 
+          element={renderProtectedRoute(Components.RequestDetailPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT])} 
+        />
+
+        <Route 
+          path={ROUTES.MY_ASSIGNMENTS} 
+          element={renderProtectedRoute(Components.MyAssignmentsPage, [ROLES.ICT])} 
+        />
+
+        {/* ==================== ATTENDANCE ROUTES ==================== */}
+        
+        {/* Teacher: Main attendance page - list of sessions */}
+        <Route 
+          path="/attendance" 
+          element={renderProtectedRoute(Components.AttendancePage, [ROLES.TEACHER, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.LAB_ASSISTANT])} 
+        />
+        
+        <Route 
+          path="/attendance/:scheduleId" 
+          element={renderProtectedRoute(Components.AttendancePage, [ROLES.TEACHER, ROLES.LAB_ASSISTANT])} 
+        />
+        
+        {/* Teacher: Take attendance for a specific schedule */}
+        <Route 
+          path="/attendance/take/:scheduleId" 
+          element={renderProtectedRoute(Components.TakeAttendancePage, [ROLES.TEACHER, ROLES.LAB_ASSISTANT])} 
+        />
+        
+        {/* Student: View my attendance records */}
+        <Route 
+          path={ROUTES.MY_ATTENDANCE} 
+          element={renderProtectedRoute(Components.MyAttendancePage, [ROLES.STUDENT])} 
+        />
+
+        {/* Student: View attendance summary */}
+        <Route 
+          path="/attendance/summary" 
+          element={renderProtectedRoute(Components.AttendanceSummaryPage, [ROLES.STUDENT])} 
+        />
+
+        {/* Student: View attendance history */}
+        <Route 
+          path="/attendance/history" 
+          element={renderProtectedRoute(Components.AttendanceHistoryPage, [ROLES.STUDENT])} 
+        />
+
+        {/* Teacher/Lab Manager/Dean: View attendance reports */}
+        <Route 
+          path={ROUTES.ATTENDANCE_REPORT} 
+          element={renderProtectedRoute(Components.AttendanceReportPage, [ROLES.TEACHER, ROLES.LAB_MANAGER, ROLES.DEAN])} 
+        />
+
+        {/* Lab Assistant: View assigned sessions (when teacher is absent) */}
+        <Route 
+          path="/lab-assistant/assigned-sessions" 
+          element={renderProtectedRoute(Components.AssignedSessionsPage, [ROLES.LAB_ASSISTANT])} 
+        />
+
+        {/* Lab Assistant: Take attendance for assigned session */}
+        <Route 
+          path="/lab-assistant/attendance/:scheduleId" 
+          element={renderProtectedRoute(Components.LabAssistantAttendancePage, [ROLES.LAB_ASSISTANT])} 
+        />
+
+        {/* ==================== ASSET/EQUIPMENT ROUTES ==================== */}
+        <Route 
+          path={ROUTES.EQUIPMENT} 
+          element={renderProtectedRoute(Components.EquipmentPage, [ROLES.LAB_MANAGER, ROLES.ASSET, ROLES.ADMIN, ROLES.LAB_ASSISTANT])} 
+        />
+        
+        <Route 
+          path="/equipment/borrow" 
+          element={renderProtectedRoute(Components.BorrowEquipmentPage, [ROLES.ASSET])} 
+        />
+        
+        <Route 
+          path={ROUTES.BORROW_EQUIPMENT} 
+          element={renderProtectedRoute(Components.BorrowEquipmentPage, [ROLES.ASSET])} 
+        />
+        
+        <Route 
+          path={ROUTES.AUDIT} 
+          element={renderProtectedRoute(Components.AuditPage, [ROLES.ASSET])} 
+        />
+        
+        <Route 
+          path={ROUTES.AUDIT_HISTORY} 
+          element={renderProtectedRoute(Components.AuditHistoryPage, [ROLES.ASSET, ROLES.ADMIN, ROLES.LAB_ASSISTANT])} 
+        />
+
+        {/* ==================== USER ROUTES ==================== */}
+        <Route 
+          path={ROUTES.USERS} 
+          element={renderProtectedRoute(Components.UsersPage, [ROLES.ADMIN])} 
+        />
+        
+        <Route 
+          path={ROUTES.PROFILE} 
+          element={renderProtectedRoute(Components.ProfilePage, ROLE_GROUPS.ALL)} 
+        />
+        
+        <Route 
+          path={ROUTES.SETTINGS} 
+          element={renderProtectedRoute(Components.SettingsPage, [ROLES.ADMIN])} 
+        />
+        
+        <Route 
+          path={ROUTES.CHANGE_PASSWORD} 
+          element={renderProtectedRoute(Components.ChangePasswordPage, ROLE_GROUPS.ALL)} 
+        />
+
+        {/* ==================== REPORT ROUTES ==================== */}
+        <Route 
+          path={ROUTES.REPORTS} 
+          element={renderProtectedRoute(Components.ReportsPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.ICT])} 
+        />
+        
+        <Route 
+          path={ROUTES.SCHEDULED_REPORTS} 
+          element={renderProtectedRoute(Components.ScheduledReportsPage, [ROLES.ADMIN])} 
+        />
+
+        {/* ==================== NOT FOUND ROUTE ==================== */}
+        <Route 
+          path={ROUTES.NOT_FOUND} 
+          element={
+            <Layout>
+              <Suspense fallback={<LoadingFallback />}>
+                <Components.NotFoundPage />
+              </Suspense>
+            </Layout>
+          } 
+        />
+        
+        {/* Catch all - redirect to 404 */}
+        <Route path="*" element={<Navigate to={ROUTES.NOT_FOUND} replace />} />
       </Routes>
     </BrowserRouter>
   );

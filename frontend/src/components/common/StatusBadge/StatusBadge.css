@@ -1,0 +1,141 @@
+/* StatusBadge.css - Green Theme */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-icon {
+  font-size: 12px;
+}
+
+/* Sizes */
+.badge-small {
+  padding: 2px 8px;
+  font-size: 10px;
+}
+
+.badge-medium {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+.badge-large {
+  padding: 6px 16px;
+  font-size: 14px;
+}
+
+/* Colors - Green Theme */
+.status-badge.success {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.status-badge.error {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.status-badge.warning {
+  background: #fed7aa;
+  color: #f59e0b;
+}
+
+.status-badge.info {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.status-badge.default {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Computer Status */
+.status-badge.computer-available {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.status-badge.computer-in-use {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.status-badge.computer-maintenance {
+  background: #fed7aa;
+  color: #f59e0b;
+}
+
+.status-badge.computer-damaged {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* Attendance Status */
+.status-badge.attendance-present {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.status-badge.attendance-absent {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.status-badge.attendance-late {
+  background: #fed7aa;
+  color: #f59e0b;
+}
+
+.status-badge.attendance-excused {
+  background: #ede9fe;
+  color: #8b5cf6;
+}
+
+/* Schedule Status */
+.status-badge.schedule-approved {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.status-badge.schedule-pending {
+  background: #fed7aa;
+  color: #f59e0b;
+}
+
+.status-badge.schedule-rejected {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.status-badge.schedule-cancelled {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Priority Status */
+.status-badge.priority-low {
+  background: #d1fae5;
+  color: #10b981;
+}
+
+.status-badge.priority-medium {
+  background: #fed7aa;
+  color: #f59e0b;
+}
+
+.status-badge.priority-high {
+  background: #ffedd5;
+  color: #f97316;
+}
+
+.status-badge.priority-urgent {
+  background: #fee2e2;
+  color: #ef4444;
+}

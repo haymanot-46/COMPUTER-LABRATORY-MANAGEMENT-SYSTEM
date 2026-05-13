@@ -1,0 +1,329 @@
+/* ============================================
+   Header.css - CLMS Header Styles
+   Theme: Consistent Green Color Scheme
+   Developed by MIND GARDEN
+   ============================================ */
+
+/* CSS Variables - Green Theme */
+:root {
+    --clms-primary: #10b981;
+    --clms-primary-dark: #059669;
+    --clms-primary-light: #34d399;
+    --clms-primary-bg: #d1fae5;
+    --clms-gradient-primary: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --clms-gradient-dark: linear-gradient(135deg, #059669 0%, #047857 100%);
+    --clms-danger: #ef4444;
+    --clms-danger-bg: #fee2e2;
+    --clms-gray-700: #374151;
+    --clms-gray-800: #1f2937;
+    --clms-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --clms-radius-lg: 0.75rem;
+    --clms-radius-full: 9999px;
+}
+
+/* ============================================
+   Logo Animation
+   ============================================ */
+@keyframes logoPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo Styles */
+.logo-image {
+    transition: all 0.3s var(--clms-ease);
+    border-radius: var(--clms-radius-full);
+}
+
+.logo-image:hover {
+    animation: logoPulse 0.5s ease;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* ============================================
+   Navigation Active State
+   ============================================ */
+.nav-active {
+    font-weight: 700 !important;
+    border-bottom: 2px solid white !important;
+    border-radius: 0 !important;
+    color: white !important;
+}
+
+/* Navigation Links */
+.nav-link {
+    position: relative;
+    transition: all 0.3s var(--clms-ease);
+    color: white !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: white;
+    transition: all 0.3s var(--clms-ease);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+.nav-link:hover {
+    color: white !important;
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* ============================================
+   User Menu Avatar
+   ============================================ */
+.user-avatar {
+    transition: all 0.3s var(--clms-ease);
+    cursor: pointer;
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.avatar-green {
+    background: var(--clms-primary) !important;
+}
+
+.avatar-green:hover {
+    background: var(--clms-primary-dark) !important;
+}
+
+/* ============================================
+   Dropdown Menu Styles
+   ============================================ */
+.dropdown-menu-item {
+    transition: all 0.2s var(--clms-ease);
+}
+
+.dropdown-menu-item:hover {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.08) 100%);
+    color: var(--clms-primary);
+}
+
+.dropdown-menu-item:hover .MuiListItemIcon-root {
+    color: var(--clms-primary);
+}
+
+/* ============================================
+   Button Styles (Green Theme)
+   ============================================ */
+/* Login Button */
+.login-btn {
+    border: 2px solid white !important;
+    color: white !important;
+    transition: all 0.3s var(--clms-ease) !important;
+    border-radius: var(--clms-radius-lg) !important;
+    padding: 6px 20px !important;
+    font-weight: 600 !important;
+}
+
+.login-btn:hover {
+    background: white !important;
+    color: var(--clms-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Register Button */
+.register-btn {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border: 1px solid white !important;
+    transition: all 0.3s var(--clms-ease) !important;
+    border-radius: var(--clms-radius-lg) !important;
+    padding: 6px 20px !important;
+    font-weight: 600 !important;
+}
+
+.register-btn:hover {
+    background: white !important;
+    color: var(--clms-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Dashboard Button */
+.dashboard-btn {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border: 1px solid white !important;
+    transition: all 0.3s var(--clms-ease) !important;
+    border-radius: var(--clms-radius-lg) !important;
+    padding: 6px 20px !important;
+    font-weight: 600 !important;
+}
+
+.dashboard-btn:hover {
+    background: white !important;
+    color: var(--clms-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Logout Button */
+.logout-btn {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: white !important;
+    border: 1px solid white !important;
+    transition: all 0.3s var(--clms-ease) !important;
+    border-radius: var(--clms-radius-lg) !important;
+    padding: 6px 20px !important;
+    font-weight: 600 !important;
+}
+
+.logout-btn:hover {
+    background: var(--clms-danger) !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* ============================================
+   Header Background - GREEN THEME
+   ============================================ */
+
+/* Default Header - Green Gradient */
+.app-header {
+    background: var(--clms-gradient-primary) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Scrolled Header - Darker Green */
+.header-scrolled {
+    background: var(--clms-gradient-dark) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.header-scrolled .logo-title {
+    color: white !important;
+}
+
+.header-scrolled .nav-link {
+    color: white !important;
+}
+
+.header-scrolled .nav-link:hover {
+    color: white !important;
+    opacity: 0.9;
+}
+
+/* Transparent Header - Light Green Overlay */
+.header-transparent {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: none !important;
+}
+
+.header-transparent .nav-link {
+    color: white !important;
+}
+
+.header-transparent .login-btn {
+    border-color: white !important;
+    color: white !important;
+}
+
+.header-transparent .login-btn:hover {
+    background: white !important;
+    color: var(--clms-primary) !important;
+}
+
+/* ============================================
+   Mobile Menu Styles
+   ============================================ */
+.mobile-menu-list {
+    padding: 16px;
+    animation: slideIn 0.3s var(--clms-ease);
+}
+
+.mobile-menu-item {
+    border-radius: var(--clms-radius-lg);
+    margin: 4px 0;
+    transition: all 0.3s var(--clms-ease);
+}
+
+.mobile-menu-item:hover {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.08) 100%);
+    color: var(--clms-primary);
+    transform: translateX(4px);
+}
+
+/* Mobile Menu Active State */
+.mobile-menu-item.active {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+    color: var(--clms-primary);
+    font-weight: 600;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+@media (max-width: 900px) {
+    .nav-link {
+        padding: 8px 0 !important;
+    }
+    
+    .mobile-menu-item {
+        padding: 12px 16px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .logo-title {
+        font-size: 1rem;
+    }
+    
+    .logo-image {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .logo-subtitle {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-title {
+        font-size: 0.9rem;
+    }
+    
+    .mobile-menu-list {
+        padding: 12px;
+    }
+}
+
+/* ============================================
+   Dark Mode Support
+   ============================================ */
+[data-theme="dark"] .header-scrolled {
+    background: linear-gradient(135deg, #047857 0%, #065f46 100%) !important;
+}
+
+[data-theme="dark"] .mobile-menu-item:hover {
+    background: rgba(16, 185, 129, 0.1);
+}

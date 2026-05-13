@@ -1,0 +1,53 @@
+.bulk-import-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.import-overlay {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+}
+
+.import-content {
+  position: relative;
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.import-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 25px;
+  border-bottom: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.import-body { padding: 25px; }
+.import-instructions { background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+.import-instructions h3 { margin: 0 0 10px; font-size: 14px; }
+.import-instructions ul { margin: 0 0 15px; padding-left: 20px; }
+.template-btn { padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; }
+
+.file-upload-area { border: 2px dashed #ddd; border-radius: 10px; padding: 30px; text-align: center; margin-bottom: 20px; }
+.file-upload-area input { margin-bottom: 10px; }
+
+.preview-area { background: #f8f9fa; padding: 15px; border-radius: 10px; }
+.preview-area pre { font-size: 12px; overflow-x: auto; }
+
+.import-footer { display: flex; justify-content: flex-end; gap: 15px; padding: 20px 25px; border-top: 1px solid #e0e0e0; }
+.cancel-btn, .import-btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; }
+.cancel-btn { background: #e0e0e0; }
+.import-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }

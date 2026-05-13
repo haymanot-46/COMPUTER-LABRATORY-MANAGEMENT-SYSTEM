@@ -1,0 +1,498 @@
+/* frontend/src/components/computers/ComputerCard.css */
+
+/* ============================================
+   COMPUTER CARD - Injibara University Theme
+   Computer Laboratory Management System
+   ============================================ */
+
+.computer-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid #e2e8f0;
+}
+
+.computer-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border-color: #f59e0b;
+}
+
+/* Card Header */
+.card-header {
+  background: linear-gradient(135deg, #1a3a4f 0%, #0f2b3d 100%);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.computer-icon {
+  font-size: 48px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.computer-info {
+  flex: 1;
+}
+
+.computer-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 4px 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.computer-id {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: monospace;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.status-icon {
+  font-size: 12px;
+}
+
+/* Card Body */
+.card-body {
+  padding: 20px;
+  background: #fafcff;
+}
+
+/* Specs Grid */
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: white;
+  border-radius: 12px;
+  transition: all 0.3s;
+  border: 1px solid #e2e8f0;
+}
+
+.spec-item:hover {
+  transform: translateX(4px);
+  border-color: #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+}
+
+.spec-icon {
+  font-size: 24px;
+}
+
+.spec-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.spec-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.spec-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a3a4f;
+  font-family: monospace;
+}
+
+/* Card Actions */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.card-actions.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-action {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.card-action.view {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.card-action.view:hover {
+  background: #bfdbfe;
+  transform: translateY(-2px);
+}
+
+.card-action.edit {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.card-action.edit:hover {
+  background: #fdba74;
+  transform: translateY(-2px);
+}
+
+.card-action.delete {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.card-action.delete:hover {
+  background: #fecaca;
+  transform: translateY(-2px);
+}
+
+/* Status Selector */
+.status-selector {
+  padding: 12px 20px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.status-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: white;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.status-select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.status-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+/* Status Option Colors */
+.status-select option[value="available"] {
+  color: #10b981;
+}
+
+.status-select option[value="in-use"] {
+  color: #3b82f6;
+}
+
+.status-select option[value="maintenance"] {
+  color: #f59e0b;
+}
+
+.status-select option[value="damaged"] {
+  color: #ef4444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .computer-card {
+    margin: 0 0 16px;
+  }
+  
+  .card-header {
+    padding: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .computer-icon {
+    font-size: 36px;
+  }
+  
+  .computer-name {
+    font-size: 16px;
+  }
+  
+  .specs-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .spec-item {
+    padding: 8px 12px;
+  }
+  
+  .card-actions {
+    opacity: 1;
+    transform: translateY(0);
+    flex-wrap: wrap;
+  }
+  
+  .card-action {
+    flex: 1;
+    min-width: 80px;
+  }
+  
+  .status-selector {
+    padding: 12px 16px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .computer-info {
+    text-align: center;
+  }
+  
+  .status-badge {
+    align-self: center;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+  }
+  
+  .card-action {
+    width: 100%;
+  }
+  
+  .spec-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+  
+  .spec-details {
+    align-items: center;
+  }
+}
+
+/* Grid Layout for multiple cards */
+.computers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  .computers-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 16px;
+  }
+}
+
+/* Loading Skeleton Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.computer-card.loading {
+  background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Hover Effects for Interactive Elements */
+.card-action:active {
+  transform: translateY(0);
+}
+
+.status-select:active {
+  transform: translateY(0);
+}
+
+/* Tooltip for Status (optional) */
+.status-badge[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+.status-badge[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: #1a3a4f;
+  color: white;
+  font-size: 11px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  margin-bottom: 8px;
+}
+
+.status-badge[data-tooltip]:hover::before {
+  opacity: 1;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .computer-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  
+  .card-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+  
+  .card-body {
+    background: #1e293b;
+  }
+  
+  .spec-item {
+    background: #334155;
+    border-color: #475569;
+  }
+  
+  .spec-label {
+    color: #94a3b8;
+  }
+  
+  .spec-value {
+    color: #cbd5e1;
+  }
+  
+  .card-actions,
+  .status-selector {
+    background: #0f172a;
+  }
+  
+  .status-select {
+    background: #334155;
+    color: #cbd5e1;
+    border-color: #475569;
+  }
+  
+  .card-action.view {
+    background: #1e3a5f;
+    color: #60a5fa;
+  }
+  
+  .card-action.edit {
+    background: #451a03;
+    color: #fdba74;
+  }
+  
+  .card-action.delete {
+    background: #450a0a;
+    color: #fca5a5;
+  }
+}
+
+/* Animation for new cards */
+.computer-card {
+  animation: cardAppear 0.4s ease-out;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .computer-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .card-actions,
+  .status-selector {
+    display: none;
+  }
+  
+  .card-header {
+    background: #f0f4f8;
+  }
+  
+  .computer-name {
+    color: #1a3a4f;
+  }
+}

@@ -1,0 +1,497 @@
+/* frontend/src/components/computers/ComputerStatus.css */
+
+/* ============================================
+   COMPUTER STATUS - Injibara University Theme
+   Computer Laboratory Management System
+   ============================================ */
+
+.computer-status {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.computer-status h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a3a4f;
+  margin: 0 0 20px 0;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.computer-status h3::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-radius: 2px;
+}
+
+/* Status Cards Grid */
+.status-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Individual Status Card */
+.status-card {
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+.status-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.status-card:active {
+  transform: translateY(-2px);
+}
+
+/* Status Icon */
+.status-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.status-card:hover .status-icon {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Info */
+.status-info {
+  flex: 1;
+}
+
+.status-count {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a3a4f;
+  line-height: 1;
+  margin-bottom: 4px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.status-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-percent {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.7);
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* Individual Card Colors */
+.status-card.available {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.status-card.in-use {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+.status-card.maintenance {
+  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+}
+
+.status-card.damaged {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+}
+
+/* Chart/Progress Bar Section */
+.status-chart {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.chart-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a3a4f;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chart-label {
+  width: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.chart-bar-container {
+  flex: 1;
+  height: 32px;
+  background: #f1f5f9;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.chart-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  transition: width 1s ease;
+  border-radius: 16px;
+}
+
+.chart-bar.available {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.chart-bar.in-use {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.chart-bar.maintenance {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.chart-bar.damaged {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.chart-percent {
+  min-width: 45px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a3a4f;
+}
+
+/* Animation for chart bars */
+@keyframes growBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--target-width);
+  }
+}
+
+.chart-bar {
+  animation: growBar 0.8s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .computer-status {
+    padding: 20px;
+  }
+  
+  .status-cards {
+    gap: 16px;
+  }
+  
+  .status-card {
+    padding: 16px;
+  }
+  
+  .status-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+  }
+  
+  .status-count {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .computer-status {
+    padding: 16px;
+  }
+  
+  .computer-status h3 {
+    font-size: 16px;
+  }
+  
+  .status-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .status-card {
+    padding: 14px;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .status-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+  }
+  
+  .status-count {
+    font-size: 24px;
+  }
+  
+  .status-label {
+    font-size: 12px;
+  }
+  
+  .chart-item {
+    flex-wrap: wrap;
+  }
+  
+  .chart-label {
+    width: 80px;
+    font-size: 12px;
+  }
+  
+  .chart-bar-container {
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .status-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .status-card {
+    flex-direction: row;
+    text-align: left;
+    padding: 16px;
+  }
+  
+  .chart-label {
+    width: 70px;
+  }
+  
+  .chart-percent {
+    min-width: 40px;
+    font-size: 12px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .computer-status {
+    background: #1e293b;
+  }
+  
+  .computer-status h3 {
+    color: #cbd5e1;
+  }
+  
+  .status-count {
+    color: #cbd5e1;
+  }
+  
+  .status-label {
+    color: #94a3b8;
+  }
+  
+  .status-percent {
+    color: #cbd5e1;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
+  .chart-title {
+    color: #cbd5e1;
+  }
+  
+  .chart-label {
+    color: #94a3b8;
+  }
+  
+  .chart-bar-container {
+    background: #334155;
+  }
+  
+  .chart-percent {
+    color: #cbd5e1;
+  }
+  
+  .status-card.available {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+  }
+  
+  .status-card.in-use {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%);
+  }
+  
+  .status-card.maintenance {
+    background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+  }
+  
+  .status-card.damaged {
+    background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
+  }
+  
+  .status-card.available .status-count,
+  .status-card.available .status-label,
+  .status-card.available .status-percent {
+    color: #a7f3d0;
+  }
+  
+  .status-card.in-use .status-count,
+  .status-card.in-use .status-label,
+  .status-card.in-use .status-percent {
+    color: #bfdbfe;
+  }
+  
+  .status-card.maintenance .status-count,
+  .status-card.maintenance .status-label,
+  .status-card.maintenance .status-percent {
+    color: #fdba74;
+  }
+  
+  .status-card.damaged .status-count,
+  .status-card.damaged .status-label,
+  .status-card.damaged .status-percent {
+    color: #fecaca;
+  }
+}
+
+/* Tooltip for cards */
+.status-card[data-tooltip] {
+  position: relative;
+}
+
+.status-card[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  background: #1a3a4f;
+  color: white;
+  font-size: 11px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  margin-bottom: 8px;
+  z-index: 10;
+}
+
+.status-card[data-tooltip]:hover::after {
+  opacity: 1;
+}
+
+/* Print Styles */
+@media print {
+  .computer-status {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+  
+  .status-card:hover {
+    transform: none;
+  }
+  
+  .chart-bar {
+    background: #ccc;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .status-card,
+  .status-icon,
+  .chart-bar {
+    transition: none;
+    animation: none;
+  }
+  
+  .status-card:hover {
+    transform: none;
+  }
+}
+
+/* Focus Styles */
+.status-card:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+  transform: translateY(-2px);
+}

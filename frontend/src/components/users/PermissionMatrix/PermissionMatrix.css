@@ -1,0 +1,257 @@
+/* Permission Matrix Modal */
+.permission-matrix-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.matrix-overlay {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+}
+
+.matrix-content {
+  position: relative;
+  background: white;
+  border-radius: 16px;
+  width: 95%;
+  max-width: 1400px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.matrix-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #e0e0e0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+}
+
+.matrix-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Body */
+.matrix-body {
+  padding: 20px;
+  overflow: auto;
+  flex: 1;
+}
+
+.matrix-scroll {
+  overflow-x: auto;
+  max-height: calc(90vh - 140px);
+}
+
+/* Table */
+.permission-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 800px;
+}
+
+.permission-table th,
+.permission-table td {
+  border: 1px solid #e0e0e0;
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.permission-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.role-cell {
+  font-weight: 600;
+  background: #fafafa;
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background-color: #fafafa;
+  z-index: 1;
+}
+
+.action-cell {
+  font-size: 10px;
+  text-transform: uppercase;
+  background: #f5f5f5;
+  color: #666;
+}
+
+/* Checkbox */
+.permission-checkbox {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.permission-checkbox input {
+  display: none;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.permission-checkbox input:checked + .checkmark {
+  background: #667eea;
+  border-color: #667eea;
+  position: relative;
+}
+
+.permission-checkbox input:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+}
+
+.permission-checkbox input:disabled + .checkmark {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f0f0f0;
+}
+
+.permission-checkbox input:disabled:checked + .checkmark {
+  background: #ccc;
+  border-color: #ccc;
+}
+
+/* Footer */
+.matrix-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 20px 25px;
+  border-top: 1px solid #e0e0e0;
+  background: #fafafa;
+  border-radius: 0 0 16px 16px;
+}
+
+.cancel-btn,
+.save-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.cancel-btn {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background: #d0d0d0;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .matrix-content {
+    width: 98%;
+    margin: 10px;
+  }
+  
+  .matrix-header h2 {
+    font-size: 18px;
+  }
+  
+  .permission-table {
+    font-size: 10px;
+  }
+  
+  .permission-table th,
+  .permission-table td {
+    padding: 6px 4px;
+  }
+  
+  .action-cell {
+    font-size: 8px;
+  }
+  
+  .matrix-footer {
+    flex-direction: column;
+  }
+  
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+  }
+}

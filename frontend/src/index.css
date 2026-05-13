@@ -1,0 +1,372 @@
+/* ============================================
+   CLMS Global Color System
+   Theme: Green & Purple Gradient
+   Developed by MIND GARDEN
+   ============================================ */
+
+/* Root Variables - Main Color Palette */
+:root {
+    /* ============================================
+       CLMS Primary Theme Colors (Green Gradient)
+       ============================================ */
+    --clms-primary: #10b981;
+    --clms-primary-rgb: 16, 185, 129;
+    --clms-primary-dark: #059669;
+    --clms-primary-light: #34d399;
+    --clms-primary-bg: #d1fae5;
+    --clms-primary-hover: #059669;
+    --clms-primary-active: #047857;
+    
+    /* Secondary Theme Colors (Purple Gradient) */
+    --clms-secondary: #8b5cf6;
+    --clms-secondary-rgb: 139, 92, 246;
+    --clms-secondary-dark: #7c3aed;
+    --clms-secondary-light: #a78bfa;
+    --clms-secondary-bg: #ede9fe;
+    --clms-secondary-hover: #7c3aed;
+    --clms-secondary-active: #6d28d9;
+    
+    /* Accent Gradient Colors */
+    --clms-gradient-primary: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --clms-gradient-secondary: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    --clms-gradient-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --clms-gradient-hero: linear-gradient(135deg, #667eea 0%, #10b981 100%);
+    
+    /* Status Colors */
+    --clms-success: #10b981;
+    --clms-success-rgb: 16, 185, 129;
+    --clms-success-bg: #d1fae5;
+    --clms-success-hover: #059669;
+    
+    --clms-info: #3b82f6;
+    --clms-info-rgb: 59, 130, 246;
+    --clms-info-bg: #dbeafe;
+    --clms-info-hover: #2563eb;
+    
+    --clms-warning: #f59e0b;
+    --clms-warning-rgb: 245, 158, 11;
+    --clms-warning-bg: #fed7aa;
+    --clms-warning-hover: #d97706;
+    
+    --clms-danger: #ef4444;
+    --clms-danger-rgb: 239, 68, 68;
+    --clms-danger-bg: #fee2e2;
+    --clms-danger-hover: #dc2626;
+    
+    /* Neutral Colors */
+    --clms-white: #ffffff;
+    --clms-black: #1f2937;
+    --clms-gray-50: #f9fafb;
+    --clms-gray-100: #f3f4f6;
+    --clms-gray-200: #e5e7eb;
+    --clms-gray-300: #d1d5db;
+    --clms-gray-400: #9ca3af;
+    --clms-gray-500: #6b7280;
+    --clms-gray-600: #4b5563;
+    --clms-gray-700: #374151;
+    --clms-gray-800: #1f2937;
+    --clms-gray-900: #111827;
+    
+    /* Computer Status Colors */
+    --computer-available: #10b981;
+    --computer-available-bg: #d1fae5;
+    --computer-in-use: #3b82f6;
+    --computer-in-use-bg: #dbeafe;
+    --computer-maintenance: #f59e0b;
+    --computer-maintenance-bg: #fed7aa;
+    --computer-damaged: #ef4444;
+    --computer-damaged-bg: #fee2e2;
+    
+    /* Attendance Status Colors */
+    --attendance-present: #10b981;
+    --attendance-present-bg: #d1fae5;
+    --attendance-absent: #ef4444;
+    --attendance-absent-bg: #fee2e2;
+    --attendance-late: #f59e0b;
+    --attendance-late-bg: #fed7aa;
+    --attendance-excused: #8b5cf6;
+    --attendance-excused-bg: #ede9fe;
+    
+    /* Schedule Status Colors */
+    --schedule-approved: #10b981;
+    --schedule-approved-bg: #d1fae5;
+    --schedule-pending: #f59e0b;
+    --schedule-pending-bg: #fed7aa;
+    --schedule-rejected: #ef4444;
+    --schedule-rejected-bg: #fee2e2;
+    --schedule-cancelled: #6b7280;
+    --schedule-cancelled-bg: #f3f4f6;
+    
+    /* Equipment Status Colors */
+    --equipment-available: #10b981;
+    --equipment-available-bg: #d1fae5;
+    --equipment-in-use: #3b82f6;
+    --equipment-in-use-bg: #dbeafe;
+    --equipment-maintenance: #f59e0b;
+    --equipment-maintenance-bg: #fed7aa;
+    --equipment-damaged: #ef4444;
+    --equipment-damaged-bg: #fee2e2;
+    
+    /* Priority Colors */
+    --priority-low: #10b981;
+    --priority-low-bg: #d1fae5;
+    --priority-medium: #f59e0b;
+    --priority-medium-bg: #fed7aa;
+    --priority-high: #f97316;
+    --priority-high-bg: #ffedd5;
+    --priority-urgent: #ef4444;
+    --priority-urgent-bg: #fee2e2;
+    
+    /* UI Component Colors */
+    --clms-card-bg: #ffffff;
+    --clms-sidebar-bg: #1f2937;
+    --clms-header-bg: #ffffff;
+    --clms-footer-bg: #1f2937;
+    --clms-border: #e5e7eb;
+    --clms-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --clms-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
+    /* Typography */
+    --clms-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --clms-font-size-sm: 0.875rem;
+    --clms-font-size-base: 1rem;
+    --clms-font-size-lg: 1.125rem;
+    --clms-font-size-xl: 1.25rem;
+    --clms-font-size-2xl: 1.5rem;
+    
+    /* Spacing */
+    --clms-spacing-2: 0.5rem;
+    --clms-spacing-3: 0.75rem;
+    --clms-spacing-4: 1rem;
+    --clms-spacing-6: 1.5rem;
+    --clms-spacing-8: 2rem;
+    
+    /* Border Radius */
+    --clms-radius-lg: 0.75rem;
+    --clms-radius-xl: 1rem;
+    --clms-radius-2xl: 1.5rem;
+    --clms-radius-full: 9999px;
+    
+    /* Transitions */
+    --clms-transition-fast: 150ms;
+    --clms-transition-normal: 300ms;
+    --clms-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+    --clms-card-bg: #1f2937;
+    --clms-sidebar-bg: #111827;
+    --clms-header-bg: #1f2937;
+    --clms-footer-bg: #111827;
+    --clms-border: #374151;
+    --clms-gray-50: #111827;
+    --clms-gray-100: #1f2937;
+    --clms-gray-200: #374151;
+    --clms-gray-800: #f3f4f6;
+    --clms-white: #1f2937;
+    --clms-black: #f9fafb;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--clms-font-family);
+    background-color: var(--clms-gray-50);
+    color: var(--clms-gray-800);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--clms-gray-200);
+    border-radius: var(--clms-radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--clms-primary);
+    border-radius: var(--clms-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--clms-primary-dark);
+}
+
+/* Selection */
+::selection {
+    background: var(--clms-primary);
+    color: white;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Background Colors */
+.bg-primary { background-color: var(--clms-primary); }
+.bg-primary-bg { background-color: var(--clms-primary-bg); }
+.bg-secondary { background-color: var(--clms-secondary); }
+.bg-secondary-bg { background-color: var(--clms-secondary-bg); }
+.bg-success { background-color: var(--clms-success); }
+.bg-warning { background-color: var(--clms-warning); }
+.bg-danger { background-color: var(--clms-danger); }
+.bg-info { background-color: var(--clms-info); }
+
+/* Text Colors */
+.text-primary { color: var(--clms-primary); }
+.text-secondary { color: var(--clms-secondary); }
+.text-success { color: var(--clms-success); }
+.text-warning { color: var(--clms-warning); }
+.text-danger { color: var(--clms-danger); }
+.text-info { color: var(--clms-info); }
+.text-white { color: white; }
+.text-gray { color: var(--clms-gray-500); }
+
+/* Gradient Backgrounds */
+.bg-gradient-primary { background: var(--clms-gradient-primary); }
+.bg-gradient-secondary { background: var(--clms-gradient-secondary); }
+.bg-gradient-accent { background: var(--clms-gradient-accent); }
+
+/* Status Badge Classes */
+.status-available, .computer-status-available, .attendance-present, .schedule-approved {
+    background-color: var(--clms-primary-bg);
+    color: var(--clms-primary);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.status-in-use, .computer-status-in-use {
+    background-color: var(--clms-info-bg);
+    color: var(--clms-info);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.status-maintenance, .computer-status-maintenance, .attendance-late {
+    background-color: var(--clms-warning-bg);
+    color: var(--clms-warning);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.status-damaged, .computer-status-damaged, .attendance-absent {
+    background-color: var(--clms-danger-bg);
+    color: var(--clms-danger);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.status-pending, .schedule-pending {
+    background-color: var(--clms-warning-bg);
+    color: var(--clms-warning);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+    display: inline-block;
+}
+
+/* Priority Badges */
+.priority-low {
+    background-color: var(--priority-low-bg);
+    color: var(--priority-low);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.priority-medium {
+    background-color: var(--priority-medium-bg);
+    color: var(--priority-medium);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.priority-high {
+    background-color: var(--priority-high-bg);
+    color: var(--priority-high);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.priority-urgent {
+    background-color: var(--priority-urgent-bg);
+    color: var(--priority-urgent);
+    padding: 4px 12px;
+    border-radius: var(--clms-radius-full);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+/* Card Styles */
+.clms-card {
+    background: var(--clms-card-bg);
+    border-radius: var(--clms-radius-xl);
+    box-shadow: var(--clms-shadow);
+    transition: all var(--clms-transition-normal) var(--clms-ease);
+}
+
+.clms-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--clms-shadow-lg);
+}
+
+/* Button Styles */
+.btn-primary-custom {
+    background: var(--clms-gradient-primary);
+    color: white;
+    padding: 10px 24px;
+    border-radius: var(--clms-radius-lg);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all var(--clms-transition-normal) var(--clms-ease);
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    :root {
+        --clms-font-size-lg: 1rem;
+        --clms-font-size-xl: 1.125rem;
+        --clms-spacing-6: 1rem;
+        --clms-spacing-8: 1.5rem;
+    }
+}

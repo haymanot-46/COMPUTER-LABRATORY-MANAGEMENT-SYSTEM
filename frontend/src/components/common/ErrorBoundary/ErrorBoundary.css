@@ -1,0 +1,87 @@
+/* ErrorBoundary.css - Green Theme */
+
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+  padding: 20px;
+}
+
+.error-content {
+  text-align: center;
+  background: white;
+  padding: 50px;
+  border-radius: var(--clms-radius-2xl, 24px);
+  max-width: 500px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.error-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.error-content h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.error-content p {
+  color: var(--clms-gray-600, #4b5563);
+  margin-bottom: 20px;
+}
+
+.error-details {
+  text-align: left;
+  background: var(--clms-gray-50, #f9fafb);
+  padding: 15px;
+  border-radius: var(--clms-radius-lg, 12px);
+  margin: 20px 0;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.error-details pre {
+  margin-top: 10px;
+  font-size: 12px;
+  overflow-x: auto;
+  color: var(--clms-gray-700, #374151);
+}
+
+.error-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.reload-btn,
+.home-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--clms-radius-lg, 12px);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.reload-btn {
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+  color: white;
+}
+
+.reload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.home-btn {
+  background: var(--clms-gray-200, #e5e7eb);
+  color: var(--clms-gray-700, #374151);
+}
+
+.home-btn:hover {
+  background: var(--clms-gray-300, #d1d5db);
+}

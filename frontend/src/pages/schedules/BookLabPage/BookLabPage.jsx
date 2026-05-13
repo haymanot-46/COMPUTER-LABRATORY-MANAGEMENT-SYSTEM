@@ -1,296 +1,197 @@
-import React, { useState } from 'react';
+// frontend/src/pages/schedules/BookLabPage/BookLabPage.jsx
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth, useRole, useNotification } from '../../../hooks';
+import { scheduleService } from '../../../services';
+import { ScheduleForm, ConflictWarning } from '../../../components/schedules';
 import './BookLabPage.css';
 
 const BookLabPage = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
-  const [conflict, setConflict] = useState(false);
+  const { user, loading: authLoading } = useAuth();
+  const { isTeacher, isDean, isLabManager } = useRole();
+  const { addToast, addNotification } = useNotification();
   
-  const [formData, setFormData] = useState({
-    laboratory: '',
-    courseName: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    recurring: 'none',
-    recurringEndDate: '',
-    expectedStudents: '',
-    notes: ''
-  });
+  const [laboratories, setLaboratories] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [showConflictWarning, setShowConflictWarning] = useState(false);
+  const [conflicts, setConflicts] = useState([]);
+  const [pendingBooking, setPendingBooking] = useState(null);
 
-  const laboratories = [
-    { id: 1, name: 'Computer Lab 101', capacity: 35, building: 'Science Block', floor: 1 },
-    { id: 2, name: 'Computer Lab 102', capacity: 35, building: 'Science Block', floor: 1 },
-    { id: 3, name: 'Computer Lab 103', capacity: 30, building: 'Science Block', floor: 2 },
-    { id: 4, name: 'Computer Lab 104', capacity: 40, building: 'Engineering Block', floor: 1 },
-    { id: 5, name: 'Computer Lab 105', capacity: 25, building: 'Engineering Block', floor: 2 },
-  ];
+  useEffect(() => { loadData(); }, []);
 
-  const timeSlots = [
-    '8:00 AM - 10:00 AM',
-    '10:00 AM - 12:00 PM',
-    '12:00 PM - 1:00 PM (Lunch Break)',
-    '1:00 PM - 3:00 PM',
-    '3:00 PM - 5:00 PM',
-    '5:00 PM - 7:00 PM'
-  ];
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setError('');
-    setConflict(false);
-  };
-
-  const handleCheckAvailability = () => {
-    // Simulate conflict check
-    if (formData.laboratory === 'lab-101' && formData.date === '2026-04-20' && formData.startTime === '10:00 AM - 12:00 PM') {
-      setConflict(true);
-      setError('This time slot is already booked. Please select another time.');
-    } else {
-      setConflict(false);
-      setError('');
-      alert('✓ Time slot is available! You can proceed with booking.');
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [labsResult, coursesResult] = await Promise.all([
+        scheduleService.getLaboratories(), 
+        scheduleService.getCourses()
+      ]);
+      if (labsResult.success) setLaboratories(labsResult.data);
+      if (coursesResult.success) setCourses(coursesResult.data);
+    } catch (error) {
+      console.error('Error loading data:', error);
+      addToast('Failed to load form data', 'error');
+    } finally { 
+      setLoading(false); 
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+  const handleSubmit = async (formData) => {
+    setSubmitting(true);
+    try {
+      const availabilityResult = await scheduleService.checkAvailability(
+        formData.labId, 
+        formData.date, 
+        formData.startTime, 
+        formData.endTime
+      );
+      
+      if (availabilityResult.success && availabilityResult.available) {
+        await submitBooking(formData);
+      } else if (availabilityResult.conflicts && availabilityResult.conflicts.length > 0) {
+        setConflicts(availabilityResult.conflicts);
+        setPendingBooking(formData);
+        setShowConflictWarning(true);
+      } else {
+        addToast('This time slot is already booked. Please select another time.', 'warning');
+      }
+    } catch (error) {
+      console.error('Error checking availability:', error);
+      addToast('Unable to check availability', 'error');
+    } finally { 
+      setSubmitting(false); 
+    }
+  };
 
-    // Validate form
-    if (!formData.laboratory || !formData.courseName || !formData.date || !formData.startTime || !formData.endTime) {
-      setError('Please fill in all required fields');
-      setLoading(false);
+  const submitBooking = async (formData) => {
+    if (!user) {
+      addToast('Please log in to book a lab', 'error');
       return;
     }
-
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      setSuccess(true);
+    
+    // Format data correctly for backend
+    const bookingData = {
+      course_name: formData.title || formData.course_name,
+      laboratory_id: parseInt(formData.labId),
+      start_time: `${formData.date} ${formData.startTime}:00`,
+      end_time: `${formData.date} ${formData.endTime}:00`,
+      expected_students: parseInt(formData.expected_students) || 0,
+      notes: formData.notes || ''
+    };
+    
+    console.log('📤 Submitting booking:', bookingData);
+    
+    try {
+      const result = await scheduleService.createSchedule(bookingData);
       
-      // Reset success message after 3 seconds
-      setTimeout(() => {
-        setSuccess(false);
-        navigate('/teacher/dashboard');
-      }, 2000);
-    }, 1500);
+      if (result.success) {
+        addToast('Lab booking request submitted successfully!', 'success');
+        if (addNotification) {
+          addNotification({
+            title: 'Booking Submitted',
+            message: 'Your lab booking request is pending approval',
+            type: 'success'
+          });
+        }
+        navigate('/my-schedules');
+      } else if (result.conflict) {
+        addToast(result.message, 'warning');
+      } else {
+        addToast(result.message || 'Failed to book lab', 'error');
+      }
+    } catch (error) {
+      console.error('❌ Error submitting booking:', error);
+      addToast('Failed to submit booking. Please try again.', 'error');
+    }
   };
 
+  const handleForceBooking = async () => { 
+    setShowConflictWarning(false); 
+    await submitBooking(pendingBooking); 
+  };
+
+  if (loading || authLoading) {
+    return (
+      <div className="book-lab-loading">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+  
+  if (!user) {
+    return (
+      <div className="book-lab-loading">
+        <div className="spinner"></div>
+        <p>Please log in to book a laboratory session.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="booklab-container">
-      <div className="booklab-header">
+    <div className="book-lab-page">
+      <div className="page-header">
         <button className="back-btn" onClick={() => navigate(-1)}>← Back</button>
-        <h1>Book Laboratory Session</h1>
-        <p>Schedule a computer lab for your class</p>
+        <h1>Book a Laboratory</h1>
+        <p>Schedule a lab session for your class</p>
       </div>
-
-      {success && (
-        <div className="success-message">
-          ✅ Booking request submitted successfully! Pending approval.
+      
+      <div className="booking-container">
+        <div className="booking-form-section">
+          <ScheduleForm 
+            laboratories={laboratories} 
+            courses={courses} 
+            onSubmit={handleSubmit} 
+            onCancel={() => navigate(-1)} 
+            isSubmitting={submitting} 
+          />
         </div>
-      )}
-
-      {error && (
-        <div className="error-message">
-          ⚠️ {error}
-        </div>
-      )}
-
-      <div className="booklab-content">
-        <form onSubmit={handleSubmit} className="booking-form">
-          {/* Laboratory Selection */}
-          <div className="form-section">
-            <h3>📋 Laboratory Information</h3>
-            
-            <div className="form-group">
-              <label>Select Laboratory *</label>
-              <select name="laboratory" value={formData.laboratory} onChange={handleChange} required>
-                <option value="">-- Select a laboratory --</option>
-                {laboratories.map(lab => (
-                  <option key={lab.id} value={`lab-${lab.id}`}>
-                    {lab.name} (Capacity: {lab.capacity}) - {lab.building}, Floor {lab.floor}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Course Name *</label>
-              <input
-                type="text"
-                name="courseName"
-                value={formData.courseName}
-                onChange={handleChange}
-                placeholder="e.g., Database Systems, Computer Networks"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Expected Number of Students *</label>
-              <input
-                type="number"
-                name="expectedStudents"
-                value={formData.expectedStudents}
-                onChange={handleChange}
-                placeholder="e.g., 30"
-                min="1"
-                max="50"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Date and Time */}
-          <div className="form-section">
-            <h3>📅 Date & Time</h3>
-            
-            <div className="form-row">
-              <div className="form-group">
-                <label>Date *</label>
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  min={new Date().toISOString().split('T')[0]}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Start Time *</label>
-                <select name="startTime" value={formData.startTime} onChange={handleChange} required>
-                  <option value="">-- Select start time --</option>
-                  {timeSlots.map(slot => (
-                    <option key={slot} value={slot}>{slot.split(' - ')[0]}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>End Time *</label>
-                <select name="endTime" value={formData.endTime} onChange={handleChange} required>
-                  <option value="">-- Select end time --</option>
-                  {timeSlots.map(slot => (
-                    <option key={slot} value={slot}>{slot.split(' - ')[1]}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <button type="button" className="check-btn" onClick={handleCheckAvailability}>
-              🔍 Check Availability
-            </button>
-
-            {conflict && (
-              <div className="conflict-warning">
-                <strong>⚠️ Scheduling Conflict Detected!</strong>
-                <p>This time slot is already booked. Please choose a different time or laboratory.</p>
-                <div className="suggested-slots">
-                  <p>Available time slots on this day:</p>
-                  <ul>
-                    <li>8:00 AM - 10:00 AM</li>
-                    <li>1:00 PM - 3:00 PM</li>
-                    <li>3:00 PM - 5:00 PM</li>
-                  </ul>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Recurring Settings */}
-          <div className="form-section">
-            <h3>🔄 Recurring Schedule (Optional)</h3>
-            
-            <div className="form-group">
-              <label>Repeat</label>
-              <select name="recurring" value={formData.recurring} onChange={handleChange}>
-                <option value="none">No repeat (One-time session)</option>
-                <option value="weekly">Weekly (Same day every week)</option>
-                <option value="biweekly">Bi-weekly (Every two weeks)</option>
-                <option value="monthly">Monthly</option>
-              </select>
-            </div>
-
-            {formData.recurring !== 'none' && (
-              <div className="form-group">
-                <label>Repeat Until</label>
-                <input
-                  type="date"
-                  name="recurringEndDate"
-                  value={formData.recurringEndDate}
-                  onChange={handleChange}
-                  min={formData.date}
-                />
-                <small>Recurring sessions will end on this date</small>
-              </div>
-            )}
-          </div>
-
-          {/* Additional Notes */}
-          <div className="form-section">
-            <h3>📝 Additional Notes (Optional)</h3>
-            
-            <div className="form-group">
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                rows="3"
-                placeholder="Special requirements, software needs, or additional instructions..."
-              ></textarea>
-            </div>
-          </div>
-
-          {/* Form Actions */}
-          <div className="form-actions">
-            <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>
-              Cancel
-            </button>
-            <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? 'Submitting...' : 'Submit Booking Request'}
-            </button>
-          </div>
-        </form>
-
-        {/* Information Sidebar */}
-        <div className="info-sidebar">
+        
+        <div className="booking-info-section">
           <div className="info-card">
-            <h4>📌 Booking Guidelines</h4>
+            <h3>📋 Booking Guidelines</h3>
             <ul>
-              <li>Book at least 24 hours in advance</li>
-              <li>Maximum 3 hours per session</li>
-              <li>Cancellation requires 2 hours notice</li>
-              <li>Contact lab manager for urgent requests</li>
+              <li>Bookings must be made at least 24 hours in advance</li>
+              <li>Each lab session is limited to 2-3 hours</li>
+              <li>Maximum 35 students per lab session</li>
+              <li>Priority given to scheduled courses</li>
+              <li>Cancellations must be made 2 hours before session</li>
+              <li>You can book multiple sessions for different dates/times</li>
             </ul>
           </div>
-
+          
           <div className="info-card">
-            <h4>🖥️ Available Software</h4>
-            <ul>
-              <li>Windows 11 / Ubuntu 22.04</li>
-              <li>VS Code, IntelliJ IDEA</li>
-              <li>MySQL, MongoDB</li>
-              <li>Docker, Kubernetes</li>
-              <li>Python, Java, C++, Node.js</li>
-            </ul>
+            <h3>🔬 Available Laboratories</h3>
+            {laboratories.map(lab => (
+              <div key={lab.id} className="lab-info-item">
+                <strong>{lab.name}</strong> ({lab.code})
+                <p>📍 {lab.building || 'Main Building'} | 🪑 Capacity: {lab.capacity} students</p>
+              </div>
+            ))}
           </div>
-
+          
           <div className="info-card">
-            <h4>📞 Need Help?</h4>
-            <p>Contact Lab Manager:</p>
-            <p>📧 lab@injibara.edu.et</p>
-            <p>📞 +251-58-xxx-xxxx</p>
+            <h3>⏰ Available Time Slots</h3>
+            <ul>
+              <li>Morning: 8:00 AM - 12:00 PM</li>
+              <li>Afternoon: 1:00 PM - 5:00 PM</li>
+              <li>Evening: 6:00 PM - 8:00 PM</li>
+            </ul>
+            <p className="note-tip">💡 Tip: Popular time slots fill up quickly. Book in advance!</p>
           </div>
         </div>
       </div>
+      
+      {showConflictWarning && (
+        <ConflictWarning 
+          conflicts={conflicts} 
+          onConfirm={handleForceBooking} 
+          onCancel={() => setShowConflictWarning(false)} 
+        />
+      )}
     </div>
   );
 };

@@ -1,0 +1,13 @@
+.timeslot-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1100; display: flex; align-items: center; justify-content: center; }
+.timeslot-overlay { position: absolute; background: rgba(0,0,0,0.5); inset: 0; }
+.timeslot-content { position: relative; background: white; border-radius: 16px; width: 90%; max-width: 400px; }
+.timeslot-header { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #e0e0e0; }
+.timeslot-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.timeslot { padding: 12px; text-align: center; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; }
+.timeslot:hover { background: #f8f9fa; }
+.timeslot.selected { background: #667eea; color: white; border-color: #667eea; }
+.timeslot-footer { display: flex; gap: 10px; padding: 15px 20px; border-top: 1px solid #e0e0e0; }
+.cancel-btn, .select-btn { flex: 1; padding: 10px; border: none; border-radius: 6px; cursor: pointer; }
+.cancel-btn { background: #e0e0e0; }
+.select-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+.select-btn:disabled { opacity: 0.6; cursor: not-allowed; }

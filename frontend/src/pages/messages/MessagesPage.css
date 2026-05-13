@@ -1,0 +1,121 @@
+/* frontend/src/pages/forms/QuestionForm/QuestionForm.css */
+.question-form-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 0;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.back-button {
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.form-title {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 8px !important;
+}
+
+.form-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.stepper-container {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-card {
+  border-radius: 20px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden;
+}
+
+.form-card .MuiCardContent-root {
+  padding: 32px;
+}
+
+.step-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #667eea;
+  margin-bottom: 16px !important;
+}
+
+.completion-message {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.completion-message .MuiTypography-h6 {
+  color: #065f46;
+  margin-top: 8px;
+}
+
+.completion-message .MuiTypography-body2 {
+  color: #047857;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 32px;
+  background: #f9fafb;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+}
+
+/* Form field spacing */
+.MuiGrid-container {
+  margin-top: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .question-form-page {
+    padding: 20px 0;
+  }
+  
+  .form-card .MuiCardContent-root {
+    padding: 20px;
+  }
+  
+  .form-actions {
+    padding: 16px 20px;
+  }
+  
+  .stepper-container {
+    padding: 16px;
+  }
+  
+  .MuiStepper-root {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

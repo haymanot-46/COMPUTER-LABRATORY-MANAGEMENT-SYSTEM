@@ -1,0 +1,506 @@
+/* FeaturesPage.css - Green Theme */
+/* CLMS Features Page Styles - Developed by MIND GARDEN */
+
+.features-page {
+  background: var(--clms-gray-50, #f9fafb);
+  min-height: 100vh;
+}
+
+/* ============================================
+   Header Section
+   ============================================ */
+.features-header {
+  background: white;
+  border-bottom: 1px solid var(--clms-border, #e5e7eb);
+  padding: 80px 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-button {
+  background: var(--clms-gray-100, #f3f4f6) !important;
+  transition: all 0.3s ease !important;
+  color: var(--clms-primary, #10b981) !important;
+}
+
+.back-button:hover {
+  background: var(--clms-gray-200, #e5e7eb) !important;
+  transform: translateX(-2px);
+  color: var(--clms-primary-dark, #059669) !important;
+}
+
+.header-title {
+  font-weight: 700 !important;
+  color: var(--clms-gray-800, #1f2937);
+  margin-bottom: 4px !important;
+}
+
+.header-subtitle {
+  color: var(--clms-gray-500, #6b7280);
+}
+
+
+
+/* Feature Card Image Styles */
+.feature-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.feature-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.feature-detail-card:hover .feature-image {
+  transform: scale(1.05);
+}
+
+.feature-icon-overlay {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Role Card Image Styles */
+.role-image-container {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #667eea;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.role-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.role-card {
+  text-align: center;
+  padding: 16px;
+  transition: transform 0.2s;
+}
+
+.role-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Role emoji fallback (if image fails to load) */
+.role-image-container img {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.role-image-container img::before {
+  content: attr(alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-size: 32px;
+}
+/* ============================================
+   Hero Section - Green Gradient
+   ============================================ */
+.features-hero {
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+  padding: 80px 0;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.features-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M10,10 L90,10 L50,50 Z" fill="white"/><circle cx="50" cy="50" r="30" fill="white"/></svg>') repeat;
+}
+
+.hero-title {
+  font-weight: 800 !important;
+  margin-bottom: 20px !important;
+  line-height: 1.2;
+  position: relative;
+  z-index: 2;
+}
+
+.highlight {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-description {
+  font-size: 18px !important;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================
+   Section Styles
+   ============================================ */
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: var(--clms-primary-bg, #d1fae5);
+  color: var(--clms-primary, #10b981);
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-weight: 700 !important;
+  color: var(--clms-gray-800, #1f2937);
+  margin-bottom: 16px !important;
+}
+
+.section-subtitle {
+  color: var(--clms-gray-500, #6b7280);
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 18px !important;
+}
+
+/* ============================================
+   Main Features
+   ============================================ */
+.main-features {
+  padding: 80px 0;
+}
+
+.feature-detail-card {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 20px !important;
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.feature-detail-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.feature-icon-large {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: var(--clms-primary, #10b981);
+}
+
+.feature-title {
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.feature-desc {
+  color: var(--clms-gray-600, #4b5563);
+  margin-bottom: 20px !important;
+  line-height: 1.6;
+}
+
+.benefits-list {
+  margin-top: 8px;
+}
+
+.benefits-list .MuiListItem-root {
+  padding: 4px 0;
+}
+
+.benefits-list .MuiListItemIcon-root {
+  color: var(--clms-primary, #10b981);
+}
+
+/* ============================================
+   Technical Features
+   ============================================ */
+.technical-features {
+  padding: 80px 0;
+  background: white;
+}
+
+.tech-card {
+  padding: 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 20px !important;
+  height: 100%;
+  background: white;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.tech-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.tech-icon {
+  font-size: 40px;
+  color: var(--clms-primary, #10b981);
+  margin-bottom: 16px;
+}
+
+.tech-title {
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.tech-desc {
+  color: var(--clms-gray-600, #4b5563);
+}
+
+/* ============================================
+   User Roles Section
+   ============================================ */
+.roles-section {
+  padding: 80px 0;
+  background: var(--clms-gray-50, #f9fafb);
+}
+
+.role-card {
+  text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 16px !important;
+  height: 100%;
+  background: white;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.role-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.role-emoji {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.role-title {
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.role-desc {
+  color: var(--clms-gray-600, #4b5563);
+}
+
+/* ============================================
+   CTA Section - Green Theme
+   ============================================ */
+.features-cta {
+  padding: 80px 0;
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+}
+
+.cta-box {
+  text-align: center;
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  backdrop-filter: blur(10px);
+}
+
+.cta-title {
+  color: white !important;
+  font-weight: 700 !important;
+  margin-bottom: 16px !important;
+}
+
+.cta-text {
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 32px !important;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.cta-primary {
+  background: white !important;
+  color: var(--clms-primary, #10b981) !important;
+  padding: 12px 32px !important;
+  border-radius: 50px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+}
+
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+}
+
+.cta-secondary {
+  border: 2px solid white !important;
+  color: white !important;
+  padding: 12px 32px !important;
+  border-radius: 50px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  background: transparent !important;
+}
+
+.cta-secondary:hover {
+  background: white !important;
+  color: var(--clms-primary, #10b981) !important;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+  .features-header {
+    padding: 60px 0 20px;
+  }
+  
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  
+  .hero-title {
+    font-size: 32px !important;
+  }
+  
+  .hero-description {
+    font-size: 16px !important;
+  }
+  
+  .section-title {
+    font-size: 28px !important;
+  }
+  
+  .section-subtitle {
+    font-size: 16px !important;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+  }
+  
+  .cta-box {
+    padding: 32px;
+  }
+  
+  .main-features {
+    padding: 60px 0;
+  }
+  
+  .technical-features {
+    padding: 60px 0;
+  }
+  
+  .roles-section {
+    padding: 60px 0;
+  }
+  
+  .features-cta {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 28px !important;
+  }
+  
+  .section-title {
+    font-size: 24px !important;
+  }
+  
+  .cta-box {
+    padding: 24px;
+  }
+  
+  .tech-card {
+    padding: 16px;
+  }
+  
+  .role-card {
+    padding: 16px;
+  }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feature-detail-card,
+.tech-card,
+.role-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.feature-detail-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-detail-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-detail-card:nth-child(3) { animation-delay: 0.3s; }
+.feature-detail-card:nth-child(4) { animation-delay: 0.4s; }
+.feature-detail-card:nth-child(5) { animation-delay: 0.5s; }
+.feature-detail-card:nth-child(6) { animation-delay: 0.6s; }

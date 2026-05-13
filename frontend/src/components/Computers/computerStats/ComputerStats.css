@@ -1,0 +1,382 @@
+/* frontend/src/components/computers/ComputerStats.css */
+
+/* ============================================
+   COMPUTER STATS - Injibara University Theme
+   Computer Laboratory Management System
+   ============================================ */
+
+.computer-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stat Card */
+.stat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-top: 4px solid;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Stat Icon */
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  background: #f8fafc;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Stat Info */
+.stat-info {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a3a4f;
+  margin-bottom: 4px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Individual Card Colors based on border-top */
+.stat-card[data-color="blue"] {
+  border-top-color: #3b82f6;
+}
+
+.stat-card[data-color="green"] {
+  border-top-color: #10b981;
+}
+
+.stat-card[data-color="orange"] {
+  border-top-color: #f59e0b;
+}
+
+.stat-card[data-color="red"] {
+  border-top-color: #ef4444;
+}
+
+.stat-card[data-color="purple"] {
+  border-top-color: #8b5cf6;
+}
+
+/* Hover glow effects per color */
+.stat-card:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card:active {
+  transform: translateY(-2px);
+}
+
+/* Loading state for stats */
+.stat-card.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Animation for value changes */
+.stat-value {
+  transition: all 0.3s ease;
+}
+
+.stat-value.increase {
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+    color: #10b981;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .computer-stats {
+    gap: 16px;
+  }
+  
+  .stat-card {
+    padding: 16px;
+  }
+  
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+  }
+  
+  .stat-value {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .computer-stats {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .stat-card {
+    padding: 14px;
+    gap: 12px;
+  }
+  
+  .stat-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+  }
+  
+  .stat-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 640px) {
+  .computer-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+  }
+  
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .computer-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .stat-card {
+    padding: 16px;
+  }
+  
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 26px;
+  }
+  
+  .stat-value {
+    font-size: 28px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .stat-card {
+    background: #1e293b;
+  }
+  
+  .stat-value {
+    color: #cbd5e1;
+  }
+  
+  .stat-label {
+    color: #94a3b8;
+  }
+  
+  .stat-icon {
+    background: #334155;
+  }
+  
+  .stat-card:hover {
+    background: #2d3a4f;
+  }
+}
+
+/* Tooltip for stats (optional) */
+.stat-card[data-tooltip] {
+  position: relative;
+}
+
+.stat-card[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  background: #1a3a4f;
+  color: white;
+  font-size: 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  margin-bottom: 8px;
+  z-index: 10;
+}
+
+.stat-card[data-tooltip]:hover::after {
+  opacity: 1;
+}
+
+/* Print Styles */
+@media print {
+  .computer-stats {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .stat-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+  
+  .stat-card:hover {
+    transform: none;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .stat-card,
+  .stat-icon,
+  .stat-value {
+    transition: none;
+    animation: none;
+  }
+  
+  .stat-card:hover {
+    transform: none;
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.stat-card:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+  transform: translateY(-2px);
+}
+
+/* Optional: Add a subtle gradient background */
+.computer-stats {
+  position: relative;
+}
+
+.stat-card:nth-child(1):hover .stat-icon {
+  background: #dbeafe;
+}
+
+.stat-card:nth-child(2):hover .stat-icon {
+  background: #d1fae5;
+}
+
+.stat-card:nth-child(3):hover .stat-icon {
+  background: #fed7aa;
+}
+
+.stat-card:nth-child(4):hover .stat-icon {
+  background: #fee2e2;
+}
+
+.stat-card:nth-child(5):hover .stat-icon {
+  background: #ede9fe;
+}

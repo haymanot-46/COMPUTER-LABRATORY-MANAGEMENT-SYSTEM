@@ -1,0 +1,17 @@
+.equipment-borrowing-container { padding: 20px; max-width: 1400px; margin: 0 auto; }
+.page-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; position: relative; }
+.page-header h1 { margin: 0 0 10px 0; font-size: 28px; }
+.new-request-btn { position: absolute; right: 30px; top: 30px; background: white; color: #667eea; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #e5e7eb; }
+.tab { padding: 12px 24px; background: none; border: none; font-size: 16px; cursor: pointer; color: #6b7280; }
+.tab.active { color: #667eea; border-bottom: 2px solid #667eea; }
+.equipment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.equipment-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; gap: 15px; }
+.borrow-btn { background: #667eea; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; }
+.borrow-btn { background: #667eea; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; }
+.borrow-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+.status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+.status-pending { background: #fff3cd; color: #856404; }
+.status-borrowed { background: #d4edda; color: #155724; }
+.status-returned { background: #e5e7eb; color: #374151; }
+.return-btn { background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-top: 10px; }

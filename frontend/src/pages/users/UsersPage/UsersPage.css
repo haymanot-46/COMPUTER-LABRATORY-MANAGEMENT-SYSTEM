@@ -1,0 +1,795 @@
+/* ============================================
+   USERS PAGE - CLMS INJIBARA UNIVERSITY
+   ============================================ */
+/* Add to UsersPage.css */
+
+.users-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 40px;
+}
+
+.error-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.users-error h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #dc2626;
+}
+
+.users-error p {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.retry-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 60px;
+  background: white;
+  border-radius: 16px;
+}
+
+.no-data-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.no-data h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.no-data p {
+  color: #6b7280;
+}
+/* Main Container */
+.users-page {
+  padding: 24px 32px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+}
+
+/* ============================================
+   HEADER SECTION
+   ============================================ */
+
+.users-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 24px 32px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  animation: slideDown 0.5s ease-out;
+}
+
+.users-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.users-header p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Add User Button */
+.add-user-btn {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-user-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+}
+
+.add-user-btn:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   FILTERS SECTION
+   ============================================ */
+
+.users-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  background: white;
+  padding: 20px 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  animation: slideUp 0.5s ease-out;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: #f9fafb;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2a5298;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+}
+
+.users-filters select {
+  padding: 12px 24px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  min-width: 180px;
+}
+
+.users-filters select:focus {
+  outline: none;
+  border-color: #2a5298;
+  background: white;
+}
+
+/* ============================================
+   TABLE SECTION
+   ============================================ */
+
+.users-table-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  overflow-x: auto;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.users-table thead {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.users-table th {
+  padding: 18px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.users-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  font-size: 14px;
+}
+
+.users-table tbody tr {
+  transition: all 0.3s ease;
+  animation: fadeInRow 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.users-table tbody tr:hover {
+  background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
+  transform: translateX(4px);
+}
+
+/* Role Badges */
+.role-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+}
+
+/* Role-specific colors */
+.role-admin {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.role-teacher {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+.role-student {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.role-lab_manager {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.role-dean {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+}
+
+.role-ict {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  color: white;
+}
+
+.role-asset {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  color: white;
+}
+
+.role-lab_assistant {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: white;
+}
+
+/* Delete Button */
+.delete-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* ============================================
+   MODAL SECTION
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+  padding: 24px 28px;
+  margin: 0;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+  border-radius: 24px 24px 0 0;
+}
+
+/* Form Styles */
+form {
+  padding: 28px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.form-group label::after {
+  content: attr(data-required);
+  color: #ef4444;
+  margin-left: 4px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: #f9fafb;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #2a5298;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+}
+
+/* Modal Buttons */
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.modal-buttons button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-buttons button:first-child {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.modal-buttons button:first-child:hover {
+  background: #e5e7eb;
+}
+
+.modal-buttons button:last-child {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+}
+
+.modal-buttons button:last-child:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4);
+}
+
+
+
+/* Add these styles to your existing UsersPage.css */
+
+.user-photo-cell {
+  text-align: center;
+  padding: 8px !important;
+}
+
+.user-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+.user-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 auto;
+}
+
+.upload-photo-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.upload-photo-btn:hover {
+  background: #2563eb;
+}
+
+.action-buttons-cell {
+  white-space: nowrap;
+}
+
+.photo-preview {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.photo-preview-label {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.photo-upload-area {
+  text-align: center;
+  padding: 20px;
+  border: 2px dashed #d1d5db;
+  border-radius: 10px;
+  background: #f9fafb;
+}
+
+.photo-upload-label {
+  display: inline-block;
+  background: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.photo-upload-label:hover {
+  background: #45a049;
+}
+
+.photo-upload-hint {
+  font-size: 11px;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: white;
+  border-radius: 20px;
+  margin: 24px;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.loading::before {
+  content: '';
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #2a5298;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.users-table tbody tr td[colspan="6"] {
+  text-align: center;
+  padding: 60px 20px;
+  color: #9ca3af;
+  font-size: 16px;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+.users-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.users-table-container::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.users-table-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 10px;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInRow {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Staggered row animations */
+.users-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.users-table tbody tr:nth-child(2) { animation-delay: 0.1s; }
+.users-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.users-table tbody tr:nth-child(4) { animation-delay: 0.2s; }
+.users-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+.users-table tbody tr:nth-child(6) { animation-delay: 0.3s; }
+.users-table tbody tr:nth-child(7) { animation-delay: 0.35s; }
+.users-table tbody tr:nth-child(8) { animation-delay: 0.4s; }
+.users-table tbody tr:nth-child(9) { animation-delay: 0.45s; }
+.users-table tbody tr:nth-child(10) { animation-delay: 0.5s; }
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .users-page {
+    padding: 20px;
+  }
+  
+  .users-header {
+    padding: 20px 24px;
+  }
+  
+  .users-header h1 {
+    font-size: 24px;
+  }
+  
+  .users-filters {
+    flex-direction: column;
+  }
+  
+  .users-filters select {
+    width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .users-page {
+    padding: 16px;
+  }
+  
+  .users-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .users-header h1 {
+    font-size: 22px;
+  }
+  
+  .users-filters {
+    padding: 16px;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .users-table-container {
+    border-radius: 16px;
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 16px;
+  }
+  
+  form {
+    padding: 20px;
+  }
+  
+  .modal-buttons {
+    flex-direction: column;
+  }
+  
+  .modal-buttons button {
+    width: 100%;
+  }
+  
+  .delete-btn {
+    padding: 8px 16px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .users-page {
+    padding: 12px;
+  }
+  
+  .users-header h1 {
+    font-size: 20px;
+  }
+  
+  .add-user-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  
+  .role-badge {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+  
+  .delete-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .modal-content h2 {
+    padding: 20px;
+    font-size: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 10px 12px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .users-page {
+    background: white;
+    padding: 0;
+  }
+  
+  .add-user-btn,
+  .users-filters,
+  .delete-btn,
+  .modal-overlay {
+    display: none;
+  }
+  
+  .users-table-container {
+    box-shadow: none;
+  }
+  
+  .users-table th {
+    background: #f3f4f6;
+    color: black;
+  }
+}

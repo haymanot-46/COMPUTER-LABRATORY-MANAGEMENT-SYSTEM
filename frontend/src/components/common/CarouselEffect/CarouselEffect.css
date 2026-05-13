@@ -1,0 +1,132 @@
+/* CarouselEffect.css */
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Slick Slider Overrides */
+.slick-slider,
+.slick-list,
+.slick-track {
+  height: 100%;
+}
+
+.slick-slide {
+  height: 100%;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+/* Slide Container */
+.slide-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Carousel Image - Full cover */
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Optional: Remove the slide overlay since we have hero-overlay-gradient */
+.slide-overlay {
+  display: none;
+}
+
+/* Custom Arrows - Green Theme */
+.custom-prev-arrow,
+.custom-next-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 45px;
+  height: 45px;
+  background: rgba(16, 185, 129, 0.5);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.custom-prev-arrow {
+  left: 20px;
+}
+
+.custom-next-arrow {
+  right: 20px;
+}
+
+.custom-prev-arrow:hover,
+.custom-next-arrow:hover {
+  background: rgba(16, 185, 129, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Hide default slick arrows */
+.slick-prev,
+.slick-next {
+  display: none !important;
+}
+
+/* Placeholder when no images */
+.carousel-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+}
+
+.placeholder-content {
+  text-align: center;
+  color: white;
+}
+
+.placeholder-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.placeholder-content p {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .custom-prev-arrow,
+  .custom-next-arrow {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .custom-prev-arrow svg,
+  .custom-next-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-prev-arrow,
+  .custom-next-arrow {
+    display: none;
+  }
+}

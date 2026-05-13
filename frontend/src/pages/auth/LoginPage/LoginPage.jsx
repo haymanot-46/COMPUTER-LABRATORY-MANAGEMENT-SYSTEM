@@ -1,163 +1,319 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  Alert,
+  Snackbar,
+  InputAdornment,
+  IconButton,
+  FormControlLabel,
+  Checkbox,
+  Divider,
+  Avatar,
+  CircularProgress
+} from '@mui/material';
+import {
+  Login as LoginIcon,
+  Email as EmailIcon,
+  Lock as LockIcon,
+  Visibility,
+  VisibilityOff,
+  ArrowBack as ArrowBackIcon,
+  Computer as ComputerIcon,
+  School as SchoolIcon
+} from '@mui/icons-material';
+import { useAuth, useNotification } from '../../../hooks';
+import { authService } from '../../../services';
 import './LoginPage.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const location = useLocation();
+  const { login } = useAuth();
+  const { addToast } = useNotification();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+
+  // Function to normalize role (handle both underscore and hyphen)
+  const normalizeRole = (role) => {
+    const roleMap = {
+      'lab-manager': 'lab_manager',
+      'lab_manager': 'lab_manager',
+      'lab-assistant': 'lab_assistant',
+      'lab_assistant': 'lab_assistant',
+      'admin': 'admin',
+      'teacher': 'teacher',
+      'student': 'student',
+      'dean': 'dean',
+      'ict': 'ict',
+      'asset': 'asset'
+    };
+    return roleMap[role] || role;
+  };
+
+  // Function to get dashboard route from role
+  const getDashboardRoute = (role) => {
+    const normalizedRole = normalizeRole(role);
+    
+    const routeMap = {
+      admin: '/admin/dashboard',
+      teacher: '/teacher/dashboard',
+      student: '/student/dashboard',
+      lab_manager: '/lab-manager/dashboard',
+      dean: '/dean/dashboard',
+      lab_assistant: '/lab-assistant/dashboard',
+      ict: '/ict/dashboard',
+      asset: '/asset/dashboard'
+    };
+    
+    return routeMap[normalizedRole] || '/dashboard';
+  };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === 'rememberMe' ? checked : value
+    }));
+    setError('');
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.email || !formData.password) {
+        setError('Please enter both email and password');
+        return;
+    }
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+        const result = await authService.login({
+            email: formData.email,
+            password: formData.password
+        });
+        
+        if (result.success) {
+            // ✅ Get normalized role
+            const role = result.user.role;
+            
+            console.log('🔐 Login successful. Role:', role);
+            
+            // ✅ Map role to dashboard route
+            const dashboardRoutes = {
+                admin: '/admin/dashboard',
+                teacher: '/teacher/dashboard',
+                student: '/student/dashboard',
+                lab_manager: '/lab-manager/dashboard',
+                dean: '/dean/dashboard',
+                lab_assistant: '/lab-assistant/dashboard',
+                ict: '/ict/dashboard',
+                asset: '/asset/dashboard'
+            };
+            
+            const dashboardPath = dashboardRoutes[role];
+            
+            if (!dashboardPath) {
+                console.error('❌ Unknown role:', role);
+                setError(`Unknown role: ${role}. Please contact administrator.`);
+                setLoading(false);
+                return;
+            }
+            
+            console.log('🎯 Redirecting to:', dashboardPath);
+            
+            addToast(`Welcome ${result.user.name}!`, 'success');
+            
+            setTimeout(() => {
+                navigate(dashboardPath);
+            }, 500);
+            
+        } else {
+            setError(result.message || 'Invalid email or password');
+        }
+    } catch (err) {
+        console.error('Login error:', err);
+        setError('Unable to connect to server. Please try again.');
+    } finally {
+        setLoading(false);
+    }
+};
+
+  const handleBack = () => {
+    navigate('/');
+  };
+
+  const fillDemoCredentials = (email, password) => {
     setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
+      email: email,
+      password: password,
+      rememberMe: false
     });
     setError('');
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    // Demo login - Replace with real API call
-    setTimeout(() => {
-      setLoading(false);
-      
-      // Demo credentials check
-      if (formData.email === 'admin@clms.com' && formData.password === 'admin123') {
-        localStorage.setItem('token', 'demo-token-admin');
-        localStorage.setItem('userRole', 'admin');
-        navigate('/admin/dashboard');
-      } 
-      else if (formData.email === 'manager@clms.com' && formData.password === 'manager123') {
-        localStorage.setItem('token', 'demo-token-manager');
-        localStorage.setItem('userRole', 'lab-manager');
-        navigate('/lab-manager/dashboard');
-      }
-      else if (formData.email === 'teacher@clms.com' && formData.password === 'teacher123') {
-        localStorage.setItem('token', 'demo-token-teacher');
-        localStorage.setItem('userRole', 'teacher');
-        navigate('/teacher/dashboard');
-      }
-      else if (formData.email === 'dean@clms.com' && formData.password === 'dean123') {
-        localStorage.setItem('token', 'demo-token-dean');
-        localStorage.setItem('userRole', 'dean');
-        navigate('/dean/dashboard');
-      }
-      else if (formData.email === 'student@clms.com' && formData.password === 'student123') {
-        localStorage.setItem('token', 'demo-token-student');
-        localStorage.setItem('userRole', 'student');
-        navigate('/student/dashboard');
-      }
-      else if (formData.email === 'assistant@clms.com' && formData.password === 'assistant123') {
-        localStorage.setItem('token', 'demo-token-assistant');
-        localStorage.setItem('userRole', 'lab-assistant');
-        navigate('/lab-assistant/dashboard');
-      }
-      else if (formData.email === 'ict@clms.com' && formData.password === 'ict123') {
-        localStorage.setItem('token', 'demo-token-ict');
-        localStorage.setItem('userRole', 'ict');
-        navigate('/ict/dashboard');
-      }
-      else if (formData.email === 'asset@clms.com' && formData.password === 'asset123') {
-        localStorage.setItem('token', 'demo-token-asset');
-        localStorage.setItem('userRole', 'asset');
-        navigate('/asset/dashboard');
-      }
-      else {
-        setError('Invalid email or password. Please try again.');
-      }
-    }, 1000);
-  };
-
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-header">
-          <div className="logo">🖥️</div>
-          <h1>CLMS</h1>
-          <p>Computer Laboratory Management System</p>
-          <p className="university">Injibara University</p>
-        </div>
+    <div className="login-page">
+      {/* Background with gradient */}
+      <div className="login-background">
+        <div className="bg-gradient"></div>
+      </div>
 
-        <div className="divider"></div>
+      <Container maxWidth="sm" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', py: 4 }}>
+        <Paper elevation={3} className="login-card">
+          {/* Back Button */}
+          <IconButton onClick={handleBack} className="back-button" aria-label="back">
+            <ArrowBackIcon /> back to home
+          </IconButton>
 
-        <h2>Welcome Back</h2>
-        <p className="subtitle">Sign in to access your dashboard</p>
+          {/* Header */}
+          <Box className="login-header">
+            <Avatar className="logo-avatar">
+              <ComputerIcon sx={{ fontSize: 40 }} />
+            </Avatar>
+            <Typography variant="h4" className="title">
+              Welcome Back
+            </Typography>
+            <Typography variant="body2" className="subtitle">
+              Sign in to access computer laboratory management dashboard
+            </Typography>
+            <Typography variant="caption" className="university">
+              Injibara University
+            </Typography>
+          </Box>
 
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+          <Divider className="divider" />
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
+          {/* Error Alert */}
+          {error && (
+            <Alert severity="error" className="error-alert" onClose={() => setError('')}>
+              {error}
+            </Alert>
+          )}
+
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="login-form">
+            <TextField
+              fullWidth
+              label="Email Address"
               name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
+              placeholder="admin@clms.com"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailIcon color="primary" />
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
+              margin="normal"
               required
-              className="form-input"
+              disabled={loading}
             />
-          </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
+            <TextField
+              fullWidth
+              label="Password"
               name="password"
+              type={showPassword ? 'text' : 'password'}
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LockIcon color="primary" />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={togglePasswordVisibility} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              variant="outlined"
+              margin="normal"
               required
-              className="form-input"
+              disabled={loading}
             />
-          </div>
 
-          <div className="form-options">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="rememberMe"
-                checked={formData.rememberMe}
-                onChange={handleChange}
+            <Box className="form-options">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="rememberMe"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
+                    color="primary"
+                  />
+                }
+                label="Remember me"
               />
-              <span>Remember me</span>
-            </label>
-            <a href="/forgot-password" className="forgot-link">Forgot Password?</a>
-          </div>
+              <Link to="/forgot-password" className="forgot-link">
+                Forgot Password?
+              </Link>
+            </Box>
 
-          <button 
-            type="submit" 
-            className="login-button"
-            disabled={loading}
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
-          </button>
-        </form>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              disabled={loading}
+              className="login-button"
+              startIcon={!loading && <LoginIcon />}
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
+            </Button>
+          </form>
 
-        <div className="demo-credentials">
-          <p>Demo Credentials:</p>
-          <div className="credentials-grid">
-            <div><strong>Admin:</strong> admin@clms.com / admin123</div>
-            <div><strong>Teacher:</strong> teacher@clms.com / teacher123</div>
-            <div><strong>Student:</strong> student@clms.com / student123</div>
-          </div>
-        </div>
-      </div>
+          {/* Register Link */}
+          <Box className="register-link">
+            <Typography variant="body2">
+              Don't have an account?{' '}
+              <Link to="/register" className="register-link-text">
+                Create Account
+              </Link>
+            </Typography>
+          </Box>
+        </Paper>
+      </Container>
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successOpen}
+        autoHideDuration={2000}
+        onClose={() => setSuccessOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert severity="success" variant="filled">
+          Login successful! Redirecting...
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

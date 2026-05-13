@@ -1,0 +1,38 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-icon {
+  font-size: 14px !important;
+}
+
+.status-badge.available {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.in-use, .status-badge.borrowed {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.maintenance {
+  background: #fed7aa;
+  color: #92400e;
+}
+
+.status-badge.damaged {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.retired {
+  background: #f3f4f6;
+  color: #4b5563;
+}

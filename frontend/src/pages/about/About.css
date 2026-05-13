@@ -1,0 +1,633 @@
+/* AboutPage.css - Green Theme */
+/* CLMS About Page Styles - Developed by MIND GARDEN */
+
+.about-page {
+  background: var(--clms-gray-50, #f9fafb);
+  min-height: 100vh;
+}
+
+/* ============================================
+   Header Section
+   ============================================ */
+.about-header {
+  background: white;
+  border-bottom: 1px solid var(--clms-border, #e5e7eb);
+  padding: 80px 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-button {
+  background: var(--clms-gray-100, #f3f4f6) !important;
+  transition: all 0.3s ease !important;
+  color: var(--clms-primary, #10b981) !important;
+}
+
+.back-button:hover {
+  background: var(--clms-gray-200, #e5e7eb) !important;
+  transform: translateX(-2px);
+  color: var(--clms-primary-dark, #059669) !important;
+}
+
+.header-title {
+  font-weight: 700 !important;
+  color: var(--clms-gray-800, #1f2937);
+  margin-bottom: 4px !important;
+}
+
+.header-subtitle {
+  color: var(--clms-gray-500, #6b7280);
+}
+
+/* ============================================
+   Hero Section - Green Gradient
+   ============================================ */
+.about-hero {
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+  padding: 80px 0;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M10,10 L90,10 L50,50 Z" fill="white"/><circle cx="50" cy="50" r="30" fill="white"/></svg>') repeat;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-weight: 800 !important;
+  margin-bottom: 8px !important;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-weight: 500 !important;
+  margin-bottom: 16px !important;
+  opacity: 0.9;
+}
+
+.hero-description {
+  font-size: 18px !important;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+}
+
+.hero-badge {
+  margin-top: 20px;
+}
+
+.version-chip {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  backdrop-filter: blur(10px);
+}
+
+/* ============================================
+   Stats Section
+   ============================================ */
+.stats-section {
+  padding: 60px 0;
+  background: white;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 24px;
+  transition: all 0.3s ease;
+  border-radius: 20px !important;
+  height: 100%;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.stat-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: var(--clms-primary, #10b981);
+}
+
+.stat-value {
+  font-weight: 800 !important;
+  color: var(--clms-gray-800, #1f2937);
+  margin-bottom: 8px !important;
+}
+
+.stat-label {
+  color: var(--clms-gray-500, #6b7280);
+  font-weight: 500;
+}
+
+/* ============================================
+   Mission & Vision Section - Green Theme
+   ============================================ */
+.mission-section {
+  padding: 80px 0;
+  background: var(--clms-gray-50, #f9fafb);
+}
+
+.mission-card,
+.vision-card {
+  padding: 32px;
+  text-align: center;
+  border-radius: 24px !important;
+  height: 100%;
+  transition: all 0.3s ease;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.mission-card:hover,
+.vision-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.mission-icon,
+.vision-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.mission-icon {
+  color: var(--clms-primary, #10b981);
+}
+
+.vision-icon {
+  color: var(--clms-secondary, #8b5cf6);
+}
+
+.mission-title,
+.vision-title {
+  font-weight: 700 !important;
+  margin-bottom: 16px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.mission-text,
+.vision-text {
+  color: var(--clms-gray-600, #4b5563);
+  line-height: 1.6;
+}
+
+/* ============================================
+   Core Values Section
+   ============================================ */
+.values-section {
+  padding: 80px 0;
+  background: white;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: var(--clms-primary-bg, #d1fae5);
+  color: var(--clms-primary, #10b981);
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-weight: 700 !important;
+  color: var(--clms-gray-800, #1f2937);
+  margin-bottom: 16px !important;
+}
+
+.section-subtitle {
+  color: var(--clms-gray-500, #6b7280);
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 18px !important;
+}
+
+.value-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: 20px !important;
+  height: 100%;
+  transition: all 0.3s ease;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.value-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  background: var(--clms-primary-bg, #d1fae5);
+  color: var(--clms-primary, #10b981);
+}
+
+.value-title {
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.value-description {
+  color: var(--clms-gray-600, #4b5563);
+  line-height: 1.5;
+}
+
+/* ============================================
+   Features Showcase
+   ============================================ */
+.features-showcase {
+  padding: 80px 0;
+  background: var(--clms-gray-50, #f9fafb);
+}
+
+.feature-showcase-card {
+  text-align: center;
+  padding: 32px;
+  border-radius: 20px !important;
+  height: 100%;
+  transition: all 0.3s ease;
+  background: white;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.feature-showcase-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.feature-showcase-icon {
+  font-size: 48px;
+  color: var(--clms-primary, #10b981);
+  margin-bottom: 16px;
+}
+
+.feature-showcase-title {
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.feature-showcase-desc {
+  color: var(--clms-gray-600, #4b5563);
+}
+
+/* ============================================
+   Technology Stack Section
+   ============================================ */
+.tech-section {
+  padding: 80px 0;
+  background: white;
+}
+
+.tech-card {
+  padding: 32px;
+  border-radius: 20px !important;
+  height: 100%;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.tech-category {
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+  color: var(--clms-primary, #10b981);
+}
+
+.tech-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tech-chip {
+  background: var(--clms-primary-bg, #d1fae5) !important;
+  color: var(--clms-primary, #10b981) !important;
+  font-weight: 500 !important;
+}
+
+/* ============================================
+   Team Section
+   ============================================ */
+.team-section {
+  padding: 80px 0;
+  background: var(--clms-gray-50, #f9fafb);
+}
+
+.team-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: 20px !important;
+  height: 100%;
+  transition: all 0.3s ease;
+  background: white;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.team-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.team-avatar-icon {
+  width: 80px !important;
+  height: 80px !important;
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%)) !important;
+  font-size: 40px !important;
+}
+
+.team-name {
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.team-role {
+  color: var(--clms-primary, #10b981);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.team-dept {
+  color: var(--clms-gray-500, #6b7280);
+  margin-bottom: 12px;
+}
+
+.team-bio {
+  color: var(--clms-gray-600, #4b5563);
+  font-size: 13px !important;
+  line-height: 1.5;
+}
+
+/* ============================================
+   Achievements Timeline
+   ============================================ */
+.achievements-section {
+  padding: 80px 0;
+  background: white;
+}
+
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+}
+
+.timeline-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.timeline-item:nth-child(odd) {
+  flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clms-primary, #10b981);
+  z-index: 2;
+  box-shadow: 0 0 0 4px var(--clms-primary-bg, #d1fae5);
+}
+
+.timeline-content {
+  width: 45%;
+  padding: 20px;
+  background: var(--clms-gray-50, #f9fafb);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.timeline-content:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  border-color: var(--clms-primary, #10b981);
+}
+
+.timeline-year {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--clms-primary, #10b981);
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.timeline-title {
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  color: var(--clms-gray-800, #1f2937);
+}
+
+.timeline-description {
+  color: var(--clms-gray-600, #4b5563);
+}
+
+/* ============================================
+   Contact CTA - Green Theme
+   ============================================ */
+.contact-cta {
+  padding: 80px 0;
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+}
+
+.cta-box {
+  text-align: center;
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  backdrop-filter: blur(10px);
+}
+
+.cta-title {
+  color: white !important;
+  font-weight: 700 !important;
+  margin-bottom: 16px !important;
+}
+
+.cta-text {
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 32px !important;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.cta-primary {
+  background: white !important;
+  color: var(--clms-primary, #10b981) !important;
+  padding: 12px 32px !important;
+  border-radius: 50px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+}
+
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+}
+
+.cta-secondary {
+  border: 2px solid white !important;
+  color: white !important;
+  padding: 12px 32px !important;
+  border-radius: 50px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  background: transparent !important;
+}
+
+.cta-secondary:hover {
+  background: white !important;
+  color: var(--clms-primary, #10b981) !important;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.about-footer {
+  padding: 24px 0;
+  background: var(--clms-gray-800, #1f2937);
+  text-align: center;
+}
+
+.footer-note {
+  color: var(--clms-gray-400, #9ca3af);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+  .about-header {
+    padding: 60px 0 20px;
+  }
+  
+  .hero-title {
+    font-size: 32px !important;
+  }
+  
+  .hero-description {
+    font-size: 16px !important;
+  }
+  
+  .section-title {
+    font-size: 28px !important;
+  }
+  
+  .section-subtitle {
+    font-size: 16px !important;
+  }
+  
+  .timeline::before {
+    left: 20px;
+  }
+  
+  .timeline-item,
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 50px;
+  }
+  
+  .timeline-dot {
+    left: 20px;
+    transform: none;
+  }
+  
+  .timeline-content {
+    width: 100%;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+  }
+  
+  .cta-box {
+    padding: 32px;
+  }
+  
+  .mission-card,
+  .vision-card {
+    margin-bottom: 20px;
+  }
+}

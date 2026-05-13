@@ -1,0 +1,85 @@
+/* Pagination.css - Green Theme */
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: var(--clms-spacing-6, 20px);
+  padding-top: var(--clms-spacing-5, 15px);
+  border-top: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  background: var(--clms-gray-100, #f3f4f6);
+  border: none;
+  border-radius: var(--clms-radius-md, 8px);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  color: var(--clms-gray-700, #374151);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--clms-primary, #10b981);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-pages {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination-page {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clms-gray-100, #f3f4f6);
+  border: none;
+  border-radius: var(--clms-radius-md, 8px);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  color: var(--clms-gray-700, #374151);
+}
+
+.pagination-page:hover:not(.active):not(.dots) {
+  background: var(--clms-gray-200, #e5e7eb);
+}
+
+.pagination-page.active {
+  background: var(--clms-gradient-primary, linear-gradient(135deg, #10b981 0%, #059669 100%));
+  color: white;
+}
+
+.pagination-page.dots {
+  background: none;
+  cursor: default;
+  color: var(--clms-gray-500, #6b7280);
+}
+
+@media (max-width: 768px) {
+  .pagination-container {
+    flex-wrap: wrap;
+  }
+  
+  .pagination-page {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .pagination-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

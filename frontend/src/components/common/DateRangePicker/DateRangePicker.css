@@ -1,0 +1,92 @@
+/* DateRangePicker.css - Green Theme */
+
+.date-range-picker {
+  position: relative;
+}
+
+.date-inputs {
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.date-input {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.date-input label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--clms-gray-600, #4b5563);
+}
+
+.date-input input {
+  padding: 8px 12px;
+  border: 1px solid var(--clms-border, #e5e7eb);
+  border-radius: var(--clms-radius-md, 8px);
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.date-input input:focus {
+  outline: none;
+  border-color: var(--clms-primary, #10b981);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.date-separator {
+  padding-bottom: 8px;
+  color: var(--clms-gray-400, #9ca3af);
+}
+
+.presets-btn {
+  padding: 8px 16px;
+  background: var(--clms-gray-100, #f3f4f6);
+  border: none;
+  border-radius: var(--clms-radius-md, 8px);
+  cursor: pointer;
+  font-size: 13px;
+  margin-bottom: 0;
+  color: var(--clms-gray-700, #374151);
+  transition: all 0.3s ease;
+}
+
+.presets-btn:hover {
+  background: var(--clms-primary, #10b981);
+  color: white;
+}
+
+.presets-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: var(--clms-radius-lg, 12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 100;
+  margin-top: 5px;
+  overflow: hidden;
+  border: 1px solid var(--clms-border, #e5e7eb);
+}
+
+.preset-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  color: var(--clms-gray-700, #374151);
+}
+
+.preset-item:hover {
+  background: var(--clms-primary-bg, #d1fae5);
+  color: var(--clms-primary, #10b981);
+}
