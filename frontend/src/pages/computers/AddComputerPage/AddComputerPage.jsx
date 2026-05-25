@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from '../../../hooks';
+import { computerService } from '../../../services';
 import './AddComputerPage.css';
 
 const AddComputerPage = () => {
@@ -35,11 +36,7 @@ const AddComputerPage = () => {
 
   const loadLaboratories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/laboratories', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await computerService.getLaboratories();
       if (data.success) {
         setLaboratories(data.data);
       }
@@ -64,17 +61,7 @@ const AddComputerPage = () => {
     setLoading(true);
     
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/computers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      const data = await response.json();
+      const data = await computerService.createComputer(formData);
       
       if (data.success) {
         addToast('Computer added successfully!', 'success');

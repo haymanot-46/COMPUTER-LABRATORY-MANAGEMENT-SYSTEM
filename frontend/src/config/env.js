@@ -5,7 +5,7 @@ class EnvConfig {
       appVersion: import.meta.env.VITE_APP_VERSION || '1.0.0',
       appEnv: import.meta.env.VITE_APP_ENV || 'development',
       apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
-      wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:5000',
+      wsUrl: import.meta.env.VITE_WS_URL || 'ws://localhost:5001',
       enableOfflineMode: import.meta.env.VITE_ENABLE_OFFLINE_MODE === 'true',
       enablePWA: import.meta.env.VITE_ENABLE_PWA === 'true',
       enableAnalytics: import.meta.env.VITE_ENABLE_ANALYTICS === 'true',

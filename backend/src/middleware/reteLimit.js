@@ -1,9 +1,12 @@
-const rateLimit = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
+
+const keyGenerator = ipKeyGenerator;
 
 // General API rate limiter
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // 100 requests per window
+  keyGenerator,
   message: {
     success: false,
     message: 'Too many requests from this IP, please try again later.'
@@ -17,6 +20,7 @@ const apiLimiter = rateLimit({
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // 5 failed attempts per window
+  keyGenerator,
   skipSuccessfulRequests: true,
   message: {
     success: false,
@@ -28,6 +32,7 @@ const authLimiter = rateLimit({
 const loginLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 10, // 10 attempts per hour
+  keyGenerator,
   skipSuccessfulRequests: true,
   message: {
     success: false,
@@ -39,6 +44,7 @@ const loginLimiter = rateLimit({
 const uploadLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 50, // 50 uploads per hour
+  keyGenerator,
   message: {
     success: false,
     message: 'Too many upload attempts, please try again later.'
@@ -49,7 +55,7 @@ const uploadLimiter = rateLimit({
 const apiKeyLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 30, // 30 requests per minute
-  keyGenerator: (req) => req.headers['x-api-key'] || req.ip,
+  keyGenerator: (req) => req.headers['x-api-key'] || ipKeyGenerator(req),
   message: {
     success: false,
     message: 'Rate limit exceeded. Please slow down your requests.'

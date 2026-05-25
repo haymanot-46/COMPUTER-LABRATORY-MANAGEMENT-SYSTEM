@@ -2,44 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
 const {
-  // Equipment Management
-  getEquipment,
-  getEquipmentById,
-  registerEquipment,
-  updateEquipment,
-  deleteEquipment,
-  getEquipmentStats,
-  getExpiringWarranties,
-  
-  // Borrowing Management
-  getBorrowRequests,
-  approveBorrowRequest,
-  rejectBorrowRequest,
-  getBorrowedEquipment,
-  getBorrowHistory,
-  
-  // Audit Management
-  conductAudit,
-  getAuditHistory,
-  getAuditSchedule,
-  scheduleAudit,
-  completeAudit,
-  
-  // Reports
-  getAssetReports,
-  generateAssetReport,
-  exportAssetData,
-  
-  // Dashboard
-  getAssetDashboard,
-  getLowStockAlert,
-  
-  // Notifications
-  getMyNotifications,
-  
-  // Profile
-  updateProfile,
-  changePassword
+  getEquipment, getEquipmentById, registerEquipment, updateEquipment, deleteEquipment,
+  getEquipmentStats, getExpiringWarranties, getBorrowRequests, approveBorrowRequest,
+  rejectBorrowRequest, getBorrowedEquipment, getBorrowHistory, conductAudit,
+  getAuditHistory, getAuditSchedule, scheduleAudit, completeAudit, getAssetReports,
+  generateAssetReport, exportAssetData, getLowStockAlert, getMyNotifications, updateProfile
 } = require('../controllers/assetController');
 const { equipmentValidation, idValidation, paginationValidation } = require('../middleware/validation');
 
@@ -48,7 +15,6 @@ router.use(protect);
 router.use(authorize('asset'));
 
 // Dashboard
-router.get('/dashboard', getAssetDashboard);
 router.get('/stats', getEquipmentStats);
 router.get('/alerts/low-stock', getLowStockAlert);
 
@@ -84,6 +50,5 @@ router.get('/notifications', getMyNotifications);
 
 // Profile
 router.put('/profile', updateProfile);
-router.put('/change-password', changePassword);
 
 module.exports = router;

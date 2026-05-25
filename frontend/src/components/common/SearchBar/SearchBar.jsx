@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDebounce } from '../../hooks';
+import { useDebounce } from '../../../hooks';
 import './SearchBar.css';
 
 const SearchBar = ({ onSearch, placeholder = 'Search...', delay = 500 }) => {

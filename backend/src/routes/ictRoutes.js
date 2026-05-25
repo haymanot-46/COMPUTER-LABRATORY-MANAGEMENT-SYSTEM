@@ -19,7 +19,7 @@ const {
   getMyNotifications,
   updateProfile,
   changePassword
-} = require('../src/controllers/ictController');
+} = require('../controllers/ictController');
 const { maintenanceValidation, idValidation } = require('../middleware/validation');
 
 // All ICT routes require authentication and ict role

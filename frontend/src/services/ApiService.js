@@ -1,8 +1,9 @@
 // frontend/src/services/ApiService.js
 import axios from 'axios';
+import envConfig from '../config/env';
 
-// API Base URL - matches backend port
-const API_BASE_URL = 'http://localhost:5001/api';
+// API Base URL - from env config, fallback to default
+const API_BASE_URL = envConfig.getApiUrl() || 'http://localhost:5001/api';
 
 const apiService = axios.create({
     baseURL: API_BASE_URL,

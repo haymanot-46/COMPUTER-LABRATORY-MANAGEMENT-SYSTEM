@@ -16,7 +16,7 @@ const {
   getMyNotifications,
   updateProfile,
   changePassword
-} = require('../src/controllers/teacherController');
+} = require('../controllers/teacherController');
 const { attendanceValidation, scheduleValidation, maintenanceValidation } = require('../middleware/validation');
 
 // All teacher routes require authentication and teacher role

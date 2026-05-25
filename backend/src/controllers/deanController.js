@@ -389,7 +389,7 @@ const getFacultyList = async (req, res) => {
                 u.name,
                 u.email,
                 u.department,
-                u.phone_number,
+                u.phone,
                 COUNT(DISTINCT s.id) as scheduleCount,
                 COUNT(DISTINCT CASE WHEN a.status = 'present' THEN a.id END) as attendanceCount
             FROM users u
@@ -470,13 +470,13 @@ const getMyNotifications = async (req, res) => {
 // Update profile
 const updateProfile = async (req, res) => {
     try {
-        const { phone_number, address, department } = req.body;
+        const { phone, address, department } = req.body;
         
         await pool.query(`
             UPDATE users 
-            SET phone_number = ?, address = ?, department = ?
+            SET phone = ?, address = ?, department = ?
             WHERE id = ?
-        `, [phone_number, address, department, req.user.id]);
+        `, [phone, address, department, req.user.id]);
         
         res.json({ success: true, message: 'Profile updated successfully' });
     } catch (error) {

@@ -47,15 +47,17 @@ export const TakeAttendancePage = lazyWithFallback(() => import('../pages/attend
 export const MyAttendancePage = lazyWithFallback(() => import('../pages/attendance/MyAttendancePage/MyAttendancePage'), 'My Attendance');
 export const AttendanceReportPage = lazyWithFallback(() => import('../pages/attendance/AttendanceReportPage/AttendanceReportPage'), 'Attendance Report');
 export const AttendanceSummaryPage = lazyWithFallback(() => import('../pages/attendance/AttendanceSummary/AttendanceSummary'), 'Attendance Summary');
-export const AttendanceHistoryPage = lazyWithFallback(() => import('../pages/attendance/AttendanceReportPage/AttendanceReportPage'), 'Attendance History');
+export const AttendanceHistoryPage = lazyWithFallback(() => import('../pages/attendance/AttendanceListView/AttendanceListView'), 'Attendance History');
 export const LabAssistantAttendancePage = lazyWithFallback(() => import('../pages/attendance/TakeAttendancePage/TakeAttendancePage'), 'Lab Assistant Attendance');
 
 // ==================== ASSET PAGES ====================
 export const EquipmentPage = lazyWithFallback(() => import('../pages/asset/EquipmentPage.jsx'), 'Equipment');
 export const RegisterEquipmentPage = lazyWithFallback(() => import('../pages/asset/RegisterEquipment/RegisterEquipment/RegisterEquipment.jsx'),'Register Equipment');
 export const AuditPage = lazyWithFallback(() => import('../pages/asset/AuditManagement/AuditList/AuditList.jsx'), 'Audit');
-export const AuditHistoryPage = lazyWithFallback(() => import('../pages/asset/AuditManagement/AuditDetails/AuditDetails.jsx'),AuditPage);
+export const AuditHistoryPage = lazyWithFallback(() => import('../pages/asset/AuditManagement/AuditDetails/AuditDetails.jsx'), 'Audit History');
 export const EquipmentBorrowingPage = lazyWithFallback(() => import('../pages/lab-assistant/EquipmentBorrowingPage/EquipmentBorrowingPage'), 'Equipment Borrowing');
+export const BorrowEquipmentPage = lazyWithFallback(() => import('../pages/lab-assistant/EquipmentBorrowingPage/EquipmentBorrowingPage'), 'Borrow Equipment');
+export const AssignedSessionsPage = lazyWithFallback(() => import('../pages/lab-assistant/AssignedSessionsPage/AssignedSessionsPage'), 'Assigned Sessions');
 
 // ==================== USER PAGES ====================
 export const UsersPage = lazyWithFallback(() => import('../pages/users/UsersPage/UsersPage'), 'Users');

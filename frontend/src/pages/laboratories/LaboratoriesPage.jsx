@@ -116,7 +116,7 @@ const LaboratoriesPage = () => {
     <div className="laboratories-page">
       <div className="laboratories-header">
         <div className="header-left">
-          <button className="back-btn" onClick={() => navigate('/admin/dashboard')}>
+          <button className="back-btn" onClick={() => navigate('/dashboard/admin')}>
             ← Back to Dashboard
           </button>
           <div className="header-title">

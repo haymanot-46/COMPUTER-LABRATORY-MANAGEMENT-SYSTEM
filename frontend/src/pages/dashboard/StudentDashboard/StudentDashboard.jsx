@@ -139,7 +139,7 @@ const StudentDashboard = () => {
 
   // Sidebar Menu Items
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/student/dashboard', color: '#f59e0b', name: 'dashboard' },
+    { label: 'Dashboard', icon: '📊', path: '/dashboard/student', color: '#f59e0b', name: 'dashboard' },
     { label: 'My Schedule', icon: '📅', path: '/my-schedules', color: '#10b981', name: 'schedule' },
     { label: 'My Attendance', icon: '📋', path: '/my-attendance', color: '#3b82f6', name: 'attendance' },
     { label: 'Schedule Calendar', icon: '📆', path: '/schedule-calendar', color: '#ec4899', name: 'calendar' },

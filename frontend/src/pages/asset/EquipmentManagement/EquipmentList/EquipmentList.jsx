@@ -1,7 +1,8 @@
 // frontend/src/pages/asset/EquipmentManagement/EquipmentList.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../../hooks';
+import { useNotification } from '../../../../hooks';
+import { assetService } from '../../../../services';
 import StatusBadge from '../Components/StatusBadge';
 import './EquipmentList.css';
 
@@ -32,17 +33,8 @@ const EquipmentList = () => {
   const loadEquipment = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const params = new URLSearchParams({
-        page: currentPage,
-        limit: itemsPerPage,
-        ...filters
-      });
-      
-      const response = await fetch(`http://localhost:5001/api/equipment?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const params = { page: currentPage, limit: itemsPerPage, ...filters };
+      const data = await assetService.getEquipment(params);
       
       if (data.success) {
         setEquipment(data.data);
@@ -60,11 +52,7 @@ const EquipmentList = () => {
 
   const loadCategories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/equipment/categories', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.getCategories();
       if (data.success) {
         setCategories(data.data);
       }
@@ -75,11 +63,7 @@ const EquipmentList = () => {
 
   const loadLaboratories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/laboratories', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.getLaboratories();
       if (data.success) {
         setLaboratories(data.data);
       }
@@ -92,12 +76,7 @@ const EquipmentList = () => {
     if (!window.confirm('Are you sure you want to delete this equipment?')) return;
     
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/equipment/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.deleteEquipment(id);
       
       if (data.success) {
         addToast('Equipment deleted successfully', 'success');

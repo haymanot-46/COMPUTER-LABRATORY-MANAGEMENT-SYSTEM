@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { borrowingService, apiClient } from '../../../services';
 import './EquipmentBorrowingPage.css';
 
 const EquipmentBorrowingPage = () => {
@@ -24,33 +25,23 @@ const EquipmentBorrowingPage = () => {
 
     const loadData = async () => {
         setLoading(true);
-        const token = localStorage.getItem('token');
         
         try {
             // Load available equipment
-            const equipmentRes = await fetch('http://localhost:5001/api/equipment/available', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const equipmentData = await equipmentRes.json();
+            const equipmentData = await borrowingService.getAvailableEquipment();
             if (equipmentData.success) {
                 setEquipment(equipmentData.data);
             }
             
             // Load my borrowings
-            const borrowingsRes = await fetch('http://localhost:5001/api/borrowings/my', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const borrowingsData = await borrowingsRes.json();
+            const borrowingsData = await borrowingService.getMyBorrowings();
             if (borrowingsData.success) {
                 setBorrowings(borrowingsData.data);
             }
             
             // Load today's schedules
             const today = new Date().toISOString().split('T')[0];
-            const schedulesRes = await fetch(`http://localhost:5001/api/schedules/lab-assistant?date=${today}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const schedulesData = await schedulesRes.json();
+            const schedulesData = await apiClient.get(`/schedules/lab-assistant`, { date: today });
             if (schedulesData.success) {
                 setSchedules(schedulesData.data);
             }
@@ -101,8 +92,6 @@ const EquipmentBorrowingPage = () => {
             return;
         }
         
-        const token = localStorage.getItem('token');
-        
         const requestData = {
             schedule_id: parseInt(formData.schedule_id),
             session_date: formData.session_date,
@@ -117,16 +106,7 @@ const EquipmentBorrowingPage = () => {
         };
         
         try {
-            const response = await fetch('http://localhost:5001/api/borrowings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(requestData)
-            });
-            
-            const data = await response.json();
+            const data = await borrowingService.createBorrowing(requestData);
             
             if (data.success) {
                 alert('Borrowing request submitted successfully!');
@@ -146,18 +126,8 @@ const EquipmentBorrowingPage = () => {
     const returnEquipment = async (borrowingId) => {
         if (!window.confirm('Are you sure you want to return this equipment?')) return;
         
-        const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:5001/api/borrowings/${borrowingId}/return`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ notes: 'Returned by lab assistant' })
-            });
-            
-            const data = await response.json();
+            const data = await borrowingService.returnBorrowing(borrowingId);
             if (data.success) {
                 alert('Equipment returned successfully!');
                 loadData();

@@ -1,6 +1,7 @@
 // frontend/src/pages/asset/Reports/AssetReports.jsx
 import React, { useState, useEffect } from 'react';
 import { useNotification } from '../../../hooks';
+import { apiClient } from '../../../services';
 import './AssetReports.css';
 
 const AssetReports = () => {
@@ -19,19 +20,11 @@ const AssetReports = () => {
   const generateReport = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/reports/asset', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          type: reportType,
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate,
-          format
-        })
+      const response = await apiClient.post('/reports/asset', {
+        type: reportType,
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        format
       });
       
       if (format === 'csv') {
@@ -45,9 +38,7 @@ const AssetReports = () => {
         a.click();
         a.remove();
         addToast('Report downloaded successfully', 'success');
-      } else {
-        const data = await response.json();
-        if (data.success) {
+      } else if (response.success) {
           setReportData(data.data);
           setSummary(data.summary);
           addToast('Report generated successfully', 'success');

@@ -6,6 +6,16 @@ export * from './offlineStorage';
 export * from './socket';
 export * from './permissions';
 export * from './ethiopianCalendar';
+export {
+  detectConflicts,
+  findAvailableSlots,
+  autoSchedule,
+  batchSchedule,
+  suggestAlternatives,
+  getTimePeriods,
+  TIME_SLOTS,
+  DAYS_OF_WEEK,
+} from './schedulingAlgorithm';
 
 // Default export
 export default {

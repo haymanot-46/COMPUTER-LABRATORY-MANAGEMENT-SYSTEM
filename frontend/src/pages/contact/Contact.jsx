@@ -37,6 +37,7 @@ import {
   Schedule as ScheduleIcon
 } from '@mui/icons-material';
 import { useNotification } from '../../hooks';
+import { contactService } from '../../services';
 import './Contact.css';
 
 const ContactPage = () => {
@@ -117,15 +118,7 @@ const ContactPage = () => {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5001/api/contact/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      const data = await response.json();
+      const data = await contactService.submit(formData);
       
       if (data.success) {
         setTicketInfo(data.ticket);

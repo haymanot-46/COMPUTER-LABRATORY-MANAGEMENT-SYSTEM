@@ -185,7 +185,7 @@ const ICTDashboard = () => {
   ];
 
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/ict/dashboard', color: '#f59e0b', name: 'dashboard' },
+    { label: 'Dashboard', icon: '📊', path: '/dashboard/ict', color: '#f59e0b', name: 'dashboard' },
     { label: 'Pending Approvals', icon: '⏳', path: '/ict/pending-approvals', color: '#ef4444', name: 'approvals' },
     { label: 'Maintenance', icon: '🔧', path: '/maintenance', color: '#3b82f6', name: 'maintenance' },
     { label: 'Computer Status', icon: '📊', path: '/computer-status', color: '#8b5cf6', name: 'status' },

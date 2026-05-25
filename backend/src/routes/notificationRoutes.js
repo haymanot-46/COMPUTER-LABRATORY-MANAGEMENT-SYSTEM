@@ -8,7 +8,7 @@ const {
   deleteNotification,
   sendNotification,
   getUnreadCount
-} = require('../src/controllers/notificationController');
+} = require('../controllers/notificationController');
 const { idValidation, paginationValidation } = require('../middleware/validation');
 
 // All routes require authentication

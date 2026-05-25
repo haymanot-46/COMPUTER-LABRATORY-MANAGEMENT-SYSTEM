@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, useNotification } from '../../../hooks';
-import { dashboardService } from '../../../services';
+import { dashboardService, contactService } from '../../../services';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -55,11 +55,7 @@ const AdminDashboard = () => {
 
   const loadContactMessages = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/contact/messages?status=pending', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await contactService.getMessages('pending');
       if (data.success) {
         setContactMessages(data.data);
         const unread = data.data.filter(msg => msg.status === 'pending').length;
@@ -84,17 +80,7 @@ const AdminDashboard = () => {
     
     setSendingReply(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/contact/messages/${selectedMessage.id}/reply`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ reply: replyText })
-      });
-      
-      const data = await response.json();
+      const data = await contactService.reply(selectedMessage.id, { reply: replyText });
       if (data.success) {
         addToast('Reply sent successfully!', 'success');
         setShowContactModal(false);
@@ -175,7 +161,7 @@ const AdminDashboard = () => {
   ];
 
   const navItems = [
-    { label: 'Dashboard', icon: '📊', path: '/admin/dashboard', active: true },
+    { label: 'Dashboard', icon: '📊', path: '/dashboard/admin', active: true },
     { label: 'Users', icon: '👥', path: '/users' },
     { label: 'Computers', icon: '🖥️', path: '/computers' },
     { label: 'Laboratories', icon: '🔬', path: '/laboratories' },

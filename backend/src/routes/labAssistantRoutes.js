@@ -9,7 +9,7 @@ const {
   updateEquipmentStatus,
   getLabComputers,
   updateComputerStatus,
-  takeAttendance,
+  markAttendance,
   getAttendanceByLab,
   submitMaintenanceRequest,
   getMaintenanceRequests,
@@ -19,7 +19,7 @@ const {
   getMyNotifications,
   updateProfile,
   changePassword
-} = require('../src/controllers/labAssistantController');
+} = require('../controllers/labAssistantController');
 const { attendanceValidation, maintenanceValidation, equipmentValidation } = require('../middleware/validation');
 
 // All lab assistant routes require authentication and lab_assistant role
@@ -42,7 +42,7 @@ router.get('/computers/lab/:labId', getLabComputers);
 router.patch('/computers/:id/status', updateComputerStatus);
 
 // Attendance
-router.post('/attendance/take', attendanceValidation.mark, takeAttendance);
+router.post('/attendance/take', attendanceValidation.mark, markAttendance);
 router.get('/attendance/lab/:labId', getAttendanceByLab);
 
 // Maintenance

@@ -16,10 +16,19 @@ const Sidebar = ({ collapsed, mobileOpen, onCloseMobile, userRole }) => {
     return location.pathname === path;
   };
 
-  // Navigation items based on role
+    // Navigation items based on role
   const getNavItems = () => {
+    // Normalize role for dashboard URL (handle underscore/hyphen difference)
+    const roleMap = {
+      'lab_manager': 'lab-manager',
+      'lab-manager': 'lab-manager',
+      'lab_assistant': 'lab-assistant',
+      'lab-assistant': 'lab-assistant',
+    };
+    const dashRole = roleMap[userRole] || userRole;
+    
     const commonItems = [
-      { icon: '📊', label: 'Dashboard', path: `/${userRole}/dashboard` },
+      { icon: '📊', label: 'Dashboard', path: `/dashboard/${dashRole}` },
     ];
 
     const roleBasedItems = {
@@ -49,10 +58,10 @@ const Sidebar = ({ collapsed, mobileOpen, onCloseMobile, userRole }) => {
         { icon: '📅', label: 'Schedules', path: '/schedule-calendar' },
         { icon: '🖥️', label: 'Computers', path: '/computers' },
         { icon: '🔧', label: 'Maintenance', path: '/maintenance' },
-        { icon: '📦', label: 'Assets', path: '/equipment' },
         { icon: '⏳', label: 'Approvals', path: '/pending-approvals' },
       ],
       dean: [
+        { icon: '🖥️', label: 'Computers', path: '/computers' },
         { icon: '📅', label: 'Schedules', path: '/schedule-calendar' },
         { icon: '📊', label: 'Reports', path: '/reports' },
         { icon: '📦', label: 'Batch Schedule', path: '/batch-schedule' },
@@ -62,6 +71,7 @@ const Sidebar = ({ collapsed, mobileOpen, onCloseMobile, userRole }) => {
         { icon: '🔧', label: 'Maintenance', path: '/maintenance' },
         { icon: '📋', label: 'My Assignments', path: '/my-assignments' },
         { icon: '📊', label: 'Status', path: '/computer-status' },
+        { icon: '📊', label: 'Reports', path: '/ict/reports' },
       ],
       asset: [
         { icon: '📦', label: 'Equipment', path: '/equipment' },

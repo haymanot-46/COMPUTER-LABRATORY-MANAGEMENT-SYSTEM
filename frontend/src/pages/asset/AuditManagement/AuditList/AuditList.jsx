@@ -1,7 +1,8 @@
 // frontend/src/pages/asset/AuditManagement/AuditList.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../../hooks';
+import { useNotification } from '../../../../hooks';
+import { auditService } from '../../../../services';
 import './AuditList.css';
 
 const AuditList = () => {
@@ -26,11 +27,7 @@ const AuditList = () => {
   const loadAudits = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/audits', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await auditService.getAudits();
       
       if (data.success) {
         setAudits(data.data);
@@ -44,11 +41,7 @@ const AuditList = () => {
 
   const loadLaboratories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/laboratories', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await auditService.getLaboratories();
       if (data.success) {
         setLaboratories(data.data);
       }
@@ -61,17 +54,7 @@ const AuditList = () => {
     e.preventDefault();
     
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/audits', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(scheduleData)
-      });
-      
-      const data = await response.json();
+      const data = await auditService.createAudit(scheduleData);
       
       if (data.success) {
         addToast('Audit scheduled successfully', 'success');

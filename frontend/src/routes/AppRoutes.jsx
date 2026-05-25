@@ -7,9 +7,6 @@ import { ROUTES, ROLES, ROLE_GROUPS } from './routeConfig';
 import * as Components from './routeComponents';
 // Layout component
 import Layout from '../components/common/Layout/Layout';
-// Auth Pages
-import LoginPage from '../pages/auth/LoginPage/LoginPage';
-import RegisterPage from '../pages/auth/RegisterPage/RegisterPage';
 // Public Pages
 import HomePage from '../pages/home/HomePage';
 import ContactPage from '../pages/contact/Contact';
@@ -121,8 +118,6 @@ const AppRoutes = () => {
         />
 
         {/* ==================== AUTHENTICATION ROUTES (No Layout) ==================== */}
-        <Route path="/login" element={renderAuthRoute(LoginPage)} />
-        <Route path="/register" element={renderAuthRoute(RegisterPage)} />
         <Route path={ROUTES.LOGIN} element={renderAuthRoute(Components.LoginPage)} />
         <Route path={ROUTES.REGISTER} element={renderAuthRoute(Components.RegisterPage)} />
         <Route path={ROUTES.FORGOT_PASSWORD} element={renderAuthRoute(Components.ForgotPasswordPage)} />
@@ -187,7 +182,7 @@ const AppRoutes = () => {
         {/* ==================== SCHEDULE ROUTES ==================== */}
         <Route 
           path={ROUTES.BOOK_LAB} 
-          element={renderProtectedRoute(Components.BookLabPage, [ROLES.TEACHER, ROLES.DEAN])} 
+          element={renderProtectedRoute(Components.BookLabPage, [ROLES.ADMIN, ROLES.TEACHER, ROLES.DEAN])} 
         />
         
         <Route 
@@ -197,7 +192,7 @@ const AppRoutes = () => {
         
         <Route 
           path={ROUTES.PENDING_APPROVALS} 
-          element={renderProtectedRoute(Components.SchedulePendingApprovalsPage, [ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.ICT])} 
+          element={renderProtectedRoute(Components.SchedulePendingApprovalsPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.DEAN])} 
         />
         
         <Route 
@@ -207,7 +202,7 @@ const AppRoutes = () => {
         
         <Route 
           path={ROUTES.SCHEDULE_CALENDAR} 
-          element={renderProtectedRoute(Components.ScheduleCalendarPage, [ROLES.TEACHER, ROLES.STUDENT, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.ScheduleCalendarPage, [ROLES.ADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.LAB_ASSISTANT])} 
         />
 
         {/* ==================== COMPUTER ROUTES ==================== */}
@@ -218,7 +213,7 @@ const AppRoutes = () => {
         
         <Route 
           path={ROUTES.COMPUTERS} 
-          element={renderProtectedRoute(Components.ComputersPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.ComputersPage, ROLES.ALL_ROLES)} 
         />
 
       <Route 
@@ -228,7 +223,7 @@ const AppRoutes = () => {
 
         <Route 
           path={ROUTES.COMPUTER_DETAIL} 
-          element={renderProtectedRoute(Components.ComputerDetailPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.ComputerDetailPage, ROLES.ALL_ROLES)} 
         />
 
         <Route 
@@ -238,13 +233,13 @@ const AppRoutes = () => {
 
         <Route 
           path={ROUTES.COMPUTER_STATUS} 
-          element={renderProtectedRoute(Components.ComputerStatusPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.ComputerStatusPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.ICT, ROLES.LAB_ASSISTANT, ROLES.ASSET])} 
         />
 
         {/* ==================== MAINTENANCE ROUTES ==================== */}
         <Route 
           path={ROUTES.CREATE_REQUEST} 
-          element={renderProtectedRoute(Components.CreateRequestPage, [ROLES.TEACHER, ROLES.STUDENT, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.CreateRequestPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.TEACHER, ROLES.STUDENT, ROLES.LAB_ASSISTANT, ROLES.ICT])} 
         />
 
         <Route 
@@ -273,18 +268,18 @@ const AppRoutes = () => {
         {/* Teacher: Main attendance page - list of sessions */}
         <Route 
           path="/attendance" 
-          element={renderProtectedRoute(Components.AttendancePage, [ROLES.TEACHER, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.AttendancePage, [ROLES.ADMIN, ROLES.TEACHER, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.STUDENT, ROLES.LAB_ASSISTANT])} 
         />
         
         <Route 
           path="/attendance/:scheduleId" 
-          element={renderProtectedRoute(Components.AttendancePage, [ROLES.TEACHER, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.AttendancePage, [ROLES.ADMIN, ROLES.TEACHER, ROLES.LAB_ASSISTANT])} 
         />
         
         {/* Teacher: Take attendance for a specific schedule */}
         <Route 
           path="/attendance/take/:scheduleId" 
-          element={renderProtectedRoute(Components.TakeAttendancePage, [ROLES.TEACHER, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.TakeAttendancePage, [ROLES.ADMIN, ROLES.TEACHER, ROLES.LAB_ASSISTANT])} 
         />
         
         {/* Student: View my attendance records */}
@@ -308,7 +303,7 @@ const AppRoutes = () => {
         {/* Teacher/Lab Manager/Dean: View attendance reports */}
         <Route 
           path={ROUTES.ATTENDANCE_REPORT} 
-          element={renderProtectedRoute(Components.AttendanceReportPage, [ROLES.TEACHER, ROLES.LAB_MANAGER, ROLES.DEAN])} 
+          element={renderProtectedRoute(Components.AttendanceReportPage, [ROLES.ADMIN, ROLES.TEACHER, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.STUDENT])} 
         />
 
         {/* Lab Assistant: View assigned sessions (when teacher is absent) */}
@@ -326,7 +321,7 @@ const AppRoutes = () => {
         {/* ==================== ASSET/EQUIPMENT ROUTES ==================== */}
         <Route 
           path={ROUTES.EQUIPMENT} 
-          element={renderProtectedRoute(Components.EquipmentPage, [ROLES.LAB_MANAGER, ROLES.ASSET, ROLES.ADMIN, ROLES.LAB_ASSISTANT])} 
+          element={renderProtectedRoute(Components.EquipmentPage, [ROLES.ASSET, ROLES.ADMIN, ROLES.LAB_ASSISTANT])} 
         />
         
         <Route 
@@ -341,7 +336,7 @@ const AppRoutes = () => {
         
         <Route 
           path={ROUTES.AUDIT} 
-          element={renderProtectedRoute(Components.AuditPage, [ROLES.ASSET])} 
+          element={renderProtectedRoute(Components.AuditPage, [ROLES.ADMIN, ROLES.ASSET, ROLES.LAB_ASSISTANT])} 
         />
         
         <Route 
@@ -373,7 +368,7 @@ const AppRoutes = () => {
         {/* ==================== REPORT ROUTES ==================== */}
         <Route 
           path={ROUTES.REPORTS} 
-          element={renderProtectedRoute(Components.ReportsPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.DEAN, ROLES.ICT])} 
+          element={renderProtectedRoute(Components.ReportsPage, [ROLES.ADMIN, ROLES.LAB_MANAGER, ROLES.TEACHER, ROLES.DEAN, ROLES.STUDENT])} 
         />
         
         <Route 

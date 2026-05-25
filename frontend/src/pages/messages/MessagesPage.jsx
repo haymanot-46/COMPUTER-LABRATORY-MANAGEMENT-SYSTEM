@@ -36,6 +36,7 @@ import {
   ArrowBack as ArrowBackIcon,
   Dashboard as DashboardIcon
 } from '@mui/icons-material';
+import { contactService } from '../../services';
 
 const MessagesPage = () => {
   const navigate = useNavigate();
@@ -56,11 +57,7 @@ const MessagesPage = () => {
     setLoading(true);
     const status = tabValue === 0 ? 'pending' : tabValue === 1 ? 'replied' : 'resolved';
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/contact/messages?status=${status}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await contactService.getMessages(status);
       if (data.success) {
         setMessages(data.data);
       }
@@ -81,17 +78,7 @@ const MessagesPage = () => {
     
     setSending(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/contact/messages/${selectedMessage.id}/reply`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ reply: replyText })
-      });
-      
-      const data = await response.json();
+      const data = await contactService.reply(selectedMessage.id, { reply: replyText });
       if (data.success) {
         setSuccessOpen(true);
         setOpenDialog(false);
@@ -127,15 +114,15 @@ const MessagesPage = () => {
     // Check user role to navigate to appropriate dashboard
     const userRole = localStorage.getItem('userRole') || 'lab_manager';
     if (userRole === 'admin') {
-      navigate('/admin/dashboard');
-    } else {
-      navigate('/lab-manager/dashboard');
+      navigate('/dashboard/admin');
+    } else if (userRole === 'lab_manager') {
+      navigate('/dashboard/lab-manager');
     }
   };
 
   const getDashboardPath = () => {
     const userRole = localStorage.getItem('userRole') || 'lab_manager';
-    return userRole === 'admin' ? '/admin/dashboard' : '/lab-manager/dashboard';
+    return userRole === 'admin' ? '/dashboard/admin' : '/dashboard/lab-manager';
   };
 
   return (

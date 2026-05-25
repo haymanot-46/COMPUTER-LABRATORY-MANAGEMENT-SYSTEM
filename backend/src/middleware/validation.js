@@ -157,6 +157,18 @@ const maintenanceValidation = {
   }
 };
 
+// Extend userValidation for profile updates
+userValidation.updateProfile = (req, res, next) => {
+  const { email, name } = req.body;
+  const errors = [];
+  if (email && !email.includes('@')) errors.push({ field: 'email', message: 'Valid email is required' });
+  if (name && name.length < 2) errors.push({ field: 'name', message: 'Name must be at least 2 characters' });
+  if (errors.length > 0) {
+    return res.status(400).json({ success: false, message: 'Validation failed', errors });
+  }
+  next();
+};
+
 // ID param validation
 const idValidation = (req, res, next) => {
   const { id } = req.params;
@@ -218,11 +230,49 @@ const dateRangeValidation = (req, res, next) => {
   next();
 };
 
+// Attendance validation rules
+const attendanceValidation = {
+  mark: (req, res, next) => {
+    const { scheduleId, status } = req.body;
+    const errors = [];
+    if (!scheduleId) errors.push({ field: 'scheduleId', message: 'Schedule ID is required' });
+    if (errors.length > 0) {
+      return res.status(400).json({ success: false, message: 'Validation failed', errors });
+    }
+    next();
+  }
+};
+
+// Equipment validation rules
+const equipmentValidation = {
+  create: (req, res, next) => {
+    const { name, category } = req.body;
+    const errors = [];
+    if (!name) errors.push({ field: 'name', message: 'Equipment name is required' });
+    if (!category) errors.push({ field: 'category', message: 'Category is required' });
+    if (errors.length > 0) {
+      return res.status(400).json({ success: false, message: 'Validation failed', errors });
+    }
+    next();
+  },
+  borrow: (req, res, next) => {
+    const { equipmentId } = req.body;
+    const errors = [];
+    if (!equipmentId) errors.push({ field: 'equipmentId', message: 'Equipment ID is required' });
+    if (errors.length > 0) {
+      return res.status(400).json({ success: false, message: 'Validation failed', errors });
+    }
+    next();
+  }
+};
+
 module.exports = {
   userValidation,
   computerValidation,
   scheduleValidation,
   maintenanceValidation,
+  attendanceValidation,
+  equipmentValidation,
   idValidation,
   paginationValidation,
   dateRangeValidation

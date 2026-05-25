@@ -1,5 +1,5 @@
 // Import your images
-import hayPortfolio from './hay-portfolio-photo.jpg';
+import hayPortfolio from './10001.jpg';
 import heymanotPortfolio from './heymanot-portfolio-photo.jpg';
 import novaLogo from './nova logo.jpg';
 import photo from './photo_2023-06-06_23-32-36 (2).jpg';
@@ -7,7 +7,7 @@ import photo from './photo_2023-06-06_23-32-36 (2).jpg';
 export const Carouselimg = [
   {
     id: 1,
-    img1: hayPortfolio,
+    img1: 'computer labratory',
     alt: 'CLMS Dashboard',
     title: 'Modern Dashboard'
   },

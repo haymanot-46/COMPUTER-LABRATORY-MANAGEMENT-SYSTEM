@@ -1,0 +1,12 @@
+◇ injected env (65) from .env // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+✅ MySQL Database connected!
+✅ Equipment & Audits tables ready
+
+========================================
+ CLMS BACKEND
+ http://localhost:5001
+ Database: CONNECTED ✅
+========================================
+

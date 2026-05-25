@@ -125,14 +125,14 @@ const Header = () => {
     if (!user) return '/login';
     const role = user.role;
     const dashboardMap = {
-      admin: '/admin/dashboard',
-      teacher: '/teacher/dashboard',
-      student: '/student/dashboard',
-      lab_manager: '/lab-manager/dashboard',
-      dean: '/dean/dashboard',
-      lab_assistant: '/lab-assistant/dashboard',
-      ict: '/ict/dashboard',
-      asset: '/asset/dashboard'
+      admin: '/dashboard/admin',
+      teacher: '/dashboard/teacher',
+      student: '/dashboard/student',
+      lab_manager: '/dashboard/lab-manager',
+      dean: '/dashboard/dean',
+      lab_assistant: '/dashboard/lab-assistant',
+      ict: '/dashboard/ict',
+      asset: '/dashboard/asset'
     };
     return dashboardMap[role] || '/dashboard';
   };

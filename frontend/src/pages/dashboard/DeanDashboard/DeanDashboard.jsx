@@ -135,7 +135,7 @@ const DeanDashboard = () => {
 
   // Sidebar Menu Items for Dean Role - CHANGED Faculty Management to Profile
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/dean/dashboard', color: '#f59e0b', name: 'dashboard' },
+    { label: 'Dashboard', icon: '📊', path: '/dashboard/dean', color: '#f59e0b', name: 'dashboard' },
     { label: 'Department Overview', icon: '🏛️', path: '/departments', color: '#10b981', name: 'departments' },
     { label: 'Schedule Calendar', icon: '📅', path: '/schedule-calendar', color: '#3b82f6', name: 'schedule' },
     { label: 'Batch Schedule', icon: '📆', path: '/batch-schedule', color: '#8b5cf6', name: 'batch' },

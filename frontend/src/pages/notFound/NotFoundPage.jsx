@@ -22,14 +22,14 @@ const NotFoundPage = () => {
     } else {
       const role = user?.role;
       const paths = {
-        admin: '/admin/dashboard',
-        teacher: '/teacher/dashboard',
-        student: '/student/dashboard',
-        lab_manager: '/lab-manager/dashboard',
-        dean: '/dean/dashboard',
-        ict: '/ict/dashboard',
-        asset: '/asset/dashboard',
-        lab_assistant: '/lab-assistant/dashboard'
+        admin: '/dashboard/admin',
+        teacher: '/dashboard/teacher',
+        student: '/dashboard/student',
+        lab_manager: '/dashboard/lab-manager',
+        dean: '/dashboard/dean',
+        ict: '/dashboard/ict',
+        asset: '/dashboard/asset',
+        lab_assistant: '/dashboard/lab-assistant'
       };
       setRedirectPath(paths[role] || '/dashboard');
     }

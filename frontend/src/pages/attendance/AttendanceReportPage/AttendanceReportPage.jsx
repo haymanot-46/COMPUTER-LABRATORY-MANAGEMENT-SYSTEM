@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { attendanceService, apiClient } from '../../../services';
 import './AttendanceReportPage.css';
 
 const AttendanceReportPage = () => {
@@ -20,14 +21,10 @@ const AttendanceReportPage = () => {
   }, []);
 
   const loadFormData = async () => {
-    const token = localStorage.getItem('token');
     
     try {
       // Load courses
-      const coursesRes = await fetch('http://localhost:5001/api/courses', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const coursesData = await coursesRes.json();
+      const coursesData = await apiClient.get('/courses');
       if (coursesData.success) {
         setCourses(coursesData.data);
       } else {
@@ -41,10 +38,7 @@ const AttendanceReportPage = () => {
       }
       
       // Load students
-      const studentsRes = await fetch('http://localhost:5001/api/users?role=student', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const studentsData = await studentsRes.json();
+      const studentsData = await apiClient.get('/users', { role: 'student' });
       if (studentsData.success) {
         setStudents(studentsData.data);
       }
@@ -65,7 +59,6 @@ const AttendanceReportPage = () => {
 
   const handleGenerateReport = async () => {
     setLoading(true);
-    const token = localStorage.getItem('token');
     
     const params = new URLSearchParams();
     if (filters.course && filters.course !== 'all') params.append('course', filters.course);
@@ -74,10 +67,7 @@ const AttendanceReportPage = () => {
     if (filters.endDate) params.append('endDate', filters.endDate);
     
     try {
-      const response = await fetch(`http://localhost:5001/api/attendance/report?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await attendanceService.getReport(params);
       
       if (data.success) {
         setReportData(data.data);
@@ -93,7 +83,6 @@ const AttendanceReportPage = () => {
   };
 
   const handleExportCSV = async () => {
-    const token = localStorage.getItem('token');
     
     const params = new URLSearchParams();
     if (filters.course && filters.course !== 'all') params.append('course', filters.course);
@@ -103,9 +92,7 @@ const AttendanceReportPage = () => {
     params.append('format', 'csv');
     
     try {
-      const response = await fetch(`http://localhost:5001/api/attendance/export?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const response = await apiClient.get(`/attendance/export?${params}`);
       
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);

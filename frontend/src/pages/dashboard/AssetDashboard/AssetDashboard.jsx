@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, useNotification } from '../../../hooks';
-import StatCard from '../../../pages/asset/StatCard/StatCard';  // ✅ ADD THIS IMPORT
-import StatusBadge from '../../../pages/asset/StatusBadge/StatusBadge';  // ✅ ADD THIS IMPORT
+import { assetService } from '../../../services';
+import StatCard from '../../../pages/asset/StatCard/StatCard';
+import StatusBadge from '../../../pages/asset/StatusBadge/StatusBadge';
 import './AssetDashboard.css';
 
 const AssetDashboard = () => {
@@ -64,13 +65,7 @@ const AssetDashboard = () => {
 
   const loadDashboardStats = async () => {
     try {
-      const token = localStorage.getItem('token');
-      
-      // Fetch equipment
-      const equipResponse = await fetch('http://localhost:5001/api/equipment', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const equipData = await equipResponse.json();
+      const equipData = await assetService.getEquipment();
       const equipment = equipData.success ? equipData.data : [];
       
       // Calculate statistics (remove API calls that don't exist yet)
@@ -122,11 +117,7 @@ const AssetDashboard = () => {
 
   const loadRecentEquipment = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/equipment?limit=5', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.getEquipment({ limit: 5 });
       if (data.success) {
         setRecentEquipment(data.data.slice(0, 5));
       }
@@ -147,11 +138,7 @@ const AssetDashboard = () => {
 
   const loadExpiringWarranties = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/equipment', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.getEquipment();
       
       if (data.success) {
         const today = new Date();
@@ -228,7 +215,7 @@ const AssetDashboard = () => {
   };
 
   const menuItems = [
-    { label: 'Dashboard', icon: 'dashboard', path: '/asset/dashboard', color: '#f59e0b', name: 'dashboard' },
+    { label: 'Dashboard', icon: 'dashboard', path: '/dashboard/asset', color: '#f59e0b', name: 'dashboard' },
     { label: 'Equipment Status', icon: 'inventory_2', path: '/asset/equipment', color: '#10b981', name: 'equipment' },
     { label: 'Register Equipment', icon: 'add_box', path: '/asset/register-equipment', color: '#3b82f6', name: 'register' },
     { label: 'Audit Equipment', icon: 'fact_check', path: '/asset/audits', color: '#8b5cf6', name: 'audit' },

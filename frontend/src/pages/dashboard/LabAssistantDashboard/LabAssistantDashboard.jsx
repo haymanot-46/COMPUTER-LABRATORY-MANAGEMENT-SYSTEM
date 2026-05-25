@@ -198,7 +198,7 @@ const LabAssistantDashboard = () => {
   ];
 
   const menuItems = [
-    { label: 'Dashboard', icon: 'dashboard', path: '/lab-assistant/dashboard', color: '#f59e0b', name: 'dashboard' },
+    { label: 'Dashboard', icon: 'dashboard', path: '/dashboard/lab-assistant', color: '#f59e0b', name: 'dashboard' },
     { label: 'Today\'s Tasks', icon: 'assignment', path: '/tasks', color: '#10b981', name: 'tasks' },
     { label: 'Equipment Status', icon: 'inventory_2', path: '/equipment', color: '#3b82f6', name: 'equipment' },
     { label: 'Take Attendance', icon: 'edit_note', path: '/attendance', color: '#8b5cf6', name: 'attendance' },

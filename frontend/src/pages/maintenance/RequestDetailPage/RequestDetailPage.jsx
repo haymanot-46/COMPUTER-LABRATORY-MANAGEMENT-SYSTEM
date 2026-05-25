@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth, useRole, useNotification } from '../../../hooks';
 import { maintenanceService } from '../../../services';
-import { MaintenanceDetail } from '../../../component/maintenance';
+import { MaintenanceDetail } from '../../../components/maintenance';
 import './RequestDetailPage.css';
 
 const RequestDetailPage = () => {

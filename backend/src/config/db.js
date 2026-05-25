@@ -1,12 +1,12 @@
 const mysql = require('mysql2/promise');
+require('dotenv').config();
 
-// MySQL configuration with YOUR credentials
 const pool = mysql.createPool({
-    host: 'localhost',
-    port: 8889,              // MAMP port
-    user: 'haymanot',        // Your username
-    password: 'haymanot',    // Your password
-    database: 'clms_db',
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT) || 3306,
+    user: process.env.DB_USER || 'haymanot',
+    password: process.env.DB_PASSWORD || 'haymanot',
+    database: process.env.DB_NAME || 'clms_db',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -15,9 +15,9 @@ const pool = mysql.createPool({
 const testConnection = async () => {
     try {
         const connection = await pool.getConnection();
-        console.log('✅ MySQL Database connected successfully!');
-        console.log('   Database: clms_db');
-        console.log('   User: haymanot@localhost:8889');
+        console.log(`✅ MySQL Database connected successfully!`);
+        console.log(`   Database: ${process.env.DB_NAME || 'clms_db'}`);
+        console.log(`   User: ${process.env.DB_USER || 'haymanot'}@${process.env.DB_HOST || 'localhost'}:${parseInt(process.env.DB_PORT) || 3306}`);
         connection.release();
         return true;
     } catch (error) {

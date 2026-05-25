@@ -80,7 +80,7 @@ const ICTReportsPage = () => {
   return (
     <div className="ict-reports-page">
       <div className="page-header">
-        <button className="back-btn" onClick={() => navigate('/ict/dashboard')}>← Back to Dashboard</button>
+        <button className="back-btn" onClick={() => navigate('/dashboard/ict')}>← Back to Dashboard</button>
         <h1>📊 Maintenance Reports</h1>
         <p>Generate and export maintenance request reports</p>
       </div>

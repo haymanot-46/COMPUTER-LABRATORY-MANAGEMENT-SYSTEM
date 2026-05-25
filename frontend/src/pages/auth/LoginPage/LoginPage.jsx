@@ -69,14 +69,14 @@ const LoginPage = () => {
     const normalizedRole = normalizeRole(role);
     
     const routeMap = {
-      admin: '/admin/dashboard',
-      teacher: '/teacher/dashboard',
-      student: '/student/dashboard',
-      lab_manager: '/lab-manager/dashboard',
-      dean: '/dean/dashboard',
-      lab_assistant: '/lab-assistant/dashboard',
-      ict: '/ict/dashboard',
-      asset: '/asset/dashboard'
+      admin: '/dashboard/admin',
+      teacher: '/dashboard/teacher',
+      student: '/dashboard/student',
+      lab_manager: '/dashboard/lab-manager',
+      dean: '/dashboard/dean',
+      lab_assistant: '/dashboard/lab-assistant',
+      ict: '/dashboard/ict',
+      asset: '/dashboard/asset'
     };
     
     return routeMap[normalizedRole] || '/dashboard';
@@ -113,6 +113,9 @@ const handleSubmit = async (e) => {
         });
         
         if (result.success) {
+            // ✅ Store user in auth context and localStorage
+            login(result.user, result.token);
+            
             // ✅ Get normalized role
             const role = result.user.role;
             
@@ -120,14 +123,14 @@ const handleSubmit = async (e) => {
             
             // ✅ Map role to dashboard route
             const dashboardRoutes = {
-                admin: '/admin/dashboard',
-                teacher: '/teacher/dashboard',
-                student: '/student/dashboard',
-                lab_manager: '/lab-manager/dashboard',
-                dean: '/dean/dashboard',
-                lab_assistant: '/lab-assistant/dashboard',
-                ict: '/ict/dashboard',
-                asset: '/asset/dashboard'
+                admin: '/dashboard/admin',
+                teacher: '/dashboard/teacher',
+                student: '/dashboard/student',
+                lab_manager: '/dashboard/lab-manager',
+                dean: '/dashboard/dean',
+                lab_assistant: '/dashboard/lab-assistant',
+                ict: '/dashboard/ict',
+                asset: '/dashboard/asset'
             };
             
             const dashboardPath = dashboardRoutes[role];

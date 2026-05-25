@@ -15,4 +15,3 @@ export { default as StatusBadge } from './StatusBadge';
 export { default as DebugPanel } from './DebugPanel';
 export { default as FeatureToggle } from './FeatureToggle';
 export { default as ThemeToggle } from './ThemeToggle';
-export { default as Layout } from './Layout';

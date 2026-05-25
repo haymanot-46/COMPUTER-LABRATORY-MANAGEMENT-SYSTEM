@@ -209,7 +209,7 @@ const handleExport = async () => {
     <div className="maintenance-page">
       <div className="page-header">
         <div className="header-left">
-          <button className="back-btn" onClick={() => navigate('/admin/dashboard')}>
+          <button className="back-btn" onClick={() => navigate('/dashboard/admin')}>
             ← Back to Dashboard
           </button>
           <h1>🔧 Maintenance Management</h1>

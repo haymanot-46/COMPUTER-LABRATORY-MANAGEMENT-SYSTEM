@@ -1,519 +1,611 @@
-const { pool } = require('../config/database');
 const jwt = require('jsonwebtoken');
 
-// Get all schedules
-const getSchedules = async (req, res) => {
-  try {
-    const { startDate, endDate, lab, status, page = 1, limit = 20 } = req.query;
-    const offset = (page - 1) * limit;
-    
-    let query = `
-      SELECT 
-        s.id,
-        s.course_name as title,
-        s.course_name,
-        s.laboratory_id,
-        l.name as lab,
-        s.requester_id,
-        u.name as instructor,
-        s.start_time,
-        s.end_time,
-        s.expected_students,
-        s.status,
-        s.notes,
-        DATE(s.start_time) as date,
-        TIME(s.start_time) as startTime,
-        TIME(s.end_time) as endTime
-      FROM schedules s
-      LEFT JOIN laboratories l ON s.laboratory_id = l.id
-      LEFT JOIN users u ON s.requester_id = u.id
-      WHERE 1=1
-    `;
-    
-    const params = [];
-    
-    if (startDate && endDate) {
-      query += ` AND DATE(s.start_time) BETWEEN ? AND ?`;
-      params.push(startDate, endDate);
-    }
-    if (lab) {
-      query += ` AND s.laboratory_id = ?`;
-      params.push(lab);
-    }
-    if (status) {
-      query += ` AND s.status = ?`;
-      params.push(status);
-    }
-    
-    query += ` ORDER BY s.start_time DESC LIMIT ? OFFSET ?`;
-    params.push(parseInt(limit), offset);
-    
-    const [rows] = await pool.query(query, params);
-    
-    const transformedRows = rows.map(row => ({
-      id: row.id,
-      title: row.title,
-      course_name: row.course_name,
-      lab: row.lab || 'Unknown',
-      lab_id: row.laboratory_id,
-      date: row.date,
-      startTime: row.startTime ? row.startTime.slice(0, 5) : null,
-      endTime: row.endTime ? row.endTime.slice(0, 5) : null,
-      instructor: row.instructor || 'Unknown',
-      students: row.expected_students,
-      status: row.status,
-      description: row.notes
-    }));
-    
-    res.json({ success: true, data: transformedRows });
-  } catch (error) {
-    console.error('Get schedules error:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Get schedule by ID
-const getScheduleById = async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT 
-        s.*,
-        l.name as lab_name,
-        u.name as requester_name
-      FROM schedules s
-      LEFT JOIN laboratories l ON s.laboratory_id = l.id
-      LEFT JOIN users u ON s.requester_id = u.id
-      WHERE s.id = ?
-    `, [req.params.id]);
-    
-    if (rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Schedule not found' });
-    }
-    
-    res.json({ success: true, data: rows[0] });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// CREATE SCHEDULE
-const createSchedule = async (req, res) => {
-  try {
-    console.log('📥 Received schedule data:', JSON.stringify(req.body, null, 2));
-    
-    const { 
-      course_name, 
-      laboratory_id, 
-      start_time, 
-      end_time, 
-      expected_students, 
-      notes 
-    } = req.body;
-    
-    if (!course_name) {
-      return res.status(400).json({ success: false, message: 'Course name is required' });
-    }
-    if (!laboratory_id) {
-      return res.status(400).json({ success: false, message: 'Laboratory ID is required' });
-    }
-    if (!start_time) {
-      return res.status(400).json({ success: false, message: 'Start time is required' });
-    }
-    if (!end_time) {
-      return res.status(400).json({ success: false, message: 'End time is required' });
-    }
-    
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({ success: false, message: 'No token provided' });
-    }
-    
-    let requesterId;
-    try {
-      // FIXED: Hardcoded 'secret-key'
-      const decoded = jwt.verify(token, 'secret-key');
-      requesterId = decoded.id;
-    } catch (error) {
-      return res.status(401).json({ success: false, message: 'Invalid token' });
-    }
-    
-    const [conflicts] = await pool.query(`
-      SELECT id FROM schedules 
-      WHERE laboratory_id = ? 
-        AND status IN ('pending', 'approved')
-        AND (
-          (start_time BETWEEN ? AND ?) OR
-          (end_time BETWEEN ? AND ?) OR
-          (start_time <= ? AND end_time >= ?)
-        )
-    `, [laboratory_id, start_time, end_time, start_time, end_time, start_time, end_time]);
-    
-    if (conflicts.length > 0) {
-      return res.status(409).json({
-        success: false,
-        message: 'Schedule conflict! This time slot is already booked.',
-        conflict: true
-      });
-    }
-    
-    const [result] = await pool.query(`
-      INSERT INTO schedules (
-        course_name,
-        laboratory_id,
-        requester_id,
-        start_time,
-        end_time,
-        expected_students,
-        status,
-        notes
-      ) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)
-    `, [course_name, laboratory_id, requesterId, start_time, end_time, expected_students || 0, notes || null]);
-    
-    console.log('✅ Schedule created! ID:', result.insertId);
-    
-    res.status(201).json({
-      success: true,
-      message: 'Schedule created successfully',
-      data: { id: result.insertId }
-    });
-  } catch (error) {
-    console.error('❌ Create schedule error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Failed to create schedule'
-    });
-  }
-};
-
-// Update schedule
-const updateSchedule = async (req, res) => {
-  try {
-    const { course_name, laboratory_id, start_time, end_time, expected_students, notes } = req.body;
-    
-    await pool.query(`
-      UPDATE schedules 
-      SET course_name = ?, laboratory_id = ?, start_time = ?, end_time = ?, 
-          expected_students = ?, notes = ?
-      WHERE id = ?
-    `, [course_name, laboratory_id, start_time, end_time, expected_students, notes, req.params.id]);
-    
-    res.json({ success: true, message: 'Schedule updated successfully' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Approve schedule
 const approveSchedule = async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split(' ')[1];
-    // FIXED: Hardcoded 'secret-key'
-    const decoded = jwt.verify(token, 'secret-key');
-    
-    await pool.query(`
-      UPDATE schedules 
-      SET status = 'approved', approver_id = ?
-      WHERE id = ?
-    `, [decoded.id, req.params.id]);
-    
-    res.json({ success: true, message: 'Schedule approved successfully' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const { id } = req.params;
+        const { comments, approver_id } = req.body;
 
-// Reject schedule
-const rejectSchedule = async (req, res) => {
-  try {
-    const { reason } = req.body;
-    const token = req.headers.authorization?.split(' ')[1];
-    // FIXED: Hardcoded 'secret-key'
-    const decoded = jwt.verify(token, 'secret-key');
-    
-    await pool.query(`
-      UPDATE schedules 
-      SET status = 'rejected', rejection_reason = ?, approver_id = ?
-      WHERE id = ?
-    `, [reason, decoded.id, req.params.id]);
-    
-    res.json({ success: true, message: 'Schedule rejected' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Cancel schedule
-const cancelSchedule = async (req, res) => {
-  try {
-    await pool.query('UPDATE schedules SET status = "cancelled" WHERE id = ?', [req.params.id]);
-    res.json({ success: true, message: 'Schedule cancelled successfully' });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Get my schedules - FIXED
-const getMySchedules = async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split(' ')[1];
-    // FIXED: Hardcoded 'secret-key'
-    const decoded = jwt.verify(token, 'secret-key');
-    
-    const [rows] = await pool.query(`
-      SELECT 
-        s.id,
-        s.course_name as title,
-        l.name as lab,
-        s.start_time,
-        s.end_time,
-        s.expected_students,
-        s.status,
-        DATE(s.start_time) as date,
-        TIME(s.start_time) as startTime,
-        TIME(s.end_time) as endTime
-      FROM schedules s
-      LEFT JOIN laboratories l ON s.laboratory_id = l.id
-      WHERE s.requester_id = ?
-      ORDER BY s.start_time DESC
-    `, [decoded.id]);
-    
-    const transformedRows = rows.map(row => ({
-      id: row.id,
-      title: row.title,
-      lab: row.lab,
-      date: row.date,
-      startTime: row.startTime ? row.startTime.slice(0, 5) : null,
-      endTime: row.endTime ? row.endTime.slice(0, 5) : null,
-      students: row.expected_students,
-      status: row.status
-    }));
-    
-    res.json({ success: true, data: transformedRows });
-  } catch (error) {
-    console.error('Get my schedules error:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Get pending approvals
-const getPendingApprovals = async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT 
-        s.id,
-        s.course_name as title,
-        l.name as lab,
-        u.name as instructor,
-        u.department,
-        s.expected_students,
-        s.notes as description,
-        s.status,
-        DATE(s.start_time) as date,
-        TIME(s.start_time) as startTime,
-        TIME(s.end_time) as endTime
-      FROM schedules s
-      LEFT JOIN laboratories l ON s.laboratory_id = l.id
-      LEFT JOIN users u ON s.requester_id = u.id
-      WHERE s.status = 'pending'
-      ORDER BY s.created_at ASC
-    `);
-    
-    const transformedRows = rows.map(row => ({
-      id: row.id,
-      title: row.title,
-      lab: row.lab,
-      date: row.date,
-      startTime: row.startTime ? row.startTime.slice(0, 5) : null,
-      endTime: row.endTime ? row.endTime.slice(0, 5) : null,
-      instructor: row.instructor,
-      department: row.department,
-      students: row.expected_students,
-      description: row.description,
-      priority: 'medium'
-    }));
-    
-    res.json({ success: true, data: transformedRows });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Check availability
-const checkAvailability = async (req, res) => {
-  try {
-    const { lab_id, date, start_time, end_time } = req.query;
-    const startDateTime = `${date} ${start_time}:00`;
-    const endDateTime = `${date} ${end_time}:00`;
-    
-    const [conflicts] = await pool.query(`
-      SELECT 
-        id,
-        course_name as title,
-        DATE(start_time) as date,
-        TIME(start_time) as startTime,
-        TIME(end_time) as endTime
-      FROM schedules
-      WHERE laboratory_id = ?
-        AND status IN ('pending', 'approved')
-        AND (
-          (start_time BETWEEN ? AND ?) OR
-          (end_time BETWEEN ? AND ?) OR
-          (start_time <= ? AND end_time >= ?)
-        )
-    `, [lab_id, startDateTime, endDateTime, startDateTime, endDateTime, startDateTime, endDateTime]);
-    
-    res.json({
-      success: true,
-      available: conflicts.length === 0,
-      conflicts: conflicts.map(c => ({
-        title: c.title,
-        date: c.date,
-        startTime: c.startTime ? c.startTime.slice(0, 5) : null,
-        endTime: c.endTime ? c.endTime.slice(0, 5) : null
-      }))
-    });
-  } catch (error) {
-    console.error('Check availability error:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Get available time slots
-const getAvailableTimeSlots = async (req, res) => {
-  try {
-    const { labId } = req.params;
-    const { date } = req.query;
-    
-    if (!date) {
-      return res.status(400).json({ success: false, message: 'Date is required' });
-    }
-    
-    const allTimeSlots = [
-      '08:00-10:00', '10:00-12:00', '12:00-14:00', 
-      '14:00-16:00', '16:00-18:00', '18:00-20:00'
-    ];
-    
-    const [bookedSlots] = await pool.query(`
-      SELECT TIME(start_time) as startTime, TIME(end_time) as endTime
-      FROM schedules
-      WHERE laboratory_id = ? 
-        AND DATE(start_time) = ?
-        AND status IN ('pending', 'approved')
-    `, [labId, date]);
-    
-    const bookedTimeStrings = bookedSlots.map(slot => {
-      const start = slot.startTime ? slot.startTime.slice(0, 5) : '';
-      const end = slot.endTime ? slot.endTime.slice(0, 5) : '';
-      return `${start}-${end}`;
-    });
-    
-    const availableSlots = allTimeSlots.filter(slot => !bookedTimeStrings.includes(slot));
-    
-    res.json({
-      success: true,
-      data: {
-        date,
-        labId,
-        availableSlots,
-        bookedSlots: bookedTimeStrings
-      }
-    });
-  } catch (error) {
-    console.error('Get available time slots error:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Batch create schedules
-const batchCreateSchedules = async (req, res) => {
-  try {
-    const { batchName, courses, labPreferences, startDate, endDate, daysOfWeek, timeSlots } = req.body;
-    const token = req.headers.authorization?.split(' ')[1];
-    // FIXED: Hardcoded 'secret-key'
-    const decoded = jwt.verify(token, 'secret-key');
-    
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const dayMap = { 'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6 };
-    const selectedDays = daysOfWeek.map(day => dayMap[day]);
-    
-    const scheduleDates = [];
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      if (selectedDays.includes(d.getDay())) {
-        scheduleDates.push(new Date(d));
-      }
-    }
-    
-    let schedulesCreated = 0;
-    
-    for (const course of courses) {
-      for (const date of scheduleDates) {
-        for (const labId of labPreferences) {
-          for (const timeSlot of timeSlots) {
-            const [startTime, endTime] = timeSlot.split('-');
-            const startDateTime = `${date.toISOString().split('T')[0]} ${startTime}:00`;
-            const endDateTime = `${date.toISOString().split('T')[0]} ${endTime}:00`;
-            
-            await pool.query(`
-              INSERT INTO schedules (
-                course_name, laboratory_id, requester_id, 
-                start_time, end_time, expected_students, batch_name, status
-              ) VALUES (?, ?, ?, ?, ?, 30, ?, 'pending')
-            `, [course, labId, decoded.id, startDateTime, endDateTime, batchName]);
-            
-            schedulesCreated++;
-          }
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
-      }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const approverId = approver_id || decoded.id;
+
+        await pool.query(`
+            UPDATE schedules 
+            SET status = 'approved', approver_id = ?, rejection_reason = NULL
+            WHERE id = ?
+        `, [approverId, id]);
+
+        res.json({ success: true, message: 'Schedule approved successfully' });
+    } catch (error) {
+        console.error('Error approving schedule:', error);
+        res.status(500).json({ success: false, message: 'Failed to approve schedule' });
     }
-    
-    res.status(201).json({
-      success: true,
-      message: `Batch schedule created! ${schedulesCreated} sessions scheduled.`,
-      data: { count: schedulesCreated }
-    });
-  } catch (error) {
-    console.error('Batch create schedules error:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
 };
 
-// Get schedule statistics
-const getScheduleStats = async (req, res) => {
-  try {
-    const [stats] = await pool.query(`
-      SELECT 
-        COUNT(*) as total,
-        SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
-        SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved,
-        SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected,
-        SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled
-      FROM schedules
-    `);
-    
-    res.json({
-      success: true,
-      data: stats[0]
-    });
-  } catch (error) {
-    console.error('Get schedule stats error:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
+const rejectSchedule = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const { id } = req.params;
+        const { reason, approver_id } = req.body;
+
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const approverId = approver_id || decoded.id;
+
+        await pool.query(`
+            UPDATE schedules 
+            SET status = 'rejected', approver_id = ?, rejection_reason = ?
+            WHERE id = ?
+        `, [approverId, reason || 'No reason provided', id]);
+
+        res.json({ success: true, message: 'Schedule rejected' });
+    } catch (error) {
+        console.error('Error rejecting schedule:', error);
+        res.status(500).json({ success: false, message: 'Failed to reject schedule' });
+    }
 };
 
-// EXPORT ALL FUNCTIONS
+const createSchedule = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const {
+            title,
+            courseId,
+            course_name,
+            labId,
+            laboratory_id,
+            date,
+            start_time,
+            end_time,
+            expected_students,
+            students,
+            batch_name,
+            notes,
+            description
+        } = req.body;
+
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized. Please login first.'
+            });
+        }
+
+        let requesterId;
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+            requesterId = decoded.id;
+        } catch (error) {
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid token. Please login again.'
+            });
+        }
+
+        const courseName = course_name || title;
+        const labIdValue = labId || laboratory_id;
+        const startDateTime = `${date} ${startTime || start_time}:00`;
+        const endDateTime = `${date} ${endTime || end_time}:00`;
+        const studentCount = expected_students || students || 0;
+        const batchName = batch_name || null;
+        const notesText = notes || description || null;
+
+        console.log('📝 Creating schedule:', {
+            courseName,
+            labIdValue,
+            startDateTime,
+            requesterId
+        });
+
+        if (!courseName) {
+            return res.status(400).json({
+                success: false,
+                message: 'Course name is required'
+            });
+        }
+        if (!labIdValue) {
+            return res.status(400).json({
+                success: false,
+                message: 'Laboratory ID is required'
+            });
+        }
+        if (!date) {
+            return res.status(400).json({
+                success: false,
+                message: 'Date is required'
+            });
+        }
+        if (!startDateTime) {
+            return res.status(400).json({
+                success: false,
+                message: 'Start time is required'
+            });
+        }
+        if (!endDateTime) {
+            return res.status(400).json({
+                success: false,
+                message: 'End time is required'
+            });
+        }
+
+        const [result] = await pool.query(`
+            INSERT INTO schedules (
+                course_name,
+                laboratory_id,
+                requester_id,
+                start_time,
+                end_time,
+                expected_students,
+                batch_name,
+                notes,
+                status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+        `, [
+            courseName,
+            labIdValue,
+            requesterId,
+            startDateTime,
+            endDateTime,
+            studentCount,
+            batchName,
+            notesText
+        ]);
+
+        console.log('✅ Schedule created! ID:', result.insertId);
+
+        res.status(201).json({
+            success: true,
+            message: 'Schedule created successfully',
+            data: { id: result.insertId }
+        });
+    } catch (error) {
+        console.error('Error creating schedule:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create schedule',
+            error: error.message
+        });
+    }
+};
+
+const batchCreateSchedules = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const {
+            batchName,
+            courses,
+            labPreferences,
+            startDate,
+            endDate,
+            daysOfWeek,
+            timeSlots
+        } = req.body;
+
+        console.log('Batch schedule request:', { batchName, courses, startDate, endDate, daysOfWeek, timeSlots });
+
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ success: false, message: 'No token provided' });
+        }
+
+        let requesterId;
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+            requesterId = decoded.id;
+        } catch (error) {
+            return res.status(401).json({ success: false, message: 'Invalid token' });
+        }
+
+        if (!batchName) {
+            return res.status(400).json({ success: false, message: 'Batch name is required' });
+        }
+        if (!courses || !Array.isArray(courses) || courses.length === 0) {
+            return res.status(400).json({ success: false, message: 'At least one course is required' });
+        }
+        if (!startDate || !endDate) {
+            return res.status(400).json({ success: false, message: 'Start and end dates are required' });
+        }
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const dayMap = {
+            'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3,
+            'Thursday': 4, 'Friday': 5, 'Saturday': 6
+        };
+
+        const selectedDays = (daysOfWeek && daysOfWeek.length > 0)
+            ? daysOfWeek.map(day => dayMap[day]).filter(d => d !== undefined)
+            : [1, 2, 3, 4, 5];
+
+        const scheduleDates = [];
+        const currentDate = new Date(start);
+
+        while (currentDate <= end) {
+            const dayOfWeek = currentDate.getDay();
+            if (selectedDays.includes(dayOfWeek)) {
+                scheduleDates.push(new Date(currentDate));
+            }
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        console.log(`Found ${scheduleDates.length} dates to schedule`);
+
+        if (scheduleDates.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: `No dates found between ${startDate} and ${endDate} for selected days`
+            });
+        }
+
+        const labList = labPreferences && labPreferences.length > 0 ? labPreferences : [1];
+
+        const slotList = timeSlots && timeSlots.length > 0 ? timeSlots : ['08:00-10:00', '10:00-12:00', '13:00-15:00'];
+
+        let schedulesCreated = 0;
+
+        for (const course of courses) {
+            for (const date of scheduleDates) {
+                for (const labId of labList) {
+                    for (const timeSlot of slotList) {
+                        const [startTime, endTime] = timeSlot.split('-');
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const startDateTime = `${year}-${month}-${day} ${startTime}:00`;
+                        const endDateTime = `${year}-${month}-${day} ${endTime}:00`;
+
+                        await pool.query(`
+                            INSERT INTO schedules (
+                                course_name,
+                                laboratory_id,
+                                requester_id,
+                                start_time,
+                                end_time,
+                                expected_students,
+                                batch_name,
+                                status
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
+                        `, [course, labId, requesterId, startDateTime, endDateTime, 30, batchName]);
+
+                        schedulesCreated++;
+                    }
+                }
+            }
+        }
+
+        res.status(201).json({
+            success: true,
+            message: `Batch schedule created! ${schedulesCreated} sessions scheduled.`,
+            data: { count: schedulesCreated, dates: scheduleDates.length }
+        });
+
+    } catch (error) {
+        console.error('Batch schedule error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create batch schedule',
+            error: error.message
+        });
+    }
+};
+
+const getSchedules = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const { startDate, endDate, lab, status } = req.query;
+
+        let query = `
+            SELECT 
+                s.id,
+                s.course_name as title,
+                s.laboratory_id,
+                l.name as lab,
+                l.code as lab_code,
+                s.requester_id,
+                u.name as instructor,
+                s.start_time,
+                s.end_time,
+                s.expected_students as students,
+                s.batch_name as batch,
+                s.status,
+                s.notes as description,
+                s.created_at,
+                DATE(s.start_time) as date,
+                TIME(s.start_time) as startTime,
+                TIME(s.end_time) as endTime
+            FROM schedules s
+            LEFT JOIN laboratories l ON s.laboratory_id = l.id
+            LEFT JOIN users u ON s.requester_id = u.id
+            WHERE 1=1
+        `;
+
+        const params = [];
+
+        if (startDate) {
+            query += ` AND DATE(s.start_time) >= ?`;
+            params.push(startDate);
+        }
+
+        if (endDate) {
+            query += ` AND DATE(s.start_time) <= ?`;
+            params.push(endDate);
+        }
+
+        if (lab && lab !== 'undefined' && lab !== 'all') {
+            query += ` AND s.laboratory_id = ?`;
+            params.push(lab);
+        }
+
+        if (status && status !== 'undefined' && status !== 'all') {
+            query += ` AND s.status = ?`;
+            params.push(status);
+        }
+
+        query += ` ORDER BY s.start_time ASC`;
+
+        const [rows] = await pool.query(query, params);
+
+        const transformedRows = rows.map(row => ({
+            id: row.id,
+            title: row.title,
+            lab: row.lab,
+            lab_id: row.laboratory_id,
+            date: row.date ? row.date.toISOString().split('T')[0] : null,
+            startTime: row.startTime ? row.startTime.slice(0, 5) : null,
+            endTime: row.endTime ? row.endTime.slice(0, 5) : null,
+            instructor: row.instructor,
+            students: row.students,
+            batch: row.batch,
+            status: row.status,
+            description: row.description,
+            start_datetime: row.start_time,
+            end_datetime: row.end_time
+        }));
+
+        res.json({ success: true, data: transformedRows });
+    } catch (error) {
+        console.error('Error fetching schedules:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch schedules' });
+    }
+};
+
+const getMySchedules = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+        const userId = decoded.id;
+
+        const [rows] = await pool.query(`
+            SELECT 
+                s.id,
+                s.course_name as title,
+                l.name as lab,
+                s.start_time,
+                s.end_time,
+                s.expected_students as students,
+                s.status,
+                DATE(s.start_time) as date,
+                TIME(s.start_time) as startTime,
+                TIME(s.end_time) as endTime
+            FROM schedules s
+            LEFT JOIN laboratories l ON s.laboratory_id = l.id
+            WHERE s.requester_id = ?
+            ORDER BY s.start_time DESC
+        `, [userId]);
+
+        const transformedRows = rows.map(row => ({
+            id: row.id,
+            title: row.title,
+            lab: row.lab,
+            date: row.date ? row.date.toISOString().split('T')[0] : null,
+            startTime: row.startTime ? row.startTime.slice(0, 5) : null,
+            endTime: row.endTime ? row.endTime.slice(0, 5) : null,
+            students: row.students,
+            status: row.status
+        }));
+
+        res.json({ success: true, data: transformedRows });
+    } catch (error) {
+        console.error('Error fetching my schedules:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch schedules' });
+    }
+};
+
+const cancelSchedule = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const { id } = req.params;
+        const { reason } = req.body;
+
+        await pool.query(`
+            UPDATE schedules 
+            SET status = 'cancelled', notes = CONCAT(notes, ' Cancelled: ', ?)
+            WHERE id = ?
+        `, [reason || 'Cancelled by user', id]);
+
+        res.json({ success: true, message: 'Schedule cancelled' });
+    } catch (error) {
+        console.error('Error cancelling schedule:', error);
+        res.status(500).json({ success: false, message: 'Failed to cancel schedule' });
+    }
+};
+
+const checkAvailability = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const { lab_id, date, start_time, end_time } = req.query;
+
+        const [conflicts] = await pool.query(`
+            SELECT 
+                s.id,
+                s.course_name as title,
+                DATE(s.start_time) as date,
+                TIME(s.start_time) as startTime,
+                TIME(s.end_time) as endTime
+            FROM schedules s
+            WHERE s.laboratory_id = ? 
+                AND DATE(s.start_time) = ?
+                AND s.status IN ('pending', 'approved')
+                AND (
+                    (TIME(s.start_time) <= ? AND TIME(s.end_time) > ?) OR
+                    (TIME(s.start_time) < ? AND TIME(s.end_time) >= ?) OR
+                    (TIME(s.start_time) >= ? AND TIME(s.end_time) <= ?)
+                )
+        `, [lab_id, date, end_time, start_time, end_time, start_time, start_time, end_time]);
+
+        if (conflicts.length > 0) {
+            res.json({
+                success: true,
+                available: false,
+                conflicts: conflicts.map(c => ({
+                    title: c.title,
+                    date: c.date,
+                    startTime: c.startTime,
+                    endTime: c.endTime
+                }))
+            });
+        } else {
+            res.json({ success: true, available: true, conflicts: [] });
+        }
+    } catch (error) {
+        console.error('Error checking availability:', error);
+        res.json({ success: true, available: true, conflicts: [] });
+    }
+};
+
+const getCourses = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const courses = [
+            { id: 1, name: 'Database Systems', code: 'CS311' },
+            { id: 2, name: 'Computer Networks', code: 'CS312' },
+            { id: 3, name: 'Software Engineering', code: 'CS313' },
+            { id: 4, name: 'Web Development', code: 'CS314' },
+            { id: 5, name: 'Data Structures', code: 'CS215' },
+            { id: 6, name: 'Operating Systems', code: 'CS316' },
+            { id: 7, name: 'C++ Programming', code: 'CS201' },
+            { id: 8, name: 'Java Programming', code: 'CS202' }
+        ];
+        res.json({ success: true, data: courses });
+    } catch (error) {
+        console.error('Error fetching courses:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch courses' });
+    }
+};
+
+const getBatches = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        res.json({
+            success: true,
+            data: [
+                { id: 1, name: 'CS 3rd Year - Batch A', semester: '1st Semester' },
+                { id: 2, name: 'CS 3rd Year - Batch B', semester: '1st Semester' },
+                { id: 3, name: 'CS 4th Year - Batch A', semester: '2nd Semester' },
+                { id: 4, name: 'CS 4th Year - Batch B', semester: '2nd Semester' }
+            ]
+        });
+    } catch (error) {
+        console.error('Error fetching batches:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch batches' });
+    }
+};
+
+const exportSchedules = async (req, res) => {
+    try {
+        const pool = global.dbPool || app.locals.db;
+        const { format = 'csv' } = req.query;
+
+        const [rows] = await pool.query(`
+            SELECT 
+                s.id,
+                s.course_name as title,
+                l.name as location,
+                s.notes as description,
+                s.start_time,
+                s.end_time,
+                s.status,
+                u.name as instructor
+            FROM schedules s
+            LEFT JOIN laboratories l ON s.laboratory_id = l.id
+            LEFT JOIN users u ON s.requester_id = u.id
+            WHERE s.status = 'approved'
+            ORDER BY s.start_time ASC
+        `);
+
+        if (format === 'csv') {
+            let csv = 'ID,Title,Location,Instructor,Start Date,End Date,Status,Description\n';
+
+            for (const row of rows) {
+                csv += `${row.id},`;
+                csv += `"${(row.title || '').replace(/"/g, '""')}",`;
+                csv += `"${(row.location || '').replace(/"/g, '""')}",`;
+                csv += `"${(row.instructor || '').replace(/"/g, '""')}",`;
+                csv += `${new Date(row.start_time).toISOString()},`;
+                csv += `${new Date(row.end_time).toISOString()},`;
+                csv += `${row.status},`;
+                csv += `"${(row.description || '').replace(/"/g, '""')}"\n`;
+            }
+
+            res.setHeader('Content-Type', 'text/csv');
+            res.setHeader('Content-Disposition', `attachment; filename="schedules_export_${Date.now()}.csv"`);
+            res.send(csv);
+        } else {
+            let ical = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//CLMS//Injibara University//EN\n`;
+
+            for (const event of rows) {
+                const startDate = new Date(event.start_time);
+                const endDate = new Date(event.end_time);
+
+                ical += `BEGIN:VEVENT\n`;
+                ical += `UID:${event.id}@clms.com\n`;
+                ical += `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
+                ical += `DTSTART:${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
+                ical += `DTEND:${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z\n`;
+                ical += `SUMMARY:${event.title}\n`;
+                ical += `LOCATION:${event.location || 'Injibara University Lab'}\n`;
+                if (event.description) ical += `DESCRIPTION:${event.description}\n`;
+                ical += `END:VEVENT\n`;
+            }
+
+            ical += `END:VCALENDAR`;
+
+            res.setHeader('Content-Type', 'text/calendar');
+            res.setHeader('Content-Disposition', `attachment; filename="schedule_calendar_${Date.now()}.ics"`);
+            res.send(ical);
+        }
+    } catch (error) {
+        console.error('Error exporting schedules:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 module.exports = {
-  getSchedules,
-  getScheduleById,
-  createSchedule,
-  updateSchedule,
-  approveSchedule,
-  rejectSchedule,
-  cancelSchedule,
-  getMySchedules,
-  getPendingApprovals,
-  checkAvailability,
-  getAvailableTimeSlots,
-  getScheduleStats,
-  batchCreateSchedules
+    approveSchedule,
+    rejectSchedule,
+    createSchedule,
+    batchCreateSchedules,
+    getSchedules,
+    getMySchedules,
+    cancelSchedule,
+    checkAvailability,
+    getCourses,
+    getBatches,
+    exportSchedules
 };

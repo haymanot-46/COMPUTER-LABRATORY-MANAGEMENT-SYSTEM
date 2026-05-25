@@ -101,14 +101,14 @@ const HomePage = () => {
         try {
           const user = JSON.parse(userStr);
           const dashboardRoutes = {
-            admin: '/admin/dashboard',
-            teacher: '/teacher/dashboard',
-            student: '/student/dashboard',
-            lab_manager: '/lab-manager/dashboard',
-            dean: '/dean/dashboard',
-            lab_assistant: '/lab-assistant/dashboard',
-            ict: '/ict/dashboard',
-            asset: '/asset/dashboard'
+            admin: '/dashboard/admin',
+            teacher: '/dashboard/teacher',
+            student: '/dashboard/student',
+            lab_manager: '/dashboard/lab-manager',
+            dean: '/dashboard/dean',
+            lab_assistant: '/dashboard/lab-assistant',
+            ict: '/dashboard/ict',
+            asset: '/dashboard/asset'
           };
           navigate(dashboardRoutes[user.role] || '/dashboard');
         } catch (error) {

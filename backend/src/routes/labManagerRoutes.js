@@ -20,6 +20,7 @@ const {
   // Computer Management
   getComputers,
   getComputerById,
+  getComputerStats,
   addComputer,
   updateComputer,
   updateComputerStatus,
@@ -70,7 +71,7 @@ const {
   updateLabSettings,
   updateProfile,
   changePassword
-} = require('../src/controllers/labManagerController');
+} = require('../controllers/labManagerController');
 const { 
   computerValidation, 
   scheduleValidation, 

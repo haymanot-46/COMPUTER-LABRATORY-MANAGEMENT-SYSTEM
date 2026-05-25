@@ -10,6 +10,9 @@ export const ROLES = {
   ASSET: 'asset'
 };
 
+// All roles array (for universally accessible routes)
+export const ALL_ROLES = Object.values(ROLES);
+
 // Role Groups
 export const ROLE_GROUPS = {
   ALL: Object.values(ROLES),
@@ -32,16 +35,16 @@ export const ROUTES = {
   RESET_PASSWORD: '/reset-password/:token',
   VERIFY_EMAIL: '/verify-email/:token',
   
-  // Dashboard Routes
+  // Dashboard Routes (SRS Section 3.10.3)
   DASHBOARD: '/dashboard',
-  ADMIN_DASHBOARD: '/admin/dashboard',
-  LAB_MANAGER_DASHBOARD: '/lab-manager/dashboard',
-  TEACHER_DASHBOARD: '/teacher/dashboard',
-  DEAN_DASHBOARD: '/dean/dashboard',
-  STUDENT_DASHBOARD: '/student/dashboard',
-  LAB_ASSISTANT_DASHBOARD: '/lab-assistant/dashboard',
-  ICT_DASHBOARD: '/ict/dashboard',
-  ASSET_DASHBOARD: '/asset/dashboard',
+  ADMIN_DASHBOARD: '/dashboard/admin',
+  LAB_MANAGER_DASHBOARD: '/dashboard/lab-manager',
+  TEACHER_DASHBOARD: '/dashboard/teacher',
+  DEAN_DASHBOARD: '/dashboard/dean',
+  STUDENT_DASHBOARD: '/dashboard/student',
+  LAB_ASSISTANT_DASHBOARD: '/dashboard/lab-assistant',
+  ICT_DASHBOARD: '/dashboard/ict',
+  ASSET_DASHBOARD: '/dashboard/asset',
   
   // Schedule Routes
   BOOK_LAB: '/book-lab',
@@ -79,6 +82,11 @@ export const ROUTES = {
   ASSET_REGISTER_EQUIPMENT: '/asset/register-equipment',
   ASSET_AUDITS: '/asset/audits',
   ASSET_BORROW: '/asset/borrow',
+  EQUIPMENT: '/equipment',
+  REGISTER_EQUIPMENT: '/equipment/register',
+  AUDIT: '/audit',
+  AUDIT_HISTORY: '/audit-history',
+  BORROW_EQUIPMENT: '/equipment/borrow',
   ASSET_MATERIAL_REQUESTS: '/asset/material-requests',
   ASSET_REPORTS: '/asset-reports',
   // User Routes
@@ -94,4 +102,4 @@ export const ROUTES = {
   NOT_FOUND: '/404'
 };
 
-export default { ROLES, ROLE_GROUPS, ROUTES };
+export default { ROLES, ALL_ROLES, ROLE_GROUPS, ROUTES };

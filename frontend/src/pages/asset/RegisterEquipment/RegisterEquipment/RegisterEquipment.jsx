@@ -1,7 +1,8 @@
 // frontend/src/pages/asset/RegisterEquipment/RegisterEquipment.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../../hooks';
+import { useNotification } from '../../../../hooks';
+import { assetService } from '../../../../services';
 import './RegisterEquipment.css';
 
 const RegisterEquipment = () => {
@@ -36,11 +37,7 @@ const RegisterEquipment = () => {
 
   const loadCategories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/equipment/categories', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.getCategories();
       if (data.success) {
         setCategories(data.data);
       } else {
@@ -58,11 +55,7 @@ const RegisterEquipment = () => {
 
   const loadLaboratories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/laboratories', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.getLaboratories();
       if (data.success) {
         setLaboratories(data.data);
       }
@@ -94,17 +87,7 @@ const RegisterEquipment = () => {
     
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/equipment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      const data = await response.json();
+      const data = await assetService.createEquipment(formData);
       
       if (data.success) {
         addToast('Equipment registered successfully!', 'success');

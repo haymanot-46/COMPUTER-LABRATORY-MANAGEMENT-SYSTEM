@@ -7,15 +7,36 @@ const Computer = sequelize.define('Computer', {
     primaryKey: true,
     autoIncrement: true
   },
-  name: {
+  code: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    unique: true
+  },
+  workstationNumber: {
     type: DataTypes.STRING(100),
-    allowNull: false
+    allowNull: false,
+    field: 'workstation_number'
   },
   model: {
     type: DataTypes.STRING(100),
-    allowNull: false
+    allowNull: true
   },
-  cpu: {
+  serialNumber: {
+    type: DataTypes.STRING(100),
+    unique: true,
+    allowNull: true,
+    field: 'serial_number'
+  },
+  laboratoryId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    field: 'laboratory_id',
+    references: {
+      model: 'laboratories',
+      key: 'id'
+    }
+  },
+  processor: {
     type: DataTypes.STRING(100),
     allowNull: true
   },
@@ -24,17 +45,13 @@ const Computer = sequelize.define('Computer', {
     allowNull: true
   },
   storage: {
-    type: DataTypes.STRING(50),
+    type: DataTypes.STRING(100),
     allowNull: true
   },
-  os: {
+  operatingSystem: {
     type: DataTypes.STRING(100),
     allowNull: true,
     field: 'operating_system'
-  },
-  lab: {
-    type: DataTypes.STRING(50),
-    allowNull: false
   },
   ipAddress: {
     type: DataTypes.STRING(45),
@@ -45,11 +62,6 @@ const Computer = sequelize.define('Computer', {
     type: DataTypes.STRING(17),
     allowNull: true,
     field: 'mac_address'
-  },
-  serialNumber: {
-    type: DataTypes.STRING(100),
-    allowNull: true,
-    field: 'serial_number'
   },
   status: {
     type: DataTypes.ENUM('available', 'in-use', 'maintenance', 'damaged'),

@@ -1,7 +1,8 @@
 // frontend/src/pages/asset/BorrowEquipment/BorrowRequest.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../../hooks';
+import { useNotification } from '../../../../hooks';
+import { assetService, apiClient } from '../../../../services';
 import './BorrowRequest.css';
 
 const BorrowRequest = () => {
@@ -25,11 +26,7 @@ const BorrowRequest = () => {
   const loadAvailableEquipment = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/equipment?status=available', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await assetService.getEquipment({ status: 'available' });
       
       if (data.success) {
         setEquipment(data.data);
@@ -79,27 +76,17 @@ const BorrowRequest = () => {
     }
     
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/borrow-requests', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          items: selectedItems.map(i => ({
-            equipment_id: i.id,
-            quantity: i.quantity
-          })),
-          purpose: formData.purpose,
-          expected_return_date: formData.expected_return_date,
-          requester_name: formData.requester_name,
-          requester_department: formData.requester_department
-        })
+      const data = await apiClient.post('/borrow-requests', {
+        items: selectedItems.map(i => ({
+          equipment_id: i.id,
+          quantity: i.quantity
+        })),
+        purpose: formData.purpose,
+        expected_return_date: formData.expected_return_date,
+        requester_name: formData.requester_name,
+        requester_department: formData.requester_department
       });
-      
-      const data = await response.json();
-      
+
       if (data.success) {
         addToast('Borrow request submitted successfully!', 'success');
         navigate('/asset/borrow/history');

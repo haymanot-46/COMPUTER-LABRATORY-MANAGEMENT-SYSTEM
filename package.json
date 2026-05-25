@@ -1,18 +1,16 @@
 {
-  "name": "clms-backend",
+  "name": "clms-monorepo",
   "version": "2.0.0",
-  "description": "CLMS Backend with Database",
-  "main": "src/server-final.js",
+  "description": "CLMS - Computer Laboratory Management System",
+  "private": true,
   "scripts": {
-    "dev": "node src/server-final.js",
-    "start": "node src/server-final.js"
+    "dev:backend": "cd backend && node src/server-final.js",
+    "dev:frontend": "cd frontend && npx vite --port 5175",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start:backend": "cd backend && node src/server-final.js",
+    "build:frontend": "cd frontend && npx vite build"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "jsonwebtoken": "^9.0.0",
-    "bcryptjs": "^2.4.3",
-    "mysql2": "^3.6.0",
-    "dotenv": "^16.0.3"
+    "concurrently": "^8.2.2"
   }
 }

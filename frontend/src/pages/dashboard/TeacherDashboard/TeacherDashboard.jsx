@@ -120,7 +120,7 @@ const TeacherDashboard = () => {
 
   // Sidebar Menu Items for Teacher Role
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/teacher/dashboard', color: '#f59e0b', name: 'dashboard' },
+    { label: 'Dashboard', icon: '📊', path: '/dashboard/teacher', color: '#f59e0b', name: 'dashboard' },
     { label: 'My Schedule', icon: '📅', path: '/my-schedules', color: '#10b981', name: 'schedule' },
     { label: 'Book Lab', icon: '🔬', path: '/book-lab', color: '#3b82f6', name: 'booklab' },
     { label: 'Take Attendance', icon: '📋', path: '/attendance', color: '#8b5cf6', name: 'attendance' },

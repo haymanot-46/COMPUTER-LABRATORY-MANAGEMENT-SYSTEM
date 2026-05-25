@@ -12,9 +12,9 @@ class Settings {
         return rows;
     }
 
-    // Get setting by key
-    static async getByKey(pool, key) {
-        const [rows] = await pool.query('SELECT * FROM settings WHERE `key` = ?', [key]);
+    // Get setting by key_name
+    static async getByKey(pool, keyName) {
+        const [rows] = await pool.query('SELECT * FROM settings WHERE key_name = ?', [keyName]);
         return rows[0];
     }
 
@@ -25,24 +25,24 @@ class Settings {
     }
 
     // Update setting
-    static async update(pool, key, value, updatedBy = null) {
+    static async update(pool, keyName, value, updatedBy = null) {
         const [result] = await pool.query(
-            'UPDATE settings SET value = ?, updated_by = ? WHERE `key` = ?',
-            [JSON.stringify(value), updatedBy, key]
+            'UPDATE settings SET value = ?, updated_by = ? WHERE key_name = ?',
+            [JSON.stringify(value), updatedBy, keyName]
         );
         return result.affectedRows > 0;
     }
 
     // Create or update setting
-    static async set(pool, key, value, category = 'system', type = 'string', description = '') {
-        const [existing] = await pool.query('SELECT id FROM settings WHERE `key` = ?', [key]);
+    static async set(pool, keyName, value, category = 'system', type = 'string', description = '') {
+        const [existing] = await pool.query('SELECT id FROM settings WHERE key_name = ?', [keyName]);
         
         if (existing.length > 0) {
-            await pool.query('UPDATE settings SET value = ? WHERE `key` = ?', [JSON.stringify(value), key]);
+            await pool.query('UPDATE settings SET value = ? WHERE key_name = ?', [JSON.stringify(value), keyName]);
         } else {
             await pool.query(
-                'INSERT INTO settings (`key`, value, category, type, description) VALUES (?, ?, ?, ?, ?)',
-                [key, JSON.stringify(value), category, type, description]
+                'INSERT INTO settings (key_name, value, category, type, description) VALUES (?, ?, ?, ?, ?)',
+                [keyName, JSON.stringify(value), category, type, description]
             );
         }
         return true;

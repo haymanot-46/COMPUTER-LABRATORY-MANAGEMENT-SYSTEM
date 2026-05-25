@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userApi } from '../../../services/ApiService';
+import { userService } from '../../../services';
 import { useAuth, useNotification } from '../../../hooks';
 import './UsersPage.css';
 
@@ -205,17 +206,7 @@ const UsersPage = () => {
     const reader = new FileReader();
     reader.onloadend = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5001/api/admin/users/${selectedUser.id}/profile-image`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ imageData: reader.result })
-        });
-        
-        const data = await response.json();
+        const data = await userService.uploadProfileImage(selectedUser.id, { imageData: reader.result });
         if (data.success) {
           addToast(`Profile photo updated for ${selectedUser.name}`, 'success');
           setShowPhotoModal(false);
@@ -305,7 +296,7 @@ const UsersPage = () => {
         <h3>Error Loading Users</h3>
         <p>{error}</p>
         <button className="retry-btn" onClick={loadUsers}>Retry</button>
-        <button className="back-btn" onClick={() => navigate('/admin/dashboard')}>Back to Dashboard</button>
+        <button className="back-btn" onClick={() => navigate('/dashboard/admin')}>Back to Dashboard</button>
       </div>
     );
   }
@@ -323,7 +314,7 @@ const UsersPage = () => {
     <div className="users-page">
       <div className="users-header">
         <div>
-          <button className="back-btn" onClick={() => navigate('/admin/dashboard')}>← Back</button>
+          <button className="back-btn" onClick={() => navigate('/dashboard/admin')}>← Back</button>
           <h1>👥 User Management</h1>
           <p>Manage all users in the Computer Laboratory Management System</p>
         </div>

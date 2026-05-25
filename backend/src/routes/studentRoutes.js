@@ -13,7 +13,7 @@ const {
   getMyNotifications,
   updateProfile,
   changePassword
-} = require('../src/controllers/studentController');
+} = require('../controllers/studentController');
 const { attendanceValidation, maintenanceValidation, equipmentValidation } = require('../middleware/validation');
 
 // All student routes require authentication and student role

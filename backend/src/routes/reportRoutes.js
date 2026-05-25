@@ -1,37 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const { protect, authorize } = require('../middleware/auth');
-const {
-  generateAttendanceReport,
-  generateEquipmentReport,
-  generateMaintenanceReport,
-  generateComputerReport,
-  generateScheduleReport,
-  getSavedReports,
-  saveReport,
-  deleteSavedReport,
-  scheduleReport,
-  getScheduledReports
-} = require('../controllers/reportController');
-const { dateRangeValidation } = require('../middleware/validation');
+const { protect } = require('../middleware/authMiddleware');
+const ctrl = require('../controllers/reportController');
 
-// All routes require authentication
-router.use(protect);
-
-// Report generation (Admin, Lab Manager, Dean)
-router.post('/attendance', authorize('admin', 'lab_manager', 'dean'), dateRangeValidation, generateAttendanceReport);
-router.post('/equipment', authorize('admin', 'asset'), generateEquipmentReport);
-router.post('/maintenance', authorize('admin', 'lab_manager'), generateMaintenanceReport);
-router.post('/computers', authorize('admin', 'lab_manager'), generateComputerReport);
-router.post('/schedules', authorize('admin', 'lab_manager', 'dean'), generateScheduleReport);
-
-// Saved reports management
-router.get('/saved', getSavedReports);
-router.post('/save', saveReport);
-router.delete('/saved/:id', deleteSavedReport);
-
-// Scheduled reports (Admin only)
-router.get('/scheduled', authorize('admin'), getScheduledReports);
-router.post('/schedule', authorize('admin'), scheduleReport);
+router.post('/attendance', ctrl.generateAttendanceReport);
+router.post('/computers', ctrl.generateComputerReport);
+router.post('/maintenance', ctrl.generateMaintenanceReport);
+router.get('/saved', ctrl.getSavedReports);
+router.post('/save', ctrl.saveReport);
+router.delete('/saved/:id', ctrl.deleteSavedReport);
+router.get('/export/:id', ctrl.exportSavedReport);
+router.get('/scheduled', ctrl.getScheduledReports);
+router.post('/schedule', ctrl.scheduleReport);
+router.put('/scheduled/:id', ctrl.updateScheduledReport);
+router.delete('/scheduled/:id', ctrl.deleteScheduledReport);
+router.post('/scheduled/:id/run', ctrl.runScheduledReport);
+router.get('/lab-utilization/export', ctrl.exportLabUtilization);
+router.get('/lab-utilization', ctrl.getLabUtilization);
+router.get('/course', ctrl.getCourseReport);
+router.get('/department/export', ctrl.exportDepartmentReport);
+router.get('/course/export', ctrl.exportCourseReport);
+router.get('/department', ctrl.getDepartmentReport);
+router.get('/stats', ctrl.getReportStats);
+router.get('/attendance', ctrl.getAttendanceReportData);
 
 module.exports = router;

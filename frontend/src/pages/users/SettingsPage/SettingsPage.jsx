@@ -29,21 +29,21 @@ const SettingsPage = () => {
     const role = user?.role;
     switch(role) {
       case 'admin':
-        return '/admin/dashboard';
+        return '/dashboard/admin';
       case 'teacher':
-        return '/teacher/dashboard';
+        return '/dashboard/teacher';
       case 'student':
-        return '/student/dashboard';
+        return '/dashboard/student';
       case 'lab_manager':
-        return '/lab-manager/dashboard';
+        return '/dashboard/lab-manager';
       case 'dean':
-        return '/dean/dashboard';
+        return '/dashboard/dean';
       case 'lab_assistant':
-        return '/lab-assistant/dashboard';
+        return '/dashboard/lab-assistant';
       case 'ict':
-        return '/ict/dashboard';
+        return '/dashboard/ict';
       case 'asset':
-        return '/asset/dashboard';
+        return '/dashboard/asset';
       default:
         return '/dashboard';
     }

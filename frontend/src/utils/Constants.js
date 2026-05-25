@@ -1,6 +1,6 @@
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
   TIMEOUT: 30000,
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000
@@ -14,14 +14,14 @@ export const APP_CONFIG = {
   COPYRIGHT_YEAR: new Date().getFullYear()
 };
 
-// User Roles
+// User Roles - MATCH backend format (underscored)
 export const ROLES = {
   ADMIN: 'admin',
   TEACHER: 'teacher',
   STUDENT: 'student',
-  LAB_MANAGER: 'lab-manager',
+  LAB_MANAGER: 'lab_manager',
   DEAN: 'dean',
-  LAB_ASSISTANT: 'lab-assistant',
+  LAB_ASSISTANT: 'lab_assistant',
   ICT: 'ict',
   ASSET: 'asset'
 };

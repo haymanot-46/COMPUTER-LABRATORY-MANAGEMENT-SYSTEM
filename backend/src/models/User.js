@@ -35,9 +35,9 @@ const User = sequelize.define('User', {
         unique: true,
         field: 'student_id'
     },
-    phoneNumber: {
+    phone: {
         type: DataTypes.STRING(20),
-        field: 'phone_number'
+        allowNull: true
     },
     address: {
         type: DataTypes.TEXT,
@@ -52,9 +52,44 @@ const User = sequelize.define('User', {
         defaultValue: true,
         field: 'is_active'
     },
+    isEmailVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        field: 'is_email_verified'
+    },
+    emailVerificationToken: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        field: 'email_verification_token'
+    },
+    resetPasswordToken: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        field: 'reset_password_token'
+    },
+    resetPasswordExpiry: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        field: 'reset_password_expiry'
+    },
     lastLogin: {
         type: DataTypes.DATE,
         field: 'last_login'
+    },
+    lastLoginIp: {
+        type: DataTypes.STRING(45),
+        allowNull: true,
+        field: 'last_login_ip'
+    },
+    failedLoginAttempts: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        field: 'failed_login_attempts'
+    },
+    lockedUntil: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        field: 'locked_until'
     }
 }, {
     tableName: 'users',

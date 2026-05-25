@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": "js,json",
   "ignore": ["src/server.js.backup", "src/server.js"],
-  "exec": "node src/server-working.js"
+  "exec": "node src/server-final.js"
 }

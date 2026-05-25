@@ -13,12 +13,17 @@ const MaintenanceRequest = sequelize.define('MaintenanceRequest', {
   },
   computerId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     field: 'computer_id'
   },
-  lab: {
-    type: DataTypes.STRING(50),
-    allowNull: false
+  laboratoryId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    field: 'laboratory_id',
+    references: {
+      model: 'laboratories',
+      key: 'id'
+    }
   },
   issueType: {
     type: DataTypes.ENUM('hardware', 'software', 'network', 'peripheral', 'other'),

@@ -1,37 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { body } = require('express-validator');
-const {
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser,
-  updatePassword
-} = require('../controllers/userController');
 const { protect, authorize } = require('../middleware/authMiddleware');
+const ctrl = require('../controllers/userController');
 
-// Validation rules
-const userValidation = [
-  body('email').isEmail().withMessage('Please provide a valid email'),
-  body('name').notEmpty().withMessage('Name is required'),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-  body('role').isIn(['admin', 'teacher', 'student', 'lab_manager', 'dean', 'ict', 'asset', 'lab_assistant'])
-    .withMessage('Invalid role')
-];
-
-// TEMPORARY: Allow public access for testing
-// Remove this in production!
-router.post('/', userValidation, createUser);
-router.get('/', getAllUsers);
-router.get('/:id', getUserById);
-
-// Protected routes (require authentication for sensitive operations)
-router.use(protect);
-router.use(authorize('admin'));
-
-router.put('/:id', updateValidation, updateUser);
-router.delete('/:id', deleteUser);
-router.put('/:id/password', updatePassword);
+router.get('/', ctrl.getUsers);
+router.get('/roles', ctrl.getUserRoles);
+router.get('/:id', ctrl.getUserById);
+router.post('/', protect, authorize('admin'), ctrl.createUser);
+router.put('/:id', ctrl.updateUser);
+router.delete('/:id', ctrl.deleteUser);
+router.post('/profile-image', protect, ctrl.uploadProfileImage);
+router.get('/:id/profile-image', protect, ctrl.getProfileImage);
+router.delete('/profile-image', protect, ctrl.deleteProfileImage);
 
 module.exports = router;

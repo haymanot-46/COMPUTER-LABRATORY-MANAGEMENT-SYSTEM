@@ -1,7 +1,8 @@
 // frontend/src/pages/asset/LabAssistantRequests/MaterialRequests.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../../hooks';
+import { useNotification } from '../../../../hooks';
+import { materialService } from '../../../../services';
 import './MaterialRequests.css';
 
 const MaterialRequests = () => {
@@ -19,11 +20,7 @@ const MaterialRequests = () => {
   const loadRequests = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/material-requests?status=${activeTab}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await materialService.getRequests(activeTab);
       
       if (data.success) {
         setRequests(data.data);
@@ -37,17 +34,7 @@ const MaterialRequests = () => {
 
   const handleApprove = async (id) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/material-requests/${id}/approve`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ approved_by: 'asset' })
-      });
-      
-      const data = await response.json();
+      const data = await materialService.approveRequest(id);
       
       if (data.success) {
         addToast('Request approved successfully', 'success');
@@ -65,17 +52,7 @@ const MaterialRequests = () => {
     if (!reason) return;
     
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/material-requests/${id}/reject`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ reason })
-      });
-      
-      const data = await response.json();
+      const data = await materialService.rejectRequest(id, { reason });
       
       if (data.success) {
         addToast('Request rejected', 'info');

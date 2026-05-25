@@ -73,7 +73,7 @@ export const SocketProvider = ({ children }) => {
       const { io } = await import('socket.io-client');
       
      // Then in the io connection:
-const newSocket = io(wsUrl, {  // Use wsUrl instead of apiUrl
+const newSocket = io(apiUrl, {
   auth: { token },
   transports: ['websocket', 'polling'],
   reconnection: true,

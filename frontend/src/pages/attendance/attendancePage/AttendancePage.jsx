@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { attendanceService } from '../../../services';
 
 const AttendancePage = () => {
     const { scheduleId } = useParams();
@@ -16,14 +17,10 @@ const AttendancePage = () => {
 
     const loadData = async () => {
         setLoading(true);
-        const token = localStorage.getItem('token');
         
         try {
             console.log('Loading students for schedule:', scheduleId);
-            const studentsRes = await fetch(`http://localhost:5001/api/schedules/${scheduleId}/students`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const studentsData = await studentsRes.json();
+            const studentsData = await attendanceService.getStudentsBySchedule(scheduleId);
             
             console.log('API Response:', studentsData);
             
@@ -61,7 +58,6 @@ const AttendancePage = () => {
 
     const handleSubmit = async () => {
         setSaving(true);
-        const token = localStorage.getItem('token');
         
         const attendanceData = students.map(student => ({
             schedule_id: parseInt(scheduleId),
@@ -71,22 +67,13 @@ const AttendancePage = () => {
         }));
         
         try {
-            const response = await fetch('http://localhost:5001/api/attendance/bulk', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ attendance: attendanceData })
-            });
+            const data = await attendanceService.markBulk({ attendance: attendanceData });
             
-            const result = await response.json();
-            
-            if (result.success) {
+            if (data.success) {
                 alert('Attendance saved successfully!');
-                navigate('/teacher/dashboard');
+                navigate('/dashboard/teacher');
             } else {
-                alert('Failed to save attendance: ' + result.message);
+                alert('Failed to save attendance: ' + data.message);
             }
         } catch (error) {
             console.error('Error saving attendance:', error);

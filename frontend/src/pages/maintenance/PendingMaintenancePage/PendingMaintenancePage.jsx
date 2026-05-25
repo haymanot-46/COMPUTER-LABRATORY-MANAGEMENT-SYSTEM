@@ -91,7 +91,7 @@ const PendingApprovalsPage = () => {
   return (
     <div className="pending-approvals-page">
       <div className="page-header">
-        <button className="back-btn" onClick={() => navigate('/ict/dashboard')}>← Back to Dashboard</button>
+        <button className="back-btn" onClick={() => navigate('/dashboard/ict')}>← Back to Dashboard</button>
         <h1>⏳ Pending Maintenance Approvals</h1>
         <p>Review and assign maintenance requests from users</p>
       </div>

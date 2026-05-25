@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, useRole, useNotification } from '../../../hooks';
-import { dashboardService, scheduleService, maintenanceService, computerService } from '../../../services';
+import { dashboardService, scheduleService, maintenanceService, computerService, contactService } from '../../../services';
 import { StatCard } from '../../../components/dashboard';
 import './LabMangenerDashboard.css';
 
@@ -53,11 +53,7 @@ const LabManagerDashboard = () => {
 
   const loadUnreadContactCount = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/contact/messages?status=pending', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await response.json();
+      const data = await contactService.getMessages('pending');
       if (data.success) {
         setUnreadContactCount(data.data.length);
       }
@@ -231,7 +227,7 @@ const LabManagerDashboard = () => {
   ];
 
   const menuItems = [
-    { label: 'Dashboard', icon: '📊', path: '/lab-manager/dashboard', color: '#f59e0b', name: 'dashboard' },
+    { label: 'Dashboard', icon: '📊', path: '/dashboard/lab-manager', color: '#f59e0b', name: 'dashboard' },
     { label: 'Schedule Calendar', icon: '📅', path: '/schedule-calendar', color: '#10b981', name: 'schedule' },
     { label: 'Pending Approvals', icon: '⏳', path: '/pending-approvals', color: '#3b82f6', name: 'approvals' },
     { label: 'Computers', icon: '🖥️', path: '/computers', color: '#8b5cf6', name: 'computers' },
